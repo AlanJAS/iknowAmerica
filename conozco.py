@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Conozco
@@ -27,7 +27,9 @@ import os
 import random
 import pygame
 import time
-import imp
+import importlib
+import importlib.util
+import importlib.machinery
 import gettext
 import configparser
 from gettext import gettext as _
@@ -112,6 +114,16 @@ shift_y = 0
 xo_resolution = True
 
 clock = pygame.time.Clock()
+
+def load_source(modname, filename):
+    loader = importlib.machinery.SourceFileLoader(modname, filename)
+    spec = importlib.util.spec_from_file_location(modname, filename, loader=loader)
+    module = importlib.util.module_from_spec(spec)
+    # The module is always executed and not cached in sys.modules.
+    # Uncomment the following line to cache the module.
+    # sys.modules[module.__name__] = module
+    loader.exec_module(module)
+    return module
 
 
 class Punto():
@@ -253,7 +265,7 @@ class Conozco():
         a_path = os.path.abspath(r_path)
         f = None
         try:
-            f = imp.load_source(self.directorio, a_path)
+            f = load_source(self.directorio, a_path)
         except:
             print(_('Cannot open %s') % self.directorio)
 
@@ -363,7 +375,7 @@ class Conozco():
                 a_path = os.path.abspath(r_path)
                 f = None
                 try:
-                    f = imp.load_source(d, a_path)
+                    f = load_source(d, a_path)
                 except:
                     print(_('Cannot open %s') % d)
 
@@ -388,7 +400,7 @@ class Conozco():
         a_path = os.path.abspath(r_path)
         f = None
         try:
-            f = imp.load_source('commons', a_path)
+            f = load_source('commons', a_path)
         except:
             print(_('Cannot open %s') % 'commons')
 
@@ -444,7 +456,7 @@ class Conozco():
         a_path = os.path.abspath(r_path)
         f = None
         try:
-            f = imp.load_source(ARCHIVONIVELES, a_path)
+            f = load_source(ARCHIVONIVELES, a_path)
         except:
             print(_('Cannot open %s') % ARCHIVONIVELES)
 
@@ -528,7 +540,7 @@ class Conozco():
         a_path = os.path.abspath(r_path)
         f = None
         try:
-            f = imp.load_source(ARCHIVOEXPLORACIONES, a_path)
+            f = load_source(ARCHIVOEXPLORACIONES, a_path)
         except:
             print(_('Cannot open %s') % ARCHIVOEXPLORACIONES)
 
