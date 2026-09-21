@@ -33,7 +33,10 @@ import importlib.machinery
 import gettext
 import configparser
 from gettext import gettext as _
-from sugar3.graphics.style import GRID_CELL_SIZE
+try:
+    from sugar3.graphics.style import GRID_CELL_SIZE
+except ImportError:
+    GRID_CELL_SIZE = 0
 gtk_present = True
 try:
     import gi
