@@ -1,0 +1,18 @@
+#!/usr/bin/make -f
+
+.PHONY: clean build build-indep build-arch binary binary-indep binary-arch
+
+clean:
+	rm -rf debian/iknowamerica-pkg debian/files debian/*.substvars
+
+build: build-indep
+build-indep:
+	python3 -c "import ast,pathlib; [ast.parse(p.read_bytes(), filename=str(p)) for p in [pathlib.Path('conozco.py'), *pathlib.Path('recursos').rglob('*.py')]]"
+build-arch:
+
+binary: binary-indep
+binary-indep: build-indep
+	python3 debian/build-package.py
+	dpkg-gencontrol -piknowamerica -Pdebian/iknowamerica-pkg
+	dpkg-deb --root-owner-group -Zxz --build debian/iknowamerica-pkg ../iknowamerica_$$(dpkg-parsechangelog -SVersion)_all.deb
+binary-arch:

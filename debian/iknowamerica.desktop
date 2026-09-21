@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=I know America
+Name[es]=Conozco América
+Comment=Learn the geography of the Americas
+Comment[es]=Aprende la geografía de América
+Exec=iknowamerica
+Icon=iknowamerica
+Terminal=false
+Categories=Education;Geography;Game;
+Keywords=geography;America;maps;
+Keywords[es]=geografía;América;mapas;

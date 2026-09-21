@@ -1,0 +1,7 @@
+iknowamerica (11) unstable; urgency=medium
+
+  * Package upstream commit b356160 for standalone desktops.
+  * Make Sugar and GTK optional; compile gettext translations.
+  * Install application launcher, desktop entry and icon.
+
+ -- Alan Aguiar <alanjas@hotmail.com>  Mon, 21 Sep 2026 14:00:00 +0000

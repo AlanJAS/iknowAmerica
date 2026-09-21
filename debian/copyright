@@ -1,0 +1,15 @@
+Upstream: I know America
+Source: https://github.com/AlanJAS/iknowAmerica
+
+Program: Copyright 2008, 2012 Gabriel Eirea;
+         Copyright 2011, 2012 Alan Aguiar and other upstream contributors.
+License: GNU General Public License version 3 or later.
+The full license is in LICENSE.md alongside this file and in
+/usr/share/common-licenses/GPL-3 on Debian systems.
+
+Images: Alan Aguiar. Terrón: Alejandro Rodriguez. JP: Ceibal.
+License: Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported,
+as stated in the upstream README.md.
+https://creativecommons.org/licenses/by-nc-sa/3.0/
+
+Bundled resources retain their upstream license notices.
