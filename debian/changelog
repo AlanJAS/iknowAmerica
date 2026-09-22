@@ -1,7 +1,80 @@
-iknowamerica (11) unstable; urgency=medium
+iknowamerica (11) unstable; urgency=low
 
   * Package upstream commit b356160 for standalone desktops.
   * Make Sugar and GTK optional; compile gettext translations.
   * Install application launcher, desktop entry and icon.
 
  -- Alan Aguiar <alanjas@hotmail.com>  Mon, 21 Sep 2026 14:00:00 +0000
+
+iknowamerica (7) unstable; urgency=low
+
+  * Add a summary to activity.info.
+  * Add new translations.
+  * Make various code changes.
+
+ -- Alan Aguiar <alanjas@hotmail.com>  Tue, 30 Oct 2012 00:00:00 +0000
+
+iknowamerica (6) unstable; urgency=low
+
+  * Add new translations.
+  * Improve the introduction and question text.
+  * Add support for running directly in GNOME.
+  * Fix an incorrect window size in GNOME.
+  * Fix translation issues.
+  * Remove the GTK requirement on other platforms.
+  * Enable full-screen mode when launched with ./conozcoam.py.
+  * Correct a translation.
+
+ -- Alan Aguiar <alanjas@hotmail.com>  Wed, 22 Aug 2012 00:00:00 +0000
+
+iknowamerica (5) unstable; urgency=low
+
+  * Add new translations.
+  * Improve compatibility with Sugar 0.96.
+  * Fix keyboard event handling in SugarGame.
+  * Fix issues with UTF-8 strings.
+  * Change the click sound.
+
+ -- Alan Aguiar <alanjas@hotmail.com>  Sun, 27 May 2012 00:00:00 +0000
+
+iknowamerica (4) unstable; urgency=low
+
+  * Add new translations.
+  * Change .txt to .py to save information of each country
+
+ -- Alan Aguiar <alanjas@hotmail.com>  Wed, 02 May 2012 00:00:00 +0000
+
+iknowamerica (3) unstable; urgency=low
+
+  * Add Saint Vincent and the Grenadines.
+
+ -- Alan Aguiar <alanjas@hotmail.com>  Sat, 22 Oct 2011 00:00:00 +0000
+
+iknowamerica (2) unstable; urgency=low
+
+  * Fix scaling issues on computers other than the XO, such as the JumPC,
+    affecting the score bar, progress bar, and introduction text.
+  * Correct the names of two provinces in Ecuador.
+  * Complete the English translation of the statistics.
+  * Make minor corrections to other translations.
+  * Add self.max_participants = 1.
+  * Add a progress bar to display game progress.
+  * Add an image of JP to the About screen.
+  * Complete the statistics for all countries.
+  * Replace datos.png with bandera.png, which contains the corresponding
+    country's flag.
+  * Create estadisticas.txt to store information displayed in Explore mode.
+  * Enable the Back button during the farewell animation so it can be skipped.
+  * Keep the question visible after an incorrect answer and display the hint
+    below it.
+  * Add a "Show All" button to Explore mode.
+
+ -- Alan Aguiar <alanjas@hotmail.com>  Thu, 25 Aug 2011 00:00:00 +0000
+
+iknowamerica (1) unstable; urgency=low
+
+  * Initial stable release, featuring 29 countries and three overview maps.
+  * Add internationalization support.
+  * Include Spanish and English translations.
+
+ -- Alan Aguiar <alanjas@hotmail.com>  Mon, 25 Jul 2011 00:00:00 +0000
