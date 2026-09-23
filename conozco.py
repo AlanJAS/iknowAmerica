@@ -1610,6 +1610,20 @@ class Conozco():
                 elif event.type == EVENTOREFRESCO:
                     pygame.display.flip()
 
+    def _draw_progress(self):
+        rect = pygame.Rect(int(XBARRA_A * scale + shift_x),
+                           int(YBARRA_A * scale + shift_y),
+                           int(ABARRA_A * scale), int(ABARRA_P * scale))
+        unit = ABARRA_A / TOTALAVANCE
+        fill = rect.copy()
+        fill.width = int(unit * self.avanceNivel * scale)
+        self.pantalla.fill(COLORBARRA_A, fill)
+        pygame.draw.rect(self.pantalla, COLORBARRA_C, rect, 3)
+        for i in range(1, TOTALAVANCE):
+            x = int((XBARRA_A + unit * i) * scale + shift_x)
+            pygame.draw.line(self.pantalla, COLORBARRA_C,
+                             (x, rect.top), (x, rect.bottom), 3)
+
     def jugarNivel(self):
         """Juego principal de preguntas y respuestas"""
         self._game_times = self._game_times + 1
@@ -1643,19 +1657,8 @@ class Conozco():
                           (int((XBARRA_P+ABARRA_P/2)*scale+shift_x),
                            int(YBARRA_P+10)*scale+shift_y), COLORBARRA_P)
         # barra avance
-        unidad = ABARRA_A / TOTALAVANCE
-        pygame.draw.rect(self.pantalla, COLORBARRA_C,
-                         (int(XBARRA_A*scale+shift_x),
-                          int(YBARRA_A*scale+shift_y),
-                          int(ABARRA_A*scale),
-                          int(ABARRA_P*scale)), 3)
-        for i in range(TOTALAVANCE-1):
-            posx = int((XBARRA_A + unidad * (i+1))*scale+shift_x)
-            l = pygame.draw.line(self.pantalla, COLORBARRA_C,
-                                 (int(posx),
-                                  int(YBARRA_A*scale+shift_y)),
-                                 (int(posx),
-                                     int(YBARRA_A+ABARRA_P)*scale+shift_y), 3)
+        self._draw_progress()
+        
         self.nBien = 0
         self.nMal = 0
         self.puntos = 0
@@ -1764,54 +1767,14 @@ class Conozco():
                             # avanzo
                             self.avanceNivel = self.avanceNivel + 1
                             # barra avance
-                            av = unidad*self.avanceNivel
-                            self.pantalla.fill(COLORBARRA_A, (
-                                int(XBARRA_A*scale+shift_x),
-                                int(YBARRA_A*scale+shift_y),
-                                int(av*scale),
-                                int(ABARRA_P*scale)
-                            )
-                            )
-                            pygame.draw.rect(self.pantalla, COLORBARRA_C,
-                                             (int(XBARRA_A*scale+shift_x),
-                                                 int(YBARRA_A*scale+shift_y),
-                                                 int(ABARRA_A*scale),
-                                                 int(ABARRA_P*scale)), 3)
-                            for i in range(TOTALAVANCE-1):
-                                posx = int(
-                                    (XBARRA_A + unidad * (i+1))*scale+shift_x)
-                                l = pygame.draw.line(self.pantalla, COLORBARRA_C,
-                                                     (int(posx),
-                                                      int(YBARRA_A*scale+shift_y)),
-                                                     (int(posx),
-                                                         int(YBARRA_A+ABARRA_P)*scale+shift_y), 3)
+                            self._draw_progress()
                             # fin barra avance
                         else:  # volver a preguntar
                             self.mostrarGlobito(self.lineasPregunta)
                     else:
                         self.avanceNivel = self.avanceNivel + 1
                         # barra avance
-                        av = unidad*self.avanceNivel
-                        self.pantalla.fill(COLORBARRA_A, (
-                            int(XBARRA_A*scale+shift_x),
-                            int((YBARRA_A)*scale+shift_y),
-                            int(av*scale),
-                            int(ABARRA_P*scale)
-                        )
-                        )
-                        pygame.draw.rect(self.pantalla, COLORBARRA_C,
-                                         (int(XBARRA_A*scale+shift_x),
-                                             int((YBARRA_A)*scale+shift_y),
-                                             int(ABARRA_A*scale),
-                                             int(ABARRA_P*scale)), 3)
-                        for i in range(TOTALAVANCE-1):
-                            posx = int((XBARRA_A + unidad * (i+1))
-                                       * scale+shift_x)
-                            l = pygame.draw.line(self.pantalla, COLORBARRA_C,
-                                                 (int(posx),
-                                                  int(YBARRA_A*scale+shift_y)),
-                                                 (int(posx),
-                                                     int(YBARRA_A+ABARRA_P)*scale+shift_y), 3)
+                        self._draw_progress()
                         # fin barra avance
                         if not(self.avanceNivel == TOTALAVANCE):
                             self.lineasPregunta = \
