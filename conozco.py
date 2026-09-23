@@ -712,6 +712,18 @@ class Conozco():
                 elif event.type == EVENTOREFRESCO:
                     pygame.display.flip()
 
+    def _draw_footer(self, last_label):
+        rectangles = []
+        for x, label in zip((20, 420, 820),
+                            (_("About this game"), _("Stats"), last_label)):
+            rect = pygame.Rect(int(x * scale + shift_x),
+                               int(801 * scale + shift_y),
+                               int(370 * scale), int(48 * scale))
+            self.pantalla.fill(COLOR_BUTTON_B, rect)
+            self.mostrarTexto(label, self.fuente40, rect.center, COLOR_BUTTON_T)
+            rectangles.append(rect)
+        return rectangles
+
     def pantallaInicial(self):
         """Pantalla con el menu principal del juego"""
         self.pantalla.fill(COLOR_FONDO)
@@ -758,30 +770,8 @@ class Conozco():
                               (int(900*scale+shift_x), yLista),
                               COLOR_NEXT)
             yLista += int(50*scale)
-            # about button
-            self.pantalla.fill(COLOR_BUTTON_B,
-                               (int(20*scale+shift_x), int(801*scale+shift_y),
-                                int(370*scale), int(48*scale)))
-            self.mostrarTexto(_("About this game"),
-                              self.fuente40,
-                              (int(205*scale+shift_x), int(825*scale+shift_y)),
-                              COLOR_BUTTON_T)
-            # stats button
-            self.pantalla.fill(COLOR_BUTTON_B,
-                               (int(420*scale+shift_x), int(801*scale+shift_y),
-                                int(370*scale), int(48*scale)))
-            self.mostrarTexto(_("Stats"),
-                              self.fuente40,
-                              (int(605*scale+shift_x), int(825*scale+shift_y)),
-                              COLOR_BUTTON_T)
-            # return button
-            self.pantalla.fill(COLOR_BUTTON_B,
-                               (int(820*scale+shift_x), int(801*scale+shift_y),
-                                int(370*scale), int(48*scale)))
-            self.mostrarTexto(_("Return"),
-                              self.fuente40,
-                              (int(1005*scale+shift_x), int(825*scale+shift_y)),
-                              COLOR_BUTTON_T)
+        # buttons
+        about_rect, stats_rect, exit_rect = self._draw_footer(_("Return"))
         pygame.display.flip()
         while 1:
             clock.tick(20)
@@ -929,30 +919,8 @@ class Conozco():
             else:
                 nDirectoriosCol1 = indiceDir - paginaDirectorios * 20
                 nDirectoriosCol2 = 0
-            # about button
-            self.pantalla.fill(COLOR_BUTTON_B,
-                               (int(20*scale+shift_x), int(801*scale+shift_y),
-                                int(370*scale), int(48*scale)))
-            self.mostrarTexto(_("About this game"),
-                              self.fuente40,
-                              (int(205*scale+shift_x), int(825*scale+shift_y)),
-                              (100, 200, 100))
-            # stats button
-            self.pantalla.fill(COLOR_BUTTON_B,
-                               (int(420*scale+shift_x), int(801*scale+shift_y),
-                                int(370*scale), int(48*scale)))
-            self.mostrarTexto(_("Stats"),
-                              self.fuente40,
-                              (int(605*scale+shift_x), int(825*scale+shift_y)),
-                              (100, 200, 100))
-            # exit button
-            self.pantalla.fill(COLOR_BUTTON_B,
-                               (int(820*scale+shift_x), int(801*scale+shift_y),
-                                int(370*scale), int(48*scale)))
-            self.mostrarTexto(_("Exit"),
-                              self.fuente40,
-                              (int(1005*scale+shift_x), int(825*scale+shift_y)),
-                              (100, 200, 100))
+            # buttons
+            about_rect, stats_rect, exit_rect = self._draw_footer(_("Exit"))
             pygame.display.flip()
             cambiarPagina = False
             while not cambiarPagina:
