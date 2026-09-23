@@ -255,6 +255,11 @@ class Conozco():
 
     """
 
+    def change_sound(self, enabled):
+        """Enable sound only when the audio device and sample are available."""
+        self.sound = bool(enabled and self.click is not None)
+        return self.sound
+
     def mostrarTexto(self, texto, fuente, posicion, color):
         """Muestra texto en una determinada posicion"""
         text = fuente.render(texto, 1, color)
