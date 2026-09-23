@@ -15,7 +15,9 @@ Writted in python using pygame
 
 ## Install
 
-You can download and execute conozco.py file.
+Download or clone the complete repository, install Python 3 and Pygame 2,
+and run `python3 conozco.py`. Resources are located relative to the script,
+so it can also be launched from another working directory.
 
 Alternatively, for Ubuntu, there are a PPA https://launchpad.net/~alanjas/+archive/ubuntu/iknowamerica
 
