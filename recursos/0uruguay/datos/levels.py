@@ -163,7 +163,7 @@ LEVEL4 = [
     (_('San Salvador River'), _("It's in %s") % _("Soriano")),
     (_('Santa Lucía River'), _("It's easy")),
     (_('Sta Lucía Chico River'), _("It's in %s") % _("Canelones")),
-    (_('Tacuarembo River'), _("It's in %s") % _("Tacuarembo")),
+    (_('Tacuarembó River'), _("It's in %s") % _("Tacuarembo")),
     (_('Tacuarí River'), _('Flows in the Merin Lagoon')),
     (_('Uruguay River'), _("It's easy")),
     (_('Yaguarón River'), _("It's near Brazil")),
