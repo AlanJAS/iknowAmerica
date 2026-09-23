@@ -1079,31 +1079,28 @@ class Conozco():
         self._time = 0
 
     def load_stats(self):
-        if self.parent is not None:
-            l = []
+        l = []
+        for i in range(7):
+            l.append(0)
+        try:
+            path = self._get_stats_path()
+            f = open(path, 'r')
             for i in range(7):
-                l.append(0)
-            try:
-                folder = self.parent.get_activity_root()
-                path = os.path.join(folder, 'data', 'stats.dat')
-                if os.path.exists(path):
-                    f = open(path, 'r')
-                    for i in range(7):
-                        val = f.readline()
-                        val = val.strip('\n')
-                        if not(val == ''):
-                            l[i] = int(float(val))
-                    f.close()
-            except Exception as err:
-                print('Cannot load stats', err)
-                return
-            if self._validate_stats(l):
-                self._score = l[0]
-                self._average = l[1]
-                self._explore_times = l[2]
-                self._explore_places = l[3]
-                self._game_times = l[4]
-                self._time = l[5]
+                val = f.readline()
+                val = val.strip('\n')
+                if not(val == ''):
+                    l[i] = int(float(val))
+            f.close()
+        except Exception as err:
+            print('Cannot load stats', err)
+            return
+        if self._validate_stats(l):
+            self._score = l[0]
+            self._average = l[1]
+            self._explore_times = l[2]
+            self._explore_places = l[3]
+            self._game_times = l[4]
+            self._time = l[5]
 
     def _validate_stats(self, l):
         return (self._calc_sum(l) == l[6])
@@ -1114,31 +1111,44 @@ class Conozco():
             s = s + l[i]
         return s % 7
 
-    def save_stats(self):
+    def _get_stats_path(self):
         if self.parent is not None:
-            try:
-                t = int((time.monotonic() - self._init_time) / 60)
-                self._time = self._time + t
-                folder = self.parent.get_activity_root()
-                path = os.path.join(folder, 'data', 'stats.dat')
-                # use aux list
-                l = []
-                for i in range(7):
-                    l.append(0)
-                l[0] = self._score
-                l[1] = self._average
-                l[2] = self._explore_times
-                l[3] = self._explore_places
-                l[4] = self._game_times
-                l[5] = self._time
-                l[6] = self._calc_sum(l)
-                # save
-                f = open(path, 'w')
-                for i in range(7):
-                    f.write(str(l[i]) + '\n')
-                f.close()
-            except Exception as err:
-                print('Error saving stats', err)
+            folder = os.path.join(self.parent.get_activity_root(), 'data')
+        else:
+            base = os.environ.get('XDG_DATA_HOME', '')
+            if not os.path.isabs(base):
+                base = os.path.expanduser('~/.local/share')
+
+            folder = os.path.join(base, 'iknowamerica')
+        try:
+            os.makedirs(folder, exist_ok=True)
+        except:
+            return None
+        return os.path.join(folder, 'stats.dat')
+
+    def save_stats(self):
+        try:
+            t = int((time.monotonic() - self._init_time) / 60)
+            self._time = self._time + t
+            path = self._get_stats_path()
+            # use aux list
+            l = []
+            for i in range(7):
+                l.append(0)
+            l[0] = self._score
+            l[1] = self._average
+            l[2] = self._explore_times
+            l[3] = self._explore_places
+            l[4] = self._game_times
+            l[5] = self._time
+            l[6] = self._calc_sum(l)
+            # save
+            f = open(path, 'w')
+            for i in range(7):
+                f.write(str(l[i]) + '\n')
+            f.close()
+        except Exception as err:
+            print('Error saving stats', err)
 
     def loadAll(self):
         global scale, shift_x, shift_y, xo_resolution
