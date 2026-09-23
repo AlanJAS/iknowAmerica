@@ -1373,85 +1373,26 @@ class Conozco():
         respuesta correcta
         """
         respCorrecta = nivel.preguntaActual[2]
-        # primero averiguar tipo
-        if nivel.preguntaActual[1] == 1:  # DEPTO
-            # buscar depto correcto
-            for d in self.listaDeptos:
-                if d.nombre == respCorrecta:
-                    break
-            if d.estaAca(pos):
-                d.mostrarNombre(self.pantalla,
-                                self.fuente32,
-                                COLORNOMBREDEPTO,
-                                True)
-                return True
-            else:
-                return False
-        elif nivel.preguntaActual[1] == 2:  # CAPITAL o CIUDAD
-            # buscar lugar correcto
-            for l in self.listaLugares:
-                if l.nombre == respCorrecta:
-                    break
-            if l.estaAca(pos):
-                l.mostrarNombre(self.pantalla,
-                                self.fuente24,
-                                COLORNOMBRECAPITAL,
-                                True)
-                return True
-            else:
-                return False
-        if nivel.preguntaActual[1] == 3:  # RIO
-            # buscar rio correcto
-            for d in self.listaRios:
-                if d.nombre == respCorrecta:
-                    break
-            if d.estaAca(pos):
-                d.mostrarNombre(self.pantalla,
-                                self.fuente24,
-                                COLORNOMBRERIO,
-                                True)
-                return True
-            else:
-                return False
-        if nivel.preguntaActual[1] == 4:  # CUCHILLA
-            # buscar cuchilla correcta
-            for d in self.listaCuchillas:
-                if d.nombre == respCorrecta:
-                    break
-            if d.estaAca(pos):
-                d.mostrarNombre(self.pantalla,
-                                self.fuente24,
-                                COLORNOMBREELEVACION,
-                                True)
-                return True
-            else:
-                return False
-        elif nivel.preguntaActual[1] == 5:  # CERRO
-            # buscar lugar correcto
-            for l in self.listaLugares:
-                if l.nombre == respCorrecta:
-                    break
-            if l.estaAca(pos):
-                l.mostrarNombre(self.pantalla,
-                                self.fuente24,
-                                COLORNOMBREELEVACION,
-                                True)
-                return True
-            else:
-                return False
-        if nivel.preguntaActual[1] == 6:  # RUTA
-            # buscar ruta correcta
-            for d in self.listaRutas:
-                if d.nombre == respCorrecta:
-                    break
-            if d.estaAca(pos):
-                d.mostrarNombre(self.pantalla,
-                                self.fuente24,
-                                COLORNOMBRERUTA,
-                                True)
-                return True
-            else:
-                return False
+        choices = {
+            1: ('listaDeptos', self.fuente32, COLORNOMBREDEPTO),
+            2: ('listaLugares', self.fuente24, COLORNOMBRECAPITAL),
+            3: ('listaRios', self.fuente24, COLORNOMBRERIO),
+            4: ('listaCuchillas', self.fuente24, COLORNOMBREELEVACION),
+            5: ('listaLugares', self.fuente24, COLORNOMBREELEVACION),
+            6: ('listaRutas', self.fuente24, COLORNOMBRERUTA),
+        }
+        choice = choices.get(nivel.preguntaActual[1])
+        if choice is None:
+            return False
+        attribute, font, color = choice
+        for place in getattr(self, attribute, []):
+            if place.nombre == respCorrecta:
+                if place.estaAca(pos):
+                    place.mostrarNombre(self.pantalla, font, color, True)
+                    return True
+                else:
+                    return False
+        return False
 
     def presentLevel(self):
         for i in self.nivelActual.dibujoInicial:
@@ -1723,6 +1664,7 @@ class Conozco():
         pygame.time.set_timer(EVENTORESPUESTA, 0)
         # leer eventos y ver si la respuesta es correcta
         while 1:
+            clock.tick(20)
             if gtk_present:
                 while Gtk.events_pending():
                     Gtk.main_iteration()
