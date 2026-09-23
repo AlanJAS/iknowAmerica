@@ -667,7 +667,7 @@ class Conozco():
                           (int(400*scale+shift_x),
                            int(500*scale+shift_y)),
                           COLOR_STAT_N)
-        t = int(time.time() - self._init_time) / 60
+        t = int((time.monotonic() - self._init_time) / 60)
         t = t + self._time
         msg = _('Total time: %s minutes') % t
         self.mostrarTexto(msg,
@@ -1066,7 +1066,10 @@ class Conozco():
         global _
         _ = gettext.gettext
         # initial time
-        self._init_time = time.time()
+        self._init_time = time.monotonic()
+        # sound
+        self.click = None
+        self.sound = False
         # stats
         self._score = 0
         self._average = 0
@@ -1114,7 +1117,7 @@ class Conozco():
     def save_stats(self):
         if self.parent is not None:
             try:
-                t = int(time.time() - self._init_time) / 60
+                t = int((time.monotonic() - self._init_time) / 60)
                 self._time = self._time + t
                 folder = self.parent.get_activity_root()
                 path = os.path.join(folder, 'data', 'stats.dat')
@@ -1197,6 +1200,7 @@ class Conozco():
         self.camino_sonidos = os.path.join(CAMINORECURSOS,
                                            CAMINOCOMUN,
                                            CAMINOSONIDOS)
+        # check sound
         self.sound = True
         try:
             self.click = pygame.mixer.Sound(os.path.join(
