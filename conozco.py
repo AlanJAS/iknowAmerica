@@ -395,68 +395,22 @@ class Conozco():
                     self.listaDirectorios.append(d)
 
     def loadCommons(self):
-
-        self.listaPrefijos = list()
-        self.listaSufijos = list()
-        self.listaCorrecto = list()
-        self.listaMal = list()
-        self.listaDespedidasB = list()
-        self.listaDespedidasM = list()
-        self.listaPresentacion = list()
-        self.listaCreditos = list()
-
-        r_path = os.path.join(CAMINORECURSOS, CAMINOCOMUN,
-                              'datos', 'commons.py')
-        a_path = os.path.abspath(r_path)
-        f = None
-        try:
-            f = load_source('commons', a_path)
-        except:
-            print(_('Cannot open %s') % 'commons')
-
-        if f:
-            if hasattr(f, 'ACTIVITY_NAME'):
-                e = f.ACTIVITY_NAME
-                self.activity_name = e
-            if hasattr(f, 'PREFIX'):
-                for e in f.PREFIX:
-                    e1 = e
-                    self.listaPrefijos.append(e1)
-            if hasattr(f, 'SUFIX'):
-                for e in f.SUFIX:
-                    e1 = e
-                    self.listaSufijos.append(e1)
-            if hasattr(f, 'CORRECT'):
-                for e in f.CORRECT:
-                    e1 = e
-                    self.listaCorrecto.append(e1)
-            if hasattr(f, 'WRONG'):
-                for e in f.WRONG:
-                    e1 = e
-                    self.listaMal.append(e1)
-            if hasattr(f, 'BYE_C'):
-                for e in f.BYE_C:
-                    e1 = e
-                    self.listaDespedidasB.append(e1)
-            if hasattr(f, 'BYE_W'):
-                for e in f.BYE_W:
-                    e1 = e
-                    self.listaDespedidasM.append(e1)
-            if hasattr(f, 'PRESENTATION'):
-                for e in f.PRESENTATION:
-                    e1 = e
-                    self.listaPresentacion.append(e1)
-            if hasattr(f, 'CREDITS'):
-                for e in f.CREDITS:
-                    e1 = e
-                    self.listaCreditos.append(e1)
-
-        self.numeroSufijos = len(self.listaSufijos)
-        self.numeroPrefijos = len(self.listaPrefijos)
-        self.numeroCorrecto = len(self.listaCorrecto)
-        self.numeroMal = len(self.listaMal)
-        self.numeroDespedidasB = len(self.listaDespedidasB)
-        self.numeroDespedidasM = len(self.listaDespedidasM)
+        """Carga los recursos en comun"""
+        path = os.path.join(CAMINORECURSOS, CAMINOCOMUN, 'datos', 'commons.py')
+        data = load_source('commons', path)
+        self.activity_name = getattr(data, 'ACTIVITY_NAME', self.activity_name)
+        attributes = {
+            'listaPrefijos': 'PREFIX',
+            'listaSufijos': 'SUFIX',
+            'listaCorrecto': 'CORRECT',
+            'listaMal': 'WRONG',
+            'listaDespedidasB': 'BYE_C',
+            'listaDespedidasM': 'BYE_W',
+            'listaPresentacion': 'PRESENTATION',
+            'listaCreditos': 'CREDITS',
+        }
+        for attribute, source in attributes.items():
+            setattr(self, attribute, list(getattr(data, source, [])))
 
     def cargarNiveles(self):
         """Carga los niveles del archivo de configuracion"""
