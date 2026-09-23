@@ -276,8 +276,8 @@ class Conozco():
         f = None
         try:
             f = load_source(self.directorio, a_path)
-        except:
-            print(_('Cannot open %s') % self.directorio)
+        except (OSError, ImportError, SyntaxError) as err:
+            print(_('Cannot open %s') % d, err)
 
         if f:
             lugares = []
