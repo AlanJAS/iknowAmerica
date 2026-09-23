@@ -1044,19 +1044,14 @@ class Conozco():
 
     def cargarImagen(self, nombre):
         """Carga una imagen y la escala de acuerdo a la resolucion"""
-        imagen = None
         archivo = os.path.join(self.camino_imagenes, nombre)
-        if os.path.exists(archivo):
-            if xo_resolution:
-                imagen = pygame.image.load(
-                    os.path.join(self.camino_imagenes, nombre))
-            else:
-                imagen0 = pygame.image.load(
-                    os.path.join(self.camino_imagenes, nombre))
-                imagen = pygame.transform.scale(imagen0,
-                                                (int(imagen0.get_width()*scale),
-                                                 int(imagen0.get_height()*scale)))
-                del imagen0
+        if not os.path.exists(archivo):
+            return None
+        imagen = pygame.image.load(archivo)
+        if not xo_resolution:
+            imagen = pygame.transform.scale(imagen,
+                         (int(imagen.get_width() * scale),
+                         int(imagen.get_height() * scale)))
         return imagen
 
     def __init__(self, parent=None):
