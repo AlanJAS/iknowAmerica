@@ -413,87 +413,45 @@ class Conozco():
 
     def cargarNiveles(self):
         """Carga los niveles del archivo de configuracion"""
-        self.listaNiveles = list()
-
-        r_path = os.path.join(self.camino_datos, ARCHIVONIVELES + '.py')
-        a_path = os.path.abspath(r_path)
-        f = None
-        try:
-            f = load_source(ARCHIVONIVELES, a_path)
-        except:
-            print(_('Cannot open %s') % ARCHIVONIVELES)
-
-        if hasattr(f, 'LEVELS'):
-            for ln in f.LEVELS:
-                index = ln[0]
-                nombreNivel = str(ln[1])
-                nuevoNivel = Nivel(nombreNivel)
-
-                listaDibujos = ln[2]
-                for i in listaDibujos:
-                    nuevoNivel.dibujoInicial.append(i.strip())
-
-                listaNombres = ln[3]
-                for i in listaNombres:
-                    nuevoNivel.nombreInicial.append(i.strip())
-
-                listpreguntas = ln[4]
-
-                if (index == 1):
-                    for i in listpreguntas:
-                        texto = i[0]
-                        tipo = i[1]
-                        respuesta = i[2]
-                        ayuda = i[3]
-                        respuesta = str(i[2])
-                        ayuda = str(i[3])
-                        nuevoNivel.preguntas.append(
-                            (texto, tipo, respuesta, ayuda))
-                else:
-                    for i in listpreguntas:
-                        respuesta = i[0]
-                        ayuda = i[1]
-                        if (index == 2):
-                            tipo = 2
-                            texto = _('the city of\n%s') % respuesta
-                        elif (index == 7):
-                            tipo = 1
-                            texto = _('the department of\n%s') % respuesta
-                        elif (index == 8):
-                            tipo = 1
-                            texto = _('the province of\n%s') % respuesta
-                        elif (index == 9):
-                            tipo = 1
-                            texto = _('the district of\n%s') % respuesta
-                        elif (index == 10):
-                            tipo = 1
-                            texto = _('the state of\n%s') % respuesta
-                        elif (index == 11):
-                            tipo = 1
-                            texto = _('the region of\n%s') % respuesta
-                        elif (index == 12):
-                            tipo = 1
-                            texto = _('the parish of\n%s') % respuesta
-                        elif (index == 14):
-                            tipo = 1
-                            texto = _('the taluka of\n%s') % respuesta
-                        elif (index == 6):
-                            tipo = 1
-                            texto = _('the municipality of\n%s') % respuesta
-                        elif (index == 4):
-                            tipo = 3
-                            texto = _('the %s') % respuesta
-                        elif (index == 5):
-                            tipo = 6
-                            texto = _('the %(route)s') % {'route': respuesta}
-
-                        nuevoNivel.preguntas.append(
-                            (texto, tipo, respuesta, ayuda))
-
-                self.listaNiveles.append(nuevoNivel)
+        path = os.path.join(self.camino_datos, ARCHIVONIVELES + '.py')
+        data = load_source(ARCHIVONIVELES, path)
+        templates = {
+            2: (2, _('the city of\n%s')),
+            7: (1, _('the department of\n%s')),
+            8: (1, _('the province of\n%s')),
+            9: (1, _('the district of\n%s')),
+            10: (1, _('the state of\n%s')),
+            11: (1, _('the region of\n%s')),
+            12: (1, _('the parish of\n%s')),
+            14: (1, _('the taluka of\n%s')),
+            6: (1, _('the municipality of\n%s')),
+            4: (3, _('the %s')),
+            5: (6, _('the %(route)s')),
+        }
+        self.listaNiveles = []
+        for index, name, drawings, labels, questions in data.LEVELS:
+            level = Nivel(str(name))
+            level.dibujoInicial = [item.strip() for item in drawings]
+            level.nombreInicial = [item.strip() for item in labels]
+            if index == 1:
+                level.preguntas = [
+                    (text, kind, str(answer), str(hint))
+                    for text, kind, answer, hint in questions
+                ]
+            else:
+                if index not in templates:
+                    raise ValueError(f'Unknown level type {index} in {path}')
+                kind, template = templates[index]
+                level.preguntas = [
+                    (template % ({'route': answer} if index == 5 else answer),
+                     kind, answer, hint)
+                    for answer, hint in questions
+                ]
+            if not level.preguntas:
+                raise ValueError(f'Empty level {name!r} in {path}')
+            self.listaNiveles.append(level)
 
         self.indiceNivelActual = 0
-        self.numeroNiveles = len(self.listaNiveles)
 
     def cargarExploraciones(self):
         """Carga los niveles de exploracion del archivo de configuracion."""
