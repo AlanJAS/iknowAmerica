@@ -166,7 +166,7 @@ LEVEL4 = [
     (_('Putumayo River'), _('Is northeast')),
     (_('San Miguel River'), _('Is northeast')),
     (_('Babahoyo River'), _('Is west')),
-    (_('Canal de Jambeli'), _('Is southwest')),
+    (_('Canal of Jambeli'), _('Is southwest')),
     (_('Gulf of Guayaquil'), _('Is southwest')),
     (_('Caráquez Bay'), _('Is northwest')),
     (_('Manta Bay'), _('Is northwest')),

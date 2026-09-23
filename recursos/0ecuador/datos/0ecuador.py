@@ -107,7 +107,7 @@ RIVERS = [
     (_('Balsas River'), 236, 59, 472, 0),
     (_('Daule River'), 235, 152, 401, 70),
     (_('Chone River'), 234, 100, 323, -40),
-    (_('Reservoir Daule Peripa River'), 233, 174, 324, 45),
+    (_('Reservoir Daule Peripa'), 233, 174, 324, 45),
     (_('Briceño River'), 232, 97, 271, -10),
     (_('Blanco River'), 229, 253, 210, 30),
     (_('Toachi River'), 228, 256, 262, -30),

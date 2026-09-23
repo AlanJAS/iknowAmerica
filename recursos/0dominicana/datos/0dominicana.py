@@ -95,7 +95,7 @@ RIVERS = [
     (_('Camú River'), 250, 352, 360, -20),
     (_('Yaque Sur River'), 249, 234, 481, 80),
     (_('San Juan River'), 248, 170, 478, -60),
-    (_('Lake Enriquillo River'), 247, 90, 550, 0),
+    (_('Lake Enriquillo'), 247, 90, 550, 0),
     (_('Ocoa River'), 246, 338, 524, -80),
     (_('Haina River'), 245, 388, 518, -45),
     (_('Ozama River'), 244, 458, 459, -60),

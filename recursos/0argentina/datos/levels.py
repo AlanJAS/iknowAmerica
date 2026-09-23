@@ -14,7 +14,7 @@ LEVEL1 = [
     (_('Chaco'), _('Is north')),
     (_('Misiones'), _('Is northeast')),
     (_('Catamarca'), _('Is northwest')),
-    (_('Sgo. del Estero'), _('Is north')),
+    (_('Santiago del Estero'), _('Is north')),
     (_('La Rioja'), _('Is northwest')),
     (_('San Juan'), _('Is west')),
     (_('Mendoza'), _('Is west')),

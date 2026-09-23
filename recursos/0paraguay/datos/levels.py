@@ -101,7 +101,7 @@ LEVEL3 = [
     (_('Puerto Casado'), _('Is north')),
     (_('Puerto Guaraní'), _('Is north')),
     (_('Puerto Pinasco'), _('Is north')),
-    (_('Is in the center')),
+    (_('Rosario'), _('Is in the center')),
     (_('San Carlos'), _('Is north')),
     (_('San Estanislao'), _('Is southeast')),
     (_('San Lázaro'), _('Is north')),

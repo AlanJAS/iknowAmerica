@@ -120,7 +120,7 @@ LEVEL4 = [
     (_('Guarajambala River'), _('Is northeast')),
     (_('Lake of Güija'), _('Is northwest')),
     (_('Lake of Coatepeque'), _('Is west')),
-    (_('Lake of Ilompango'), _('Is west')),
+    (_('Lake of Ilopango'), _('Is west')),
     (_('Olomega Lagoon'), _('Is southeast')),
     (_('Cerrón Grande Reservoir'), _('Is northwest')),
     (_('Pacific Ocean'), _('Is south'))

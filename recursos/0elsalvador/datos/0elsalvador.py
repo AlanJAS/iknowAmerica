@@ -85,9 +85,9 @@ RIVERS = [
     (_('Grande de San Miguel River'), 249, 582, 511, 45),
     (_('Goascorán River'), 248, 741, 434, 80),
     (_('Guarajambala River'), 247, 545, 262, 80),
-    (_('Lake of Güija River'), 246, 206, 266, 0),
-    (_('Lake of Coatepeque River'), 245, 200, 392, 0),
-    (_('Lake of Ilopango River'), 244, 352, 452, 45),
+    (_('Lake of Güija'), 246, 206, 266, 0),
+    (_('Lake of Coatepeque'), 245, 200, 392, 0),
+    (_('Lake of Ilopango'), 244, 352, 452, 45),
     (_('Olomega Lagoon'), 243, 665, 569, 45),
     (_('Cerrón Grande Reservoir'), 242, 354, 324, -45),
     (_('Pacific Ocean'), 241, 298, 708, 0)

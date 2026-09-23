@@ -178,14 +178,14 @@ LEVEL4 = [
     (_('San Pedro River'), _('Is northwest')),
     (_('Mopán River'), _('Is northeast')),
     (_('Azul River'), _('Is northeast')),
-    (_('Lake Izabal River'), _('Is east')),
+    (_('Lake Izabal'), _('Is east')),
     (_('Amatique Bay'), _('Is east')),
     (_('Gulf of Honduras'), _('Is northwest')),
     (_('Caribbean Sea'), _('Is northwest')),
     (_('Pacific Ocean'), _('Is southwest')),
     (_('Atitlán Lagoon'), _('Is southwest')),
     (_('Lake Petén Itzá'), _('Is north')),
-    (_('Laguna Perdida'), _('Is north'))
+    (_('Perdida Lagoon'), _('Is north'))
 ]
 ]
 

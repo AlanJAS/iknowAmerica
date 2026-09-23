@@ -92,8 +92,8 @@ RIVERS = [
     (_('Guaporé River'), 230, 524, 244, -25),
     (_('Tucavaca River'), 229, 682, 563, -40),
     (_('Lateriquique River'), 228, 613, 610, -40),
-    (_('Lake Titicaca River'), 227, 47, 424, -45),
-    (_('Lake Poopo River'), 226, 180, 610, 0)
+    (_('Lake Titicaca'), 227, 47, 424, -45),
+    (_('Lake Poopo'), 226, 180, 610, 0)
 ]
 
 ROUTES = []
