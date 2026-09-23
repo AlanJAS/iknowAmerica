@@ -42,7 +42,7 @@ try:
     import gi
     gi.require_version('Gtk', '3.0')
     from gi.repository import Gtk
-except:
+except (ImportError, ValueError):
     gtk_present = False
 
 # constantes
@@ -77,12 +77,14 @@ ESTADOPESTANAS = 2
 ESTADOFRENTE = 3
 ESTADODESPEGUE = 4
 # paths
-CAMINORECURSOS = "recursos"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CAMINORECURSOS = os.path.join(BASE_DIR, "recursos")
 CAMINOCOMUN = "comun"
 CAMINOFUENTES = "fuentes"
 CAMINODATOS = "datos"
 CAMINOIMAGENES = "imagenes"
 CAMINOSONIDOS = "sonidos"
+
 ARCHIVONIVELES = "levels"
 ARCHIVOEXPLORACIONES = "explorations"
 # colors
@@ -1061,11 +1063,11 @@ class Conozco():
         self.parent = parent
         self.running = True
         file_activity_info = configparser.ConfigParser()
-        activity_info_path = os.path.abspath('activity/activity.info')
+        activity_info_path = os.path.join(BASE_DIR, 'activity', 'activity.info')
         file_activity_info.read(activity_info_path)
         bundle_id = file_activity_info.get('Activity', 'bundle_id')
         self.activity_name = file_activity_info.get('Activity', 'name')
-        path = os.path.abspath('locale')
+        path = os.path.join(BASE_DIR, 'locale')
         gettext.bindtextdomain(bundle_id, path)
         gettext.textdomain(bundle_id)
         global _
