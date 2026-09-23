@@ -1942,6 +1942,31 @@ class Conozco():
                         pass
                     pygame.display.flip()
 
+    def _wait_presentation(self, milliseconds):
+        """Return True when the presentation is skipped or the window closes."""
+        pygame.time.set_timer(EVENTORESPUESTA, milliseconds)
+        try:
+            while True:
+                clock.tick(20)
+                if gtk_present:
+                    while Gtk.events_pending():
+                        Gtk.main_iteration()
+                events = pygame.event.get()
+                if any(event.type == pygame.QUIT for event in events):
+                    return True
+                for event in events:
+                    if event.type in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
+                        if self.sound:
+                            self.click.play()
+                        return True
+                    if event.type == EVENTORESPUESTA:
+                        return False
+                    if event.type == EVENTOREFRESCO:
+                        pygame.display.flip()
+        finally:
+            pygame.time.set_timer(EVENTORESPUESTA, 0)
+            pygame.event.clear(EVENTORESPUESTA)
+
     def presentacion(self):
 
         #***************************** cuadro 1 ******************************
@@ -1954,8 +1979,8 @@ class Conozco():
                         COLOR_SKIP)
         pygame.display.flip()
         # esperar o no esperar, esa es la cuestion
-        time.sleep(0.5)
-
+        if self._wait_presentation(500):
+            return
 
         # comienzo animacion
         self.pantalla.blit(self.globo1,
@@ -1973,25 +1998,8 @@ class Conozco():
 
         #time.sleep(2)
         terminar = False
-        pygame.time.set_timer(EVENTORESPUESTA, 2000)
-        while True:
-            while Gtk.events_pending():
-                Gtk.main_iteration()
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN or \
-                        event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.sound:
-                        self.click.play()
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    return
-                elif event.type == EVENTORESPUESTA:
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    terminar = True
-                elif event.type == EVENTOREFRESCO:
-                    pygame.display.flip()
-            if terminar:
-                break
+        if self._wait_presentation(2000):
+            return
 
         self.pantalla.blit(self.globo1,
                         (int(180*scale+shift_x),int(260*scale+shift_y)))
@@ -2005,51 +2013,15 @@ class Conozco():
             self.pantalla.blit(text, textrect)
             yLinea = yLinea+self.fuente32.get_height()+int(10*scale)
         pygame.display.flip()
-        terminar = False
-        pygame.time.set_timer(EVENTORESPUESTA, 2000)
-        while True:
-            while Gtk.events_pending():
-                Gtk.main_iteration()
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN or \
-                        event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.sound:
-                        self.click.play()
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    return
-                elif event.type == EVENTORESPUESTA:
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    terminar = True
-                elif event.type == EVENTOREFRESCO:
-                    pygame.display.flip()
-            if terminar:
-                break
+        if self._wait_presentation(2000):
+            return
 
         #***************************** cuadro 3 ******************************
         self.pantalla.blit(self.globo3,
                         (int(618*scale+shift_x),int(78*scale+shift_y)))
         pygame.display.flip()
-        terminar = False
-        pygame.time.set_timer(EVENTORESPUESTA, 2000)
-        while True:
-            while Gtk.events_pending():
-                Gtk.main_iteration()
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN or \
-                        event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.sound:
-                        self.click.play()
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    return
-                elif event.type == EVENTORESPUESTA:
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    terminar = True
-                elif event.type == EVENTOREFRESCO:
-                    pygame.display.flip()
-            if terminar:
-                break
+        if self._wait_presentation(2000):
+            return
 
         #***************************** cuadro 4 ******************************
         # **************************** fondo 2 *******************************
@@ -2076,26 +2048,8 @@ class Conozco():
             self.pantalla.blit(text, textrect)
             yLinea = yLinea+self.fuente32.get_height()+int(10*scale)
         pygame.display.flip()
-        terminar = False
-        pygame.time.set_timer(EVENTORESPUESTA, 1000)
-        while True:
-            while Gtk.events_pending():
-                Gtk.main_iteration()
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN or \
-                        event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.sound:
-                        self.click.play()
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    return
-                elif event.type == EVENTORESPUESTA:
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    terminar = True
-                elif event.type == EVENTOREFRESCO:
-                    pygame.display.flip()
-            if terminar:
-                break
+        if self._wait_presentation(1000):
+            return
 
         #***************************** cuadro 5 ******************************
         self.pantalla.blit(self.globo2,
@@ -2110,26 +2064,8 @@ class Conozco():
             self.pantalla.blit(text, textrect)
             yLinea = yLinea + self.fuente32.get_height()+int(10*scale)
         pygame.display.flip()
-        terminar = False
-        pygame.time.set_timer(EVENTORESPUESTA, 2000)
-        while True:
-            while Gtk.events_pending():
-                Gtk.main_iteration()
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN or \
-                        event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.sound:
-                        self.click.play()
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    return
-                elif event.type == EVENTORESPUESTA:
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    terminar = True
-                elif event.type == EVENTOREFRESCO:
-                    pygame.display.flip()
-            if terminar:
-                break
+        if self._wait_presentation(2000):
+            return
 
         #***************************** cuadro 6 ******************************
         self.pantalla.blit(self.fondo2,
@@ -2157,27 +2093,8 @@ class Conozco():
             yLinea = yLinea + self.fuente32.get_height()+int(10*scale)
         pygame.display.flip()
 
-        #time.sleep(1)
-        terminar = False
-        pygame.time.set_timer(EVENTORESPUESTA, 1500)
-        while True:
-            while Gtk.events_pending():
-                Gtk.main_iteration()
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN or \
-                        event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.sound:
-                        self.click.play()
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    return
-                elif event.type == EVENTORESPUESTA:
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    terminar = True
-                elif event.type == EVENTOREFRESCO:
-                    pygame.display.flip()
-            if terminar:
-                break
+        if self._wait_presentation(1500):
+            return
 
         self.pantalla.blit(self.globo1,
                         (int(160*scale+shift_x),int(240*scale+shift_y)))
@@ -2191,28 +2108,9 @@ class Conozco():
             self.pantalla.blit(text, textrect)
             yLinea = yLinea + self.fuente32.get_height()+int(10*scale)
         pygame.display.flip()
-        terminar = False
-        pygame.time.set_timer(EVENTORESPUESTA, 2000)
-        while True:
-            while Gtk.events_pending():
-                Gtk.main_iteration()
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN or \
-                        event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.sound:
-                        self.click.play()
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    return
-                elif event.type == EVENTORESPUESTA:
-                    pygame.time.set_timer(EVENTORESPUESTA,0)
-                    terminar = True
-                elif event.type == EVENTOREFRESCO:
-                    pygame.display.flip()
-            if terminar:
-                break
-
-        return
+        
+        if self._wait_presentation(2000):
+            return
 
     def run(self):
         """Este es el loop principal del juego"""
@@ -2230,10 +2128,10 @@ class Conozco():
         self.loadAll()
 
         self.loadCommons()
+        
+        self.load_stats()
 
         self.presentacion()
-
-        self.load_stats()
 
         self.paginaDir = 0
         self.running = True
