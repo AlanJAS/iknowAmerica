@@ -496,37 +496,16 @@ class Conozco():
         self.numeroNiveles = len(self.listaNiveles)
 
     def cargarExploraciones(self):
-        """Carga los niveles de exploracion del archivo de configuracion"""
-        self.listaExploraciones = list()
-
-        r_path = os.path.join(self.camino_datos, ARCHIVOEXPLORACIONES + '.py')
-        a_path = os.path.abspath(r_path)
-        f = None
-        try:
-            f = load_source(ARCHIVOEXPLORACIONES, a_path)
-        except:
-            print(_('Cannot open %s') % ARCHIVOEXPLORACIONES)
-
-        if hasattr(f, 'EXPLORATIONS'):
-            for e in f.EXPLORATIONS:
-                nombreNivel = e[0]
-                nuevoNivel = Nivel(nombreNivel)
-
-                listaDibujos = e[1]
-                for i in listaDibujos:
-                    nuevoNivel.dibujoInicial.append(i.strip())
-
-                listaNombres = e[2]
-                for i in listaNombres:
-                    nuevoNivel.nombreInicial.append(i.strip())
-
-                listaNombres = e[3]
-                for i in listaNombres:
-                    nuevoNivel.elementosActivos.append(i.strip())
-
-                self.listaExploraciones.append(nuevoNivel)
-
-        self.numeroExploraciones = len(self.listaExploraciones)
+        """Carga los niveles de exploracion del archivo de configuracion."""
+        path = os.path.join(self.camino_datos, ARCHIVOEXPLORACIONES + '.py')
+        data = load_source(ARCHIVOEXPLORACIONES, path)
+        self.listaExploraciones = []
+        for name, drawings, labels, active in data.EXPLORATIONS:
+            level = Nivel(name)
+            level.dibujoInicial = [item.strip() for item in drawings]
+            level.nombreInicial = [item.strip() for item in labels]
+            level.elementosActivos = [item.strip() for item in active]
+            self.listaExploraciones.append(level)
 
     def pantallaAcercaDe(self):
         """Pantalla con los datos del juego, creditos, etc"""
