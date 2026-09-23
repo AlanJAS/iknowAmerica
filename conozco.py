@@ -1096,7 +1096,9 @@ class Conozco():
                 if not(val == ''):
                     l[i] = int(float(val))
             f.close()
-        except Exception as err:
+        except FileNotFoundError:
+            return  # First run.
+        except (OSError, ValueError) as err:
             print('Cannot load stats', err)
             return
         if self._validate_stats(l):
