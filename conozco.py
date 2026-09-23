@@ -232,15 +232,14 @@ class Nivel():
     def prepararPreguntas(self):
         """Este metodo sirve para preparar la lista de preguntas al azar."""
         random.shuffle(self.preguntas)
+        self.indicePreguntaActual = 0
 
     def siguientePregunta(self, listaSufijos, listaPrefijos):
         """Prepara el texto de la pregunta siguiente"""
         self.preguntaActual = self.preguntas[self.indicePreguntaActual]
-        self.sufijoActual = random.randint(1, len(listaSufijos))-1
-        self.prefijoActual = random.randint(1, len(listaPrefijos))-1
-        lineas = listaPrefijos[self.prefijoActual].split("\n")
+        lineas = random.choice(listaPrefijos).split("\n")
         lineas.extend(self.preguntaActual[0].split("\n"))
-        lineas.extend(listaSufijos[self.sufijoActual].split("\n"))
+        lineas.extend(random.choice(listaSufijos).split("\n"))
         self.indicePreguntaActual = self.indicePreguntaActual+1
         if self.indicePreguntaActual == len(self.preguntas):
             self.indicePreguntaActual = 0
@@ -1277,8 +1276,7 @@ class Conozco():
 
     def correcto(self):
         """Muestra texto en el globito cuando la respuesta es correcta"""
-        self.correctoActual = random.randint(1, self.numeroCorrecto)-1
-        self.mostrarGlobito([self.listaCorrecto[self.correctoActual]])
+        self.mostrarGlobito([random.choice(self.listaCorrecto)])
         self.esCorrecto = True
         if self.nRespuestasMal >= 1:
             self.puntos = self.puntos + 5
@@ -1288,8 +1286,7 @@ class Conozco():
 
     def mal(self):
         """Muestra texto en el globito cuando la respuesta es incorrecta"""
-        self.malActual = random.randint(1, self.numeroMal)-1
-        self.mostrarGlobito([self.listaMal[self.malActual]])
+        self.mostrarGlobito([random.choice(self.listaMal)])
         self.esCorrecto = False
         self.nRespuestasMal += 1
         pygame.time.set_timer(EVENTORESPUESTA, TIEMPORESPUESTA)
@@ -1707,12 +1704,10 @@ class Conozco():
                             self.otorgado = False
                     if self.avanceNivel == TOTALAVANCE:  # inicia despedida
                         if self.puntos == 70:
-                            self.lineasPregunta = self.listaDespedidasB[
-                                random.randint(1, self.numeroDespedidasB)-1]\
+                            self.lineasPregunta = random.choice(self.listaDespedidasB)\
                                 .split("\n")
                         else:
-                            self.lineasPregunta = self.listaDespedidasM[
-                                random.randint(1, self.numeroDespedidasM)-1]\
+                            self.lineasPregunta = random.choice(self.listaDespedidasM)\
                                 .split("\n")
                         self.mostrarGlobito(self.lineasPregunta)
                         pygame.time.set_timer(EVENTODESPEGUE,
