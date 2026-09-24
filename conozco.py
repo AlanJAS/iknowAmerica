@@ -749,51 +749,43 @@ class Conozco():
                                 int(1200*scale), int(600*scale)))
             
             opciones = []
+
+            # Página anterior
             if paginaDirectorios > 0:
                 rect = self._draw_menu_option(
-                    "<<< " + _("Previous page"), 10, yLista, COLOR_NEXT)
+                    "<<< " + _("Previous page"),
+                    10, yLista, COLOR_NEXT
+                )
                 opciones.append((rect, "anterior", None))
-          
-            yLista += int(50*scale)
-            indiceDir = paginaDirectorios * 20
-            terminar = False
-            while not terminar:
-                rect = self._draw_menu_option(
-                    self.listaNombreDirectorios[indiceDir], 10, yLista,
-                    COLOR_OPTION_T)
-                opciones.append((rect, "mapa", indiceDir))
-                yLista += int(50*scale)
-                indiceDir = indiceDir + 1
-                if indiceDir == nDirectorios or \
-                        indiceDir == paginaDirectorios * 20 + 10:
-                    terminar = True
-            if indiceDir == paginaDirectorios * 20 + 10 and \
-                    not indiceDir == nDirectorios:
-                nDirectoriosCol1 = 10
-                yLista = int(250*scale+shift_y)
-                terminar = False
-                while not terminar:
-                    rect = self._draw_menu_option(
-                        self.listaNombreDirectorios[indiceDir], 610, yLista,
-                        COLOR_OPTION_T)
-                    opciones.append((rect, "mapa", indiceDir))
-                    yLista += int(50*scale)
-                    indiceDir = indiceDir + 1
-                    if indiceDir == nDirectorios or \
-                            indiceDir == paginaDirectorios * 20 + 20:
-                        terminar = True
-                if indiceDir == paginaDirectorios * 20 + 20:
-                    if indiceDir < nDirectorios:
-                        rect = self._draw_menu_option(
-                            _("Next page") + " >>>", 610, yLista, COLOR_NEXT)
-                        opciones.append((rect, "siguiente", None))
 
-                    nDirectoriosCol2 = 10
-                else:
-                    nDirectoriosCol2 = indiceDir - paginaDirectorios * 20 - 10
-            else:
-                nDirectoriosCol1 = indiceDir - paginaDirectorios * 20
-                nDirectoriosCol2 = 0
+            # Países de la página actual
+            inicio = paginaDirectorios * 20
+            fin = min(inicio + 20, nDirectorios)
+
+            for local, indice in enumerate(range(inicio, fin)):
+                columna = local // 10
+                fila = local % 10
+
+                x = 10 + columna * 600
+                y = int((250 + fila * 50) * scale + shift_y)
+
+                rect = self._draw_menu_option(
+                    self.listaNombreDirectorios[indice],
+                    x, y, COLOR_OPTION_T
+                )
+
+                opciones.append((rect, "mapa", indice))
+
+            # Página siguiente
+            if fin < nDirectorios:
+                rect = self._draw_menu_option(
+                    _("Next page") + " >>>",
+                    610,
+                    int(750 * scale + shift_y),
+                    COLOR_NEXT
+                )
+                opciones.append((rect, "siguiente", None))
+
             # buttons
             about_rect, stats_rect, exit_rect = self._draw_footer(_("Exit"))
             pygame.display.flip()
