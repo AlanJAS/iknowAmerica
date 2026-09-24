@@ -1658,14 +1658,14 @@ class Conozco():
                         Gtk.main_iteration()
                 events = pygame.event.get()
                 if any(event.type == pygame.QUIT for event in events):
-                    return True
+                    return "quit"
                 for event in events:
                     if event.type in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
                         if self.sound:
                             self.click.play()
-                        return True
+                        return "skip"
                     if event.type == EVENTORESPUESTA:
-                        return False
+                        return "continue"
                     if event.type == EVENTOREFRESCO:
                         pygame.display.flip()
         finally:
@@ -1684,8 +1684,9 @@ class Conozco():
                         COLOR_SKIP)
         pygame.display.flip()
         # esperar o no esperar, esa es la cuestion
-        if self._wait_presentation(500):
-            return
+        resultado = self._wait_presentation(500)
+        if resultado != "continue":
+            return resultado
 
         # comienzo animacion
         self.pantalla.blit(self.globo1,
@@ -1703,8 +1704,9 @@ class Conozco():
 
         #time.sleep(2)
         terminar = False
-        if self._wait_presentation(2000):
-            return
+        resultado = self._wait_presentation(2000)
+        if resultado != "continue":
+            return resultado
 
         self.pantalla.blit(self.globo1,
                         (int(180*scale+shift_x),int(260*scale+shift_y)))
@@ -1718,15 +1720,17 @@ class Conozco():
             self.pantalla.blit(text, textrect)
             yLinea = yLinea+self.fuente32.get_height()+int(10*scale)
         pygame.display.flip()
-        if self._wait_presentation(2000):
-            return
+        resultado = self._wait_presentation(2000)
+        if resultado != "continue":
+            return resultado
 
         #***************************** cuadro 3 ******************************
         self.pantalla.blit(self.globo3,
                         (int(618*scale+shift_x),int(78*scale+shift_y)))
         pygame.display.flip()
-        if self._wait_presentation(2000):
-            return
+        resultado = self._wait_presentation(2000)
+        if resultado != "continue":
+            return resultado
 
         #***************************** cuadro 4 ******************************
         # **************************** fondo 2 *******************************
@@ -1740,7 +1744,10 @@ class Conozco():
                         COLOR_SKIP)
         pygame.display.flip()
         # espero
-        time.sleep(0.5)
+        resultado = self._wait_presentation(500)
+        if resultado != "continue":
+            return resultado
+
         self.pantalla.blit(self.globo1,
                         (int(160*scale+shift_x),int(240*scale+shift_y)))
         yLinea = int(310*scale+shift_y)
@@ -1753,8 +1760,9 @@ class Conozco():
             self.pantalla.blit(text, textrect)
             yLinea = yLinea+self.fuente32.get_height()+int(10*scale)
         pygame.display.flip()
-        if self._wait_presentation(1000):
-            return
+        resultado = self._wait_presentation(1000)
+        if resultado != "continue":
+            return resultado
 
         #***************************** cuadro 5 ******************************
         self.pantalla.blit(self.globo2,
@@ -1769,8 +1777,9 @@ class Conozco():
             self.pantalla.blit(text, textrect)
             yLinea = yLinea + self.fuente32.get_height()+int(10*scale)
         pygame.display.flip()
-        if self._wait_presentation(2000):
-            return
+        resultado = self._wait_presentation(1500)
+        if resultado != "continue":
+            return resultado
 
         #***************************** cuadro 6 ******************************
         self.pantalla.blit(self.fondo2,
@@ -1783,7 +1792,9 @@ class Conozco():
                         COLOR_SKIP)
         pygame.display.flip()
         # espero
-        time.sleep(0.5)
+        resultado = self._wait_presentation(500)
+        if resultado != "continue":
+            return resultado
 
         self.pantalla.blit(self.globo1,
                         (int(160*scale+shift_x),int(240*scale+shift_y)))
@@ -1798,8 +1809,9 @@ class Conozco():
             yLinea = yLinea + self.fuente32.get_height()+int(10*scale)
         pygame.display.flip()
 
-        if self._wait_presentation(1500):
-            return
+        resultado = self._wait_presentation(2000)
+        if resultado != "continue":
+            return resultado
 
         self.pantalla.blit(self.globo1,
                         (int(160*scale+shift_x),int(240*scale+shift_y)))
@@ -1814,8 +1826,9 @@ class Conozco():
             yLinea = yLinea + self.fuente32.get_height()+int(10*scale)
         pygame.display.flip()
         
-        if self._wait_presentation(2000):
-            return
+        resultado = self._wait_presentation(2000)
+        # retorno siempre algo
+        return resultado
 
     def run(self):
         """Este es el loop principal del juego"""
@@ -1836,10 +1849,21 @@ class Conozco():
         
         self.load_stats()
 
-        self.presentacion()
+        resultado = self.presentacion()
 
+        if resultado == "quit":
+            self.running = False
+            self.save_stats()
+
+            if self.parent is not None:
+                self.parent.close(skip_save=True)
+
+            return
+
+        # Si terminó normalmente o se salto, continuar con el juego.
         self.paginaDir = 0
         self.running = True
+
         while self.running:
             if self.pantallaDirectorios() == 1:
                 return
