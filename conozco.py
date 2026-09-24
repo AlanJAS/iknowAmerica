@@ -860,21 +860,16 @@ class Conozco():
         self._game_times = l[3]
         self._time = l[4]
 
-        # Calculate average instead of reading it from stats.dat.
-        self._average = (
-            self._score / self._game_times
-            if self._game_times > 0
-            else 0
-        )
+        # Calculate average instead of reading it from stats.dat
+        if self._game_times > 0:
+            self._average = self._score / self._game_times
 
     def _validate_stats(self, l):
-        return (
-            len(l) in (6, 7)
-            and self._calc_sum(l) == l[-1]
+        return self._calc_sum(l) == l[-1]
         )
 
     def _calc_sum(self, l):
-        return sum(l[:-1]) % 7
+        return sum(l) % 7
 
     def _get_stats_path(self):
         if self.parent is not None:
@@ -885,10 +880,7 @@ class Conozco():
                 base = os.path.expanduser('~/.local/share')
 
             folder = os.path.join(base, 'iknowamerica')
-        try:
-            os.makedirs(folder, exist_ok=True)
-        except:
-            return None
+        os.makedirs(folder, exist_ok=True)
         return os.path.join(folder, 'stats.dat')
 
     def _update_play_time(self):
@@ -903,21 +895,15 @@ class Conozco():
         try:
             self._update_play_time()
             path = self._get_stats_path()
-            # use aux list
-            l = []
-            for i in range(7):
-                l.append(0)
-            l[0] = self._score
-            l[1] = self._average
-            l[2] = self._explore_times
-            l[3] = self._explore_places
-            l[4] = self._game_times
-            l[5] = self._time
-            l[6] = self._calc_sum(l)
+
+            values = [self._score, self._explore_times, self._explore_places,
+                      self._game_times, self._time]
+            values.append(self._calc_sum(values))
+
             # save
             f = open(path, 'w')
-            for i in range(7):
-                f.write(str(l[i]) + '\n')
+            for val in values:
+                f.write(str(val) + '\n')
             f.close()
         except Exception as err:
             print('Error saving stats', err)
