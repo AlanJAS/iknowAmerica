@@ -866,7 +866,6 @@ class Conozco():
 
     def _validate_stats(self, l):
         return self._calc_sum(l) == l[-1]
-        )
 
     def _calc_sum(self, l):
         return sum(l) % 7
