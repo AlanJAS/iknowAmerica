@@ -357,21 +357,19 @@ class Conozco():
         """Carga la lista de directorios con los distintos mapas"""
         self.listaDirectorios = []
         self.listaNombreDirectorios = []
-        listaTemp = os.listdir(CAMINORECURSOS)
-        listaTemp.sort()
-        for d in listaTemp:
-            if not (d == 'comun'):
-                path = os.path.join(CAMINORECURSOS, d, 'datos', d + '.py')
-                f = None
-                try:
-                    f = load_source(d, path)
-                except:
-                    print(_('Cannot open %s') % d)
-
-                if hasattr(f, 'NAME'):
-                    name = f.NAME
-                    self.listaNombreDirectorios.append(name)
-                    self.listaDirectorios.append(d)
+        for directory in sorted(os.listdir(CAMINORECURSOS)):
+            path = os.path.join(CAMINORECURSOS, directory, CAMINODATOS,
+                                directory + '.py')
+            if not os.path.isfile(path):
+                continue
+            try:
+                data = load_source(directory, path)
+            except (OSError, ImportError, SyntaxError) as err:
+                print(_('Cannot open %s') % path, err)
+                continue
+            if hasattr(data, 'NAME'):
+                self.listaDirectorios.append(directory)
+                self.listaNombreDirectorios.append(data.NAME)
 
     def loadCommons(self):
         """Carga los recursos en comun"""
