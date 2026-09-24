@@ -25,7 +25,6 @@
 
 import os
 import random
-import pygame
 import time
 import importlib
 import importlib.util
@@ -33,6 +32,7 @@ import importlib.machinery
 import gettext
 import configparser
 from gettext import gettext as _
+import pygame
 try:
     from sugar3.graphics.style import GRID_CELL_SIZE
 except ImportError:
