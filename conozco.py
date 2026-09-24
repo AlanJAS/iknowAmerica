@@ -395,11 +395,10 @@ class Conozco():
         listaTemp.sort()
         for d in listaTemp:
             if not (d == 'comun'):
-                r_path = os.path.join(CAMINORECURSOS, d, 'datos', d + '.py')
-                a_path = os.path.abspath(r_path)
+                path = os.path.join(CAMINORECURSOS, d, 'datos', d + '.py')
                 f = None
                 try:
-                    f = load_source(d, a_path)
+                    f = load_source(d, path)
                 except:
                     print(_('Cannot open %s') % d)
 
