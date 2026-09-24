@@ -884,39 +884,54 @@ class Conozco():
         self._time = 0
 
     def load_stats(self):
-        l = []
-        for i in range(7):
-            l.append(0)
         try:
             path = self._get_stats_path()
-            f = open(path, 'r')
-            for i in range(7):
-                val = f.readline()
-                val = val.strip('\n')
-                if not(val == ''):
-                    l[i] = int(float(val))
-            f.close()
+
+            with open(path, 'r', encoding='utf-8') as f:
+                l = [int(float(line.strip())) for line in f]
+
         except FileNotFoundError:
             return  # First run.
-        except (OSError, ValueError) as err:
+
+        except (OSError, ValueError, TypeError) as err:
             print('Cannot load stats', err)
             return
-        if self._validate_stats(l):
-            self._score = l[0]
-            self._average = l[1]
-            self._explore_times = l[2]
-            self._explore_places = l[3]
-            self._game_times = l[4]
-            self._time = l[5]
+
+        # Accept both the old and the new format.
+        if not self._validate_stats(l):
+            print('Invalid stats file')
+            return
+
+        # Old format: 7 values, including average at index 1.
+        # Remove the average and the old checksum.
+        if len(l) == 7:
+            l = [l[0], l[2], l[3], l[4], l[5]]
+
+        else:
+            # New format: remove the checksum.
+            l = l[:-1]
+
+        self._score = l[0]
+        self._explore_times = l[1]
+        self._explore_places = l[2]
+        self._game_times = l[3]
+        self._time = l[4]
+
+        # Calculate average instead of reading it from stats.dat.
+        self._average = (
+            self._score / self._game_times
+            if self._game_times > 0
+            else 0
+        )
 
     def _validate_stats(self, l):
-        return (self._calc_sum(l) == l[6])
+        return (
+            len(l) in (6, 7)
+            and self._calc_sum(l) == l[-1]
+        )
 
     def _calc_sum(self, l):
-        s = 0
-        for i in range(6):
-            s = s + l[i]
-        return s % 7
+        return sum(l[:-1]) % 7
 
     def _get_stats_path(self):
         if self.parent is not None:
