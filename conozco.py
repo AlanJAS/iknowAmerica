@@ -112,6 +112,24 @@ COLOR_SKIP = (255, 155, 155)
 COLOR_CREDITS = (155, 155, 255)
 COLOR_SHOW_ALL = (100, 20, 20)
 
+# Categoria: lista, fuente, color, tipos de punto, imagen, tipo de pregunta.
+CATEGORIAS = {
+    "deptos": ("listaDeptos", "fuente32", COLORNOMBREDEPTO,
+               None, "deptosLineas", 1),
+    "rios": ("listaRios", "fuente24", COLORNOMBRERIO,
+             None, "rios", 3),
+    "rutas": ("listaRutas", "fuente24", COLORNOMBRERUTA,
+              None, "rutas", 6),
+    "cuchillas": ("listaCuchillas", "fuente24", COLORNOMBREELEVACION,
+                  None, "cuchillas", 4),
+    "capitales": ("listaLugares", "fuente24", COLORNOMBRECAPITAL,
+                  (0, 1), None, 2),
+    "ciudades": ("listaLugares", "fuente24", COLORNOMBRECAPITAL,
+                 (2,), None, 2),
+    "cerros": ("listaLugares", "fuente24", COLORNOMBREELEVACION,
+               (5,), None, 5),
+}
+
 # variables globales para adaptar la pantalla a distintas resoluciones
 scale = 1
 shift_x = 0
@@ -1194,77 +1212,56 @@ class Conozco():
         self.nRespuestasMal += 1
         pygame.time.set_timer(EVENTORESPUESTA, TIEMPORESPUESTA)
 
+    def _categoria(self, nombre):
+        """Resuelve los prefijos usados por los archivos de niveles."""
+        if nombre.startswith("lineasDepto"):
+            return "deptos"
+        return next((clave for clave in CATEGORIAS
+                     if nombre.startswith(clave)), None)
+
+    def _elementos_categoria(self, categoria):
+        """Devuelve los elementos y el estilo de una categoria."""
+        lista, fuente, color, tipos, _, _ = CATEGORIAS[categoria]
+        elementos = (elemento for elemento in getattr(self, lista)
+                     if tipos is None or elemento.tipo in tipos)
+        return elementos, getattr(self, fuente), color
+
     def esCorrecta(self, nivel, pos):
-        """Devuelve True si las coordenadas cliqueadas corresponden a la
-        respuesta correcta
-        """
-        respCorrecta = nivel.preguntaActual[2]
-        choices = {
-            1: ('listaDeptos', self.fuente32, COLORNOMBREDEPTO),
-            2: ('listaLugares', self.fuente24, COLORNOMBRECAPITAL),
-            3: ('listaRios', self.fuente24, COLORNOMBRERIO),
-            4: ('listaCuchillas', self.fuente24, COLORNOMBREELEVACION),
-            5: ('listaLugares', self.fuente24, COLORNOMBREELEVACION),
-            6: ('listaRutas', self.fuente24, COLORNOMBRERUTA),
-        }
-        choice = choices.get(nivel.preguntaActual[1])
-        if choice is None:
-            return False
-        attribute, font, color = choice
-        for place in getattr(self, attribute, []):
-            if place.nombre == respCorrecta:
-                if place.estaAca(pos):
-                    place.mostrarNombre(self.pantalla, font, color, True)
+        """Comprueba nombre, categoria y posicion de la respuesta."""
+        tipo = nivel.preguntaActual[1]
+        respuesta = nivel.preguntaActual[2]
+        for categoria, configuracion in CATEGORIAS.items():
+            if configuracion[5] != tipo:
+                continue
+            elementos, fuente, color = self._elementos_categoria(categoria)
+            for elemento in elementos:
+                if elemento.nombre == respuesta and elemento.estaAca(pos):
+                    elemento.mostrarNombre(self.pantalla, fuente, color, True)
                     return True
-                else:
-                    return False
         return False
 
     def mostrarNombres(self, categorias):
-        """Dibuja los nombres de las categorias indicadas, sin actualizar pantalla"""
-        configuracion = {
-            "deptos": (self.listaDeptos, self.fuente32, COLORNOMBREDEPTO, None),
-            "rios": (self.listaRios, self.fuente24, COLORNOMBRERIO, None),
-            "rutas": (self.listaRutas, self.fuente24, COLORNOMBRERUTA, None),
-            "cuchillas": (self.listaCuchillas, self.fuente24,
-                         COLORNOMBREELEVACION, None),
-            "capitales": (self.listaLugares, self.fuente24,
-                          COLORNOMBRECAPITAL, (0, 1)),
-            "ciudades": (self.listaLugares, self.fuente24,
-                         COLORNOMBRECAPITAL, (2,)),
-            "cerros": (self.listaLugares, self.fuente24,
-                       COLORNOMBREELEVACION, (5,)),
-        }
-        for categoria in categorias:
-            for prefijo, (elementos, fuente, color, tipos) in configuracion.items():
-                if categoria.startswith(prefijo):
-                    for elemento in elementos:
-                        if tipos is None or elemento.tipo in tipos:
-                            elemento.mostrarNombre(self.pantalla, fuente, color, False)
-                    break
+        """Dibuja los nombres indicados sin actualizar la pantalla."""
+        for nombre in categorias:
+            categoria = self._categoria(nombre)
+            if categoria is None:
+                continue
+            elementos, fuente, color = self._elementos_categoria(categoria)
+            for elemento in elementos:
+                elemento.mostrarNombre(self.pantalla, fuente, color, False)
 
     def presentLevel(self):
-        for i in self.nivelActual.dibujoInicial:
-            if i.startswith("lineasDepto"):
-                self.pantalla.blit(self.deptosLineas, (shift_x, shift_y))
-            elif i.startswith("rios"):
-                self.pantalla.blit(self.rios, (shift_x, shift_y))
-            elif i.startswith("rutas"):
-                self.pantalla.blit(self.rutas, (shift_x, shift_y))
-            elif i.startswith("cuchillas"):
-                self.pantalla.blit(self.cuchillas, (shift_x, shift_y))
-            elif i.startswith("capitales"):
-                for l in self.listaLugares:
-                    if ((l.tipo == 0) or (l.tipo == 1)):
-                        l.dibujar(self.pantalla, False)
-            elif i.startswith("ciudades"):
-                for l in self.listaLugares:
-                    if l.tipo == 2:
-                        l.dibujar(self.pantalla, False)
-            elif i.startswith("cerros"):
-                for l in self.listaLugares:
-                    if l.tipo == 5:
-                        l.dibujar(self.pantalla, False)
+        for nombre in self.nivelActual.dibujoInicial:
+            categoria = self._categoria(nombre)
+            if categoria is None:
+                continue
+            imagen = CATEGORIAS[categoria][4]
+            if imagen is not None:
+                self.pantalla.blit(getattr(self, imagen), (shift_x, shift_y))
+            else:
+                elementos, _, _ = self._elementos_categoria(categoria)
+                for elemento in elementos:
+                    elemento.dibujar(self.pantalla, False)
         self.mostrarNombres(self.nivelActual.nombreInicial)
 
     def explorarNombres(self):
@@ -1317,70 +1314,17 @@ class Conozco():
                     if self.sound:
                         self.click.play()
                     if event.pos[0] < XMAPAMAX*scale+shift_x:  # zona de mapa
-                        for i in self.nivelActual.elementosActivos:
-                            if i.startswith("capitales"):
-                                for l in self.listaLugares:
-                                    if ((l.tipo == 0) or (l.tipo == 1)) and l.estaAca(event.pos):
-                                        l.mostrarNombre(self.pantalla,
-                                                        self.fuente24,
-                                                        COLORNOMBRECAPITAL,
-                                                        True)
-                                        self._explore_places += 1
-                                        break
-                            elif i.startswith("ciudades"):
-                                for l in self.listaLugares:
-                                    if l.tipo == 2 and l.estaAca(event.pos):
-                                        l.mostrarNombre(self.pantalla,
-                                                        self.fuente24,
-                                                        COLORNOMBRECAPITAL,
-                                                        True)
-                                        self._explore_places += 1
-                                        break
-                            elif i.startswith("rios"):
-                                for d in self.listaRios:
-                                    if d.estaAca(event.pos):
-                                        d.mostrarNombre(self.pantalla,
-                                                        self.fuente24,
-                                                        COLORNOMBRERIO,
-                                                        True)
-                                        self._explore_places += 1
-                                        break
-                            elif i.startswith("rutas"):
-                                for d in self.listaRutas:
-                                    if d.estaAca(event.pos):
-                                        d.mostrarNombre(self.pantalla,
-                                                        self.fuente24,
-                                                        COLORNOMBRERUTA,
-                                                        True)
-                                        self._explore_places += 1
-                                        break
-                            elif i.startswith("cuchillas"):
-                                for d in self.listaCuchillas:
-                                    if d.estaAca(event.pos):
-                                        d.mostrarNombre(self.pantalla,
-                                                        self.fuente24,
-                                                        COLORNOMBREELEVACION,
-                                                        True)
-                                        self._explore_places += 1
-                                        break
-                            elif i.startswith("cerros"):
-                                for l in self.listaLugares:
-                                    if l.tipo == 5 and l.estaAca(event.pos):
-                                        l.mostrarNombre(self.pantalla,
-                                                        self.fuente24,
-                                                        COLORNOMBREELEVACION,
-                                                        True)
-                                        self._explore_places += 1
-                                        break
-                            elif i.startswith("deptos"):
-                                for d in self.listaDeptos:
-                                    if d.estaAca(event.pos):
-                                        d.mostrarNombre(self.pantalla,
-                                                        self.fuente32,
-                                                        COLORNOMBREDEPTO,
-                                                        True)
-                                        self._explore_places += 1
-                                        break
+                        for nombre in self.nivelActual.elementosActivos:
+                            categoria = self._categoria(nombre)
+                            if categoria is None:
+                                continue
+                            elementos, fuente, color = self._elementos_categoria(categoria)
+                            for elemento in elementos:
+                                if elemento.estaAca(event.pos):
+                                    elemento.mostrarNombre(
+                                        self.pantalla, fuente, color, True)
+                                    self._explore_places += 1
+                                    break
                     elif end_rect.collidepoint(event.pos):
                         return
                     elif show_all_rect.collidepoint(event.pos):
