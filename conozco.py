@@ -47,7 +47,6 @@ except (ImportError, ValueError):
 
 # constantes
 RADIO = 10
-RADIO2 = RADIO**2
 XMAPAMAX = 786
 DXPANEL = 414
 XCENTROPANEL = 1002
@@ -548,38 +547,18 @@ class Conozco():
                           self.fuente40,
                           posicion(600, 100),
                           COLOR_ACT_NAME)
-        msg = _('Total score: %s') % self._score
-        self.mostrarTexto(msg,
-                          self.fuente32,
-                          posicion(400, 300),
-                          COLOR_STAT_N)
-        msg = _('Game average score: %s') % self._average
-        self.mostrarTexto(msg,
-                          self.fuente32,
-                          posicion(400, 350),
-                          COLOR_STAT_N)
-        msg = _('Times using Explore Mode: %s') % self._explore_times
-        self.mostrarTexto(msg,
-                          self.fuente32,
-                          posicion(400, 400),
-                          COLOR_STAT_N)
-        msg = _('Places Explored: %s') % self._explore_places
-        self.mostrarTexto(msg,
-                          self.fuente32,
-                          posicion(400, 450),
-                          COLOR_STAT_N)
-        msg = _('Times using Game Mode: %s') % self._game_times
-        self.mostrarTexto(msg,
-                          self.fuente32,
-                          posicion(400, 500),
-                          COLOR_STAT_N)
-        t = int((time.monotonic() - self._init_time) / 60)
-        t = t + self._time
-        msg = _('Total time: %s minutes') % t
-        self.mostrarTexto(msg,
-                          self.fuente32,
-                          posicion(400, 550),
-                          COLOR_STAT_N)
+        minutos = int((time.monotonic() - self._init_time) / 60) + self._time
+        estadisticas = (
+            (_('Total score: %s'), self._score),
+            (_('Game average score: %s'), self._average),
+            (_('Times using Explore Mode: %s'), self._explore_times),
+            (_('Places Explored: %s'), self._explore_places),
+            (_('Times using Game Mode: %s'), self._game_times),
+            (_('Total time: %s minutes'), minutos),
+        )
+        for indice, (texto, valor) in enumerate(estadisticas):
+            self.mostrarTexto(texto % valor, self.fuente32,
+                              posicion(400, 300 + indice * 50), COLOR_STAT_N)
 
         self.mostrarTexto(_("Press any key to return"),
                           self.fuente32,
@@ -940,32 +919,19 @@ class Conozco():
         self.camino_imagenes = os.path.join(CAMINORECURSOS,
                                             CAMINOCOMUN,
                                             CAMINOIMAGENES)
-        # fondo presentacion
-        self.fondo1 = self.cargarImagen("fondo1.png")
-        self.fondo2 = self.cargarImagen("fondo2.png")
-        # JP presentacion
-        self.jpp1 = self.cargarImagen("jpp1.png")
-        self.jpp2 = self.cargarImagen("jpp2.png")
-        # globo
-        self.globo1 = self.cargarImagen("globo1.png")
+        imagenes = {
+            'fondo1': 'fondo1', 'fondo2': 'fondo2',
+            'jpp1': 'jpp1', 'jpp2': 'jpp2',
+            'globo1': 'globo1', 'globo3': 'globo3', 'jp1': 'jp1',
+            'ojos1': 'ojos1', 'ojos2': 'ojos2', 'ojos3': 'ojos3',
+            'puerta1': 'puerta01', 'puerta2': 'puerta02',
+            'globito': 'globito', 'terron': 'terron',
+            'simboloCapitalD': 'capitalD', 'simboloCapitalN': 'capitalN',
+            'simboloCiudad': 'ciudad', 'simboloCerro': 'cerro',
+        }
+        for atributo, archivo in imagenes.items():
+            setattr(self, atributo, self.cargarImagen(archivo + '.png'))
         self.globo2 = pygame.transform.flip(self.globo1, True, False)
-        self.globo3 = self.cargarImagen("globo3.png")
-        # JP para el juego
-        self.jp1 = self.cargarImagen("jp1.png")
-        # Ojos JP
-        self.ojos1 = self.cargarImagen("ojos1.png")
-        self.ojos2 = self.cargarImagen("ojos2.png")
-        self.ojos3 = self.cargarImagen("ojos3.png")
-        # Puerta fin
-        self.puerta1 = self.cargarImagen("puerta01.png")
-        self.puerta2 = self.cargarImagen("puerta02.png")
-        # Otros
-        self.globito = self.cargarImagen("globito.png")
-        self.terron = self.cargarImagen("terron.png")
-        self.simboloCapitalD = self.cargarImagen("capitalD.png")
-        self.simboloCapitalN = self.cargarImagen("capitalN.png")
-        self.simboloCiudad = self.cargarImagen("ciudad.png")
-        self.simboloCerro = self.cargarImagen("cerro.png")
         # cargar sonidos
         self.camino_sonidos = os.path.join(CAMINORECURSOS,
                                            CAMINOCOMUN,
@@ -981,23 +947,13 @@ class Conozco():
         # cargar directorios
         self.cargarListaDirectorios()
         # cargar fuentes
-        self.fuente60 = pygame.font.Font(os.path.join(CAMINORECURSOS,
-                                                      CAMINOCOMUN,
-                                                      CAMINOFUENTES,
-                                                      "Share-Regular.ttf"),
-                                         escalar(60))
-        self.fuente40 = pygame.font.Font(os.path.join(CAMINORECURSOS,
-                                                      CAMINOCOMUN,
-                                                      CAMINOFUENTES,
-                                                      "Share-Regular.ttf"),
-                                         escalar(34))
-        self.fuente9 = pygame.font.Font(os.path.join(CAMINORECURSOS,
-                                                     CAMINOCOMUN,
-                                                     CAMINOFUENTES,
-                                                     "Share-Regular.ttf"),
-                                        escalar(20))
-        self.fuente32 = pygame.font.Font(None, escalar(30))
-        self.fuente24 = pygame.font.Font(None, escalar(24))
+        fuente = os.path.join(CAMINORECURSOS, CAMINOCOMUN,
+                              CAMINOFUENTES, "Share-Regular.ttf")
+        for atributo, archivo, tamano in (
+                ('fuente60', fuente, 60), ('fuente40', fuente, 34),
+                ('fuente9', fuente, 20), ('fuente32', None, 30),
+                ('fuente24', None, 24)):
+            setattr(self, atributo, pygame.font.Font(archivo, escalar(tamano)))
         # cursor
         datos_cursor = (
             "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  ",
@@ -1111,10 +1067,7 @@ class Conozco():
         """Muestra texto en el globito cuando la respuesta es correcta"""
         self.mostrarGlobito([random.choice(self.listaCorrecto)])
         self.esCorrecto = True
-        if self.nRespuestasMal >= 1:
-            self.puntos = self.puntos + 5
-        else:
-            self.puntos = self.puntos + 10
+        self.puntos += 5 if self.nRespuestasMal >= 1 else 10
         pygame.time.set_timer(EVENTORESPUESTA, TIEMPORESPUESTA)
 
     def mal(self):
@@ -1270,13 +1223,10 @@ class Conozco():
         # barra avance
         self._draw_progress()
         
-        self.nBien = 0
-        self.nMal = 0
         self.puntos = 0
         self.nRespuestasMal = 0
         self.otorgado = False
         self.estadodespedida = 0
-        self.primera = False
         self.respondiendo = False
         self.avanceNivel = 0
         pygame.time.set_timer(EVENTORESPUESTA, 0)
@@ -1446,162 +1396,39 @@ class Conozco():
             pygame.event.clear(EVENTORESPUESTA)
 
     def presentacion(self):
-
-        #***************************** cuadro 1 ******************************
+        """Reproduce los cuadros de la introduccion hasta terminar, saltar o salir."""
+        # Duracion, imagenes (nombre, x, y), dialogo (indice, x, y), aviso.
+        cuadros = (
+            (500, [('fondo1', 75, 75)], None, True),
+            (2000, [('globo1', 180, 260)], (0, 384, 330), False),
+            (2000, [('globo1', 180, 260)], (1, 384, 315), False),
+            (2000, [('globo3', 618, 78)], None, False),
+            (500, [('fondo2', 75, 75), ('jpp1', 487, 347)], None, True),
+            (1000, [('globo1', 160, 240)], (2, 360, 310), False),
+            (1500, [('globo2', 570, 260)], (3, 770, 330), False),
+            (500, [('fondo2', 75, 75), ('jpp2', 487, 347)], None, True),
+            (2000, [('globo1', 160, 240)], (4, 360, 310), False),
+            (2000, [('globo1', 160, 240)], (5, 360, 310), False),
+        )
         self.pantalla.fill(COLOR_FONDO)
-        self.pantalla.blit(self.fondo1,
-                        posicion(75, 75))
-        self.mostrarTexto(_("Press any key to skip"),
-                        self.fuente32,
-                        posicion(600, 800),
-                        COLOR_SKIP)
-        pygame.display.flip()
-        # esperar o no esperar, esa es la cuestion
-        resultado = self._wait_presentation(500)
-        if resultado != "continue":
-            return resultado
-
-        # comienzo animacion
-        self.pantalla.blit(self.globo1,
-                        posicion(180, 260))
-        yLinea = coordenada_y(330)
-        # hola amigos
-        lineas = self.listaPresentacion[0].split("\n")
-        for l in lineas:
-            text = self.fuente40.render(l.strip(), 1, COLORPREGUNTAS)
-            textrect = text.get_rect()
-            textrect.center = (coordenada_x(384),yLinea)
-            self.pantalla.blit(text, textrect)
-            yLinea = yLinea+self.fuente32.get_height()+escalar(10)
-        pygame.display.flip()
-
-        #time.sleep(2)
-        terminar = False
-        resultado = self._wait_presentation(2000)
-        if resultado != "continue":
-            return resultado
-
-        self.pantalla.blit(self.globo1,
-                        posicion(180, 260))
-        yLinea = coordenada_y(315)
-        # mañana tengo...
-        lineas = self.listaPresentacion[1].split("\n")
-        for l in lineas:
-            text = self.fuente40.render(l.strip(), 1, COLORPREGUNTAS)
-            textrect = text.get_rect()
-            textrect.center = (coordenada_x(384),yLinea)
-            self.pantalla.blit(text, textrect)
-            yLinea = yLinea+self.fuente32.get_height()+escalar(10)
-        pygame.display.flip()
-        resultado = self._wait_presentation(2000)
-        if resultado != "continue":
-            return resultado
-
-        #***************************** cuadro 3 ******************************
-        self.pantalla.blit(self.globo3,
-                        posicion(618, 78))
-        pygame.display.flip()
-        resultado = self._wait_presentation(2000)
-        if resultado != "continue":
-            return resultado
-
-        #***************************** cuadro 4 ******************************
-        # **************************** fondo 2 *******************************
-        self.pantalla.blit(self.fondo2,
-                        posicion(75, 75))
-        self.pantalla.blit(self.jpp1,
-                        posicion(487, 347))
-        self.mostrarTexto(_("Press any key to skip"),
-                        self.fuente32,
-                        posicion(600, 800),
-                        COLOR_SKIP)
-        pygame.display.flip()
-        # espero
-        resultado = self._wait_presentation(500)
-        if resultado != "continue":
-            return resultado
-
-        self.pantalla.blit(self.globo1,
-                        posicion(160, 240))
-        yLinea = coordenada_y(310)
-        # y no se nada
-        lineas = self.listaPresentacion[2].split("\n")
-        for l in lineas:
-            text = self.fuente40.render(l.strip(), 1, COLORPREGUNTAS)
-            textrect = text.get_rect()
-            textrect.center = (coordenada_x(360),yLinea)
-            self.pantalla.blit(text, textrect)
-            yLinea = yLinea+self.fuente32.get_height()+escalar(10)
-        pygame.display.flip()
-        resultado = self._wait_presentation(1000)
-        if resultado != "continue":
-            return resultado
-
-        #***************************** cuadro 5 ******************************
-        self.pantalla.blit(self.globo2,
-                        posicion(570, 260))
-        yLinea = coordenada_y(330)
-        # que hago
-        lineas = self.listaPresentacion[3].split("\n")
-        for l in lineas:
-            text = self.fuente40.render(l.strip(), 1, COLORPREGUNTAS)
-            textrect = text.get_rect()
-            textrect.center = (coordenada_x(770),yLinea)
-            self.pantalla.blit(text, textrect)
-            yLinea = yLinea + self.fuente32.get_height()+escalar(10)
-        pygame.display.flip()
-        resultado = self._wait_presentation(1500)
-        if resultado != "continue":
-            return resultado
-
-        #***************************** cuadro 6 ******************************
-        self.pantalla.blit(self.fondo2,
-                        posicion(75, 75))
-        self.pantalla.blit(self.jpp2,
-                        posicion(487, 347))
-        self.mostrarTexto(_("Press any key to skip"),
-                        self.fuente32,
-                        posicion(600, 800),
-                        COLOR_SKIP)
-        pygame.display.flip()
-        # espero
-        resultado = self._wait_presentation(500)
-        if resultado != "continue":
-            return resultado
-
-        self.pantalla.blit(self.globo1,
-                        posicion(160, 240))
-        yLinea = coordenada_y(310)
-        # te puedo pedir
-        lineas = self.listaPresentacion[4].split("\n")
-        for l in lineas:
-            text = self.fuente40.render(l.strip(), 1, COLORPREGUNTAS)
-            textrect = text.get_rect()
-            textrect.center = (coordenada_x(360),yLinea)
-            self.pantalla.blit(text, textrect)
-            yLinea = yLinea + self.fuente32.get_height()+escalar(10)
-        pygame.display.flip()
-
-        resultado = self._wait_presentation(2000)
-        if resultado != "continue":
-            return resultado
-
-        self.pantalla.blit(self.globo1,
-                        posicion(160, 240))
-        yLinea = coordenada_y(310)
-        # me ayudas
-        lineas = self.listaPresentacion[5].split("\n")
-        for l in lineas:
-            text = self.fuente40.render(l.strip(), 1, COLORPREGUNTAS)
-            textrect = text.get_rect()
-            textrect.center = (coordenada_x(360),yLinea)
-            self.pantalla.blit(text, textrect)
-            yLinea = yLinea + self.fuente32.get_height()+escalar(10)
-        pygame.display.flip()
-        
-        resultado = self._wait_presentation(2000)
-        # retorno siempre algo
-        return resultado
+        for duracion, imagenes, dialogo, aviso in cuadros:
+            for nombre, x, y in imagenes:
+                self.pantalla.blit(getattr(self, nombre), posicion(x, y))
+            if aviso:
+                self.mostrarTexto(_("Press any key to skip"), self.fuente32,
+                                  posicion(600, 800), COLOR_SKIP)
+            if dialogo is not None:
+                indice, x, y = dialogo
+                y_linea = coordenada_y(y)
+                for linea in self.listaPresentacion[indice].split("\n"):
+                    self.mostrarTexto(linea.strip(), self.fuente40,
+                                      (coordenada_x(x), y_linea), COLORPREGUNTAS)
+                    y_linea += self.fuente32.get_height() + escalar(10)
+            pygame.display.flip()
+            resultado = self._wait_presentation(duracion)
+            if resultado != "continue":
+                return resultado
+        return "continue"
 
     def run(self):
         """Este es el loop principal del juego"""
