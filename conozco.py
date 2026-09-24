@@ -1482,6 +1482,10 @@ class Conozco():
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.sound:
                         self.click.play()
+                    if end_rect.collidepoint(event.pos):
+                        pygame.time.set_timer(EVENTORESPUESTA, 0)
+                        pygame.time.set_timer(EVENTODESPEGUE, 0)
+                        return
                     if event.pos[0] < XMAPAMAX*scale+shift_x:  # zona mapa
                         if self.avanceNivel < TOTALAVANCE:
                             if not(self.respondiendo):
@@ -1525,18 +1529,7 @@ class Conozco():
                                                       (int((XBARRA_P+ABARRA_P/2)*scale+shift_x),
                                                        int(YBARRA_P+15)*scale+shift_y),
                                                       COLORBARRA_P)
-                            elif event.pos[0] > 975*scale+shift_x and \
-                                    event.pos[0] < 1175*scale+shift_x and \
-                                    event.pos[1] > 25*scale+shift_y and \
-                                    event.pos[1] < 75*scale+shift_y:  # terminar
-                                return
-                    else:
-                        if event.pos[0] > 975*scale+shift_x and \
-                           event.pos[0] < 1175*scale+shift_x and \
-                           event.pos[1] > 25*scale+shift_y and \
-                           event.pos[1] < 75*scale+shift_y:  # terminar
-                            pygame.time.set_timer(EVENTODESPEGUE, 0)
-                            return
+
                 elif event.type == EVENTORESPUESTA:
                     pygame.time.set_timer(EVENTORESPUESTA, 0)
                     self.respondiendo = False
