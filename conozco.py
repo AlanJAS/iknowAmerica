@@ -731,30 +731,21 @@ class Conozco():
             self.pantalla.fill(COLOR_FONDO,
                                (int(shift_x), yLista-int(24*scale),
                                 int(1200*scale), int(600*scale)))
-            if paginaDirectorios == 0:
-                paginaAnteriorActiva = False
-            else:
-                paginaAnteriorActiva = True
-            paginaSiguienteActiva = False
-            if paginaAnteriorActiva:
-                self.pantalla.fill(COLOR_OPTION_B,
-                                   (int(10*scale+shift_x), yLista-int(24*scale),
-                                    int(590*scale), int(48*scale)))
-                self.mostrarTexto("<<< " + _("Previous page"),
-                                  self.fuente40,
-                                  (int(300*scale+shift_x), yLista),
-                                  COLOR_NEXT)
+            
+            opciones = []
+            if paginaDirectorios > 0:
+                rect = self._draw_menu_option(
+                    "<<< " + _("Previous page"), 10, yLista, COLOR_NEXT)
+                opciones.append((rect, "anterior", None))
+          
             yLista += int(50*scale)
             indiceDir = paginaDirectorios * 20
             terminar = False
             while not terminar:
-                self.pantalla.fill(COLOR_OPTION_B,
-                                   (int(10*scale+shift_x), yLista-int(24*scale),
-                                    int(590*scale), int(48*scale)))
-                self.mostrarTexto(self.listaNombreDirectorios[indiceDir],
-                                  self.fuente40,
-                                  (int(300*scale+shift_x), yLista),
-                                  COLOR_OPTION_T)
+                rect = self._draw_menu_option(
+                    self.listaNombreDirectorios[indiceDir], 10, yLista,
+                    COLOR_OPTION_T)
+                opciones.append((rect, "mapa", indiceDir))
                 yLista += int(50*scale)
                 indiceDir = indiceDir + 1
                 if indiceDir == nDirectorios or \
@@ -766,14 +757,10 @@ class Conozco():
                 yLista = int(250*scale+shift_y)
                 terminar = False
                 while not terminar:
-                    self.pantalla.fill(COLOR_OPTION_B,
-                                       (int(610*scale+shift_x),
-                                        yLista-int(24*scale),
-                                        int(590*scale), int(48*scale)))
-                    self.mostrarTexto(self.listaNombreDirectorios[indiceDir],
-                                      self.fuente40,
-                                      (int(900*scale+shift_x), yLista),
-                                      COLOR_OPTION_T)
+                    rect = self._draw_menu_option(
+                        self.listaNombreDirectorios[indiceDir], 610, yLista,
+                        COLOR_OPTION_T)
+                    opciones.append((rect, "mapa", indiceDir))
                     yLista += int(50*scale)
                     indiceDir = indiceDir + 1
                     if indiceDir == nDirectorios or \
@@ -781,15 +768,10 @@ class Conozco():
                         terminar = True
                 if indiceDir == paginaDirectorios * 20 + 20:
                     if indiceDir < nDirectorios:
-                        self.pantalla.fill(COLOR_OPTION_B,
-                                           (int(610*scale+shift_x),
-                                            yLista-int(24*scale),
-                                            int(590*scale), int(48*scale)))
-                        self.mostrarTexto(_("Next page") + " >>>",
-                                          self.fuente40,
-                                          (int(900*scale+shift_x), yLista),
-                                          COLOR_NEXT)
-                        paginaSiguienteActiva = True
+                        rect = self._draw_menu_option(
+                            _("Next page") + " >>>", 610, yLista, COLOR_NEXT)
+                        opciones.append((rect, "siguiente", None))
+
                     nDirectoriosCol2 = 10
                 else:
                     nDirectoriosCol2 = indiceDir - paginaDirectorios * 20 - 10
@@ -825,65 +807,33 @@ class Conozco():
                             self.click.play()
                         pos = event.pos
                         # zona de opciones
-                        if pos[1] < 800*scale+shift_y:
-                            if pos[1] > 175*scale+shift_y:
-                                if pos[0] < 600*scale+shift_x:  # primera columna
-                                    if pos[1] < 175*scale + shift_y + \
-                                            (nDirectoriosCol1+1)*50*scale:  # mapa
-                                        self.indiceDirectorioActual = \
-                                            int((pos[1]-int(175*scale+shift_y)) //
-                                                int(50*scale)) - 1 + \
-                                            paginaDirectorios*20
-                                        if self.indiceDirectorioActual == \
-                                                paginaDirectorios*20-1 and \
-                                                paginaAnteriorActiva:  # pag. ant.
-                                            paginaDirectorios = paginaDirectorios-1
-                                            paginaSiguienteActiva = True
-                                            cambiarPagina = True
-                                        elif self.indiceDirectorioActual >\
-                                                paginaDirectorios*20-1:
-                                            self.paginaDir = paginaDirectorios
-                                            return
-                                else:
-                                    if pos[1] < 225*scale + shift_y + \
-                                            nDirectoriosCol2*50*scale or \
-                                            (paginaSiguienteActiva and
-                                                pos[1] < 775*scale+shift_y):  # mapa
-                                        self.indiceDirectorioActual = \
-                                            int((pos[1]-int(225*scale+shift_y)) //
-                                                int(50*scale)) + \
-                                            paginaDirectorios*20 + 10
-                                        if self.indiceDirectorioActual == \
-                                                paginaDirectorios*20+9:
-                                            pass  # ignorar; espacio vacio
-                                        elif self.indiceDirectorioActual == \
-                                                paginaDirectorios*20+20 and \
-                                                paginaSiguienteActiva:  # pag. sig.
-                                            paginaDirectorios = \
-                                                paginaDirectorios + 1
-                                            paginaAnteriorActiva = True
-                                            cambiarPagina = True
-                                        elif self.indiceDirectorioActual <\
-                                                paginaDirectorios*20+20:
-                                            self.paginaDir = paginaDirectorios
-                                            return
-                        # buttons zone
+                        if about_rect.collidepoint(pos):
+                            if self.pantallaAcercaDe() == 1:
+                                return 1
+                        elif stats_rect.collidepoint(pos):
+                            if self.pantallaStats() == 1:
+                                return 1
+                        elif exit_rect.collidepoint(pos):
+                            self.save_stats()
+                            if self.parent is not None:
+                                self.parent.close(skip_save=True)
+                            return 1
                         else:
-                            if pos[1] < 850*scale + shift_y:
-                                if pos[0] > 20*scale+shift_x and \
-                                   pos[0] < 390*scale+shift_x:
-                                    if self.pantallaAcercaDe() == 1:
-                                        return 1  # acerca
-                                elif pos[0] > 420*scale+shift_x and \
-                                        pos[0] < 790*scale+shift_x:
-                                    if self.pantallaStats() == 1:
-                                        return 1  # stats
-                                elif pos[0] > 820*scale+shift_x and \
-                                        pos[0] < 1190*scale+shift_x:
-                                    self.save_stats()
-                                    if self.parent is not None:
-                                        self.parent.close(skip_save=True)
-                                    return 1
+                            for rect, accion, indice in opciones:
+                                if not rect.collidepoint(pos):
+                                    continue
+                                if accion == "anterior":
+                                    paginaDirectorios -= 1
+                                    cambiarPagina = True
+                                elif accion == "siguiente":
+                                    paginaDirectorios += 1
+                                    cambiarPagina = True
+                                else:
+                                    self.indiceDirectorioActual = indice
+                                    self.paginaDir = paginaDirectorios
+                                    return
+                                break
+
                     elif event.type == EVENTOREFRESCO:
                         pygame.display.flip()
 
