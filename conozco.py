@@ -33,10 +33,6 @@ import gettext
 import configparser
 from gettext import gettext as _
 import pygame
-try:
-    from sugar3.graphics.style import GRID_CELL_SIZE
-except ImportError:
-    GRID_CELL_SIZE = 0
 gtk_present = True
 try:
     import gi
@@ -66,10 +62,7 @@ YBARRA_A = 900 - ABARRA_P - 20
 ABARRA_A = DXPANEL-40
 # control
 TOTALAVANCE = 7
-EVENTORESPUESTA = pygame.USEREVENT+1
 TIEMPORESPUESTA = 2300
-EVENTODESPEGUE = EVENTORESPUESTA+1
-EVENTOREFRESCO = EVENTODESPEGUE+1
 TIEMPOREFRESCO = 250
 ESTADONORMAL = 1
 ESTADOPESTANAS = 2
@@ -194,21 +187,17 @@ class Punto():
 
         return dx * dx + dy * dy < radio * radio
 
-    def dibujar(self, pantalla, flipAhora):
+    def dibujar(self, pantalla):
         """Dibuja un punto en su posicion"""
         rect = self.simbolo.get_rect(center=self.posicion)
         pantalla.blit(self.simbolo, rect)
-        if flipAhora:
-            pygame.display.flip()
 
-    def mostrarNombre(self, pantalla, fuente, color, flipAhora):
+    def mostrarNombre(self, pantalla, fuente, color):
         """Escribe el nombre del punto en su posicion"""
         text = fuente.render(self.nombre, 1, color)
         textrect = text.get_rect()
         textrect.center = (self.postexto[0], self.postexto[1])
         pantalla.blit(text, textrect)
-        if flipAhora:
-            pygame.display.flip()
 
 
 class Zona():
@@ -242,15 +231,13 @@ class Zona():
         else:
             return False
 
-    def mostrarNombre(self, pantalla, fuente, color, flipAhora):
+    def mostrarNombre(self, pantalla, fuente, color):
         """Escribe el nombre de la zona en su posicion"""
         text = fuente.render(self.nombre, 1, color)
         textrot = pygame.transform.rotate(text, self.rotacion)
         textrect = textrot.get_rect()
         textrect.center = (self.posicion[0], self.posicion[1])
         pantalla.blit(textrot, textrect)
-        if flipAhora:
-            pygame.display.flip()
 
 
 class Nivel():
@@ -482,33 +469,19 @@ class Conozco():
             self.click.play()
 
     def _close_game(self, close_activity=False):
-        """Guarda las estadisticas y, si corresponde, cierra Sugar"""
+        """Finaliza la partida y guarda una sola vez antes de cerrar."""
+        if not self.running:
+            return
+        self._finish_game()
+        self.running = False
+        self._deadline = None
         self.save_stats()
         if close_activity and self.parent is not None:
             self.parent.close(skip_save=True)
-        return 1
 
-    def _wait_return(self):
-        """Espera el regreso desde Creditos o Estadisticas."""
-        while 1:
-            for event in self._get_events():
-                if event.type == pygame.KEYDOWN or \
-                        event.type == pygame.MOUSEBUTTONDOWN:
-                    self._play_click()
-                    self.pantalla.blit(self.pantallaTemp, (0, 0))
-                    pygame.display.flip()
-                    return
-                elif event.type == pygame.QUIT:
-                    self._play_click()
-                    return self._close_game()
-                elif event.type == EVENTOREFRESCO:
-                    pygame.display.flip()
 
     def pantallaAcercaDe(self):
         """Pantalla con los datos del juego, creditos, etc"""
-        self.pantallaTemp = pygame.Surface(
-            (self.anchoPantalla, self.altoPantalla))
-        self.pantallaTemp.blit(self.pantalla, (0, 0))
         self.pantalla.fill(COLOR_FONDO)
         self.pantalla.blit(self.terron,
                            posicion(20, 20))
@@ -531,14 +504,9 @@ class Conozco():
                           self.fuente32,
                           posicion(600, 800),
                           COLOR_SKIP)
-        pygame.display.flip()
-        return self._wait_return()
 
     def pantallaStats(self):
         """Pantalla con los datos del juego, creditos, etc"""
-        self.pantallaTemp = pygame.Surface(
-            (self.anchoPantalla, self.altoPantalla))
-        self.pantallaTemp.blit(self.pantalla, (0, 0))
         self.pantalla.fill(COLOR_FONDO)
         self.pantalla.blit(self.jp1,
                            posicion(925, 468))
@@ -564,9 +532,6 @@ class Conozco():
                           self.fuente32,
                           posicion(600, 800),
                           COLOR_SKIP)
-
-        pygame.display.flip()
-        return self._wait_return()
 
     def _draw_footer(self, last_label):
         rectangles = []
@@ -605,10 +570,10 @@ class Conozco():
                           posicion(300, 220),
                           COLOR_OPTION_T)
 
-        niveles_rect = []
+        self.niveles_rect = []
         yLista = coordenada_y(300)
         for n in self.listaNiveles:
-            niveles_rect.append(self._draw_menu_option(
+            self.niveles_rect.append(self._draw_menu_option(
                 n.nombre, 10, yLista, COLOR_OPTION_T))
             yLista += escalar(50)
             
@@ -617,53 +582,15 @@ class Conozco():
                           posicion(900, 220),
                           COLOR_NEXT)
 
-        exploraciones_rect = []
+        self.exploraciones_rect = []
         yLista = coordenada_y(300)
         for n in self.listaExploraciones:
-            exploraciones_rect.append(self._draw_menu_option(
+            self.exploraciones_rect.append(self._draw_menu_option(
                 n.nombre, 610, yLista, COLOR_NEXT))
             yLista += escalar(50)
 
         # buttons
-        about_rect, stats_rect, exit_rect = self._draw_footer(_("Return"))
-        pygame.display.flip()
-        while 1:
-            for event in self._get_events():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == 27:  # escape: volver
-                        self._play_click()
-                        self.elegir_directorio = True
-                        return
-                elif event.type == pygame.QUIT:
-                    self._play_click()
-                    return self._close_game()
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    self._play_click()
-
-                    pos = event.pos
-                    if about_rect.collidepoint(pos):
-                        if self.pantallaAcercaDe() == 1:
-                            return 1
-                    elif stats_rect.collidepoint(pos):
-                        if self.pantallaStats() == 1:
-                            return 1
-                    elif exit_rect.collidepoint(pos):
-                        self.elegir_directorio = True
-                        return
-                    else:
-                        for indice, rect in enumerate(niveles_rect):
-                            if rect.collidepoint(pos):
-                                self.indiceNivelActual = indice
-                                self.jugar = True
-                                return
-                        for indice, rect in enumerate(exploraciones_rect):
-                            if rect.collidepoint(pos):
-                                self.indiceNivelActual = indice
-                                self.jugar = False
-                                return
-
-                elif event.type == EVENTOREFRESCO:
-                    pygame.display.flip()
+        self.footer_rects = self._draw_footer(_("Return"))
 
     def pantallaDirectorios(self):
         """Pantalla con el menu de directorios"""
@@ -678,94 +605,51 @@ class Conozco():
                           COLOR_OPTION_T)
         nDirectorios = len(self.listaNombreDirectorios)
         paginaDirectorios = self.paginaDir
-        while 1:
-            self._process_gtk_events()
-            yLista = coordenada_y(200)
-            self.pantalla.fill(COLOR_FONDO,
-                               (int(shift_x), yLista-escalar(24),
-                                escalar(1200), escalar(600)))
-            
-            opciones = []
+        yLista = coordenada_y(200)
+        self.pantalla.fill(COLOR_FONDO,
+                           (int(shift_x), yLista-escalar(24),
+                            escalar(1200), escalar(600)))
 
-            # Página anterior
-            if paginaDirectorios > 0:
-                rect = self._draw_menu_option(
-                    "<<< " + _("Previous page"),
-                    10, yLista, COLOR_NEXT
-                )
-                opciones.append((rect, "anterior", None))
+        self.opciones = []
 
-            # Países de la página actual
-            inicio = paginaDirectorios * 20
-            fin = min(inicio + 20, nDirectorios)
+        # Página anterior
+        if paginaDirectorios > 0:
+            rect = self._draw_menu_option(
+                "<<< " + _("Previous page"),
+                10, yLista, COLOR_NEXT
+            )
+            self.opciones.append((rect, "anterior", None))
 
-            for local, indice in enumerate(range(inicio, fin)):
-                columna = local // 10
-                fila = local % 10
+        # Países de la página actual
+        inicio = paginaDirectorios * 20
+        fin = min(inicio + 20, nDirectorios)
 
-                x = 10 + columna * 600
-                y = coordenada_y(250 + fila * 50)
+        for local, indice in enumerate(range(inicio, fin)):
+            columna = local // 10
+            fila = local % 10
 
-                rect = self._draw_menu_option(
-                    self.listaNombreDirectorios[indice],
-                    x, y, COLOR_OPTION_T
-                )
+            x = 10 + columna * 600
+            y = coordenada_y(250 + fila * 50)
 
-                opciones.append((rect, "mapa", indice))
+            rect = self._draw_menu_option(
+                self.listaNombreDirectorios[indice],
+                x, y, COLOR_OPTION_T
+            )
 
-            # Página siguiente
-            if fin < nDirectorios:
-                rect = self._draw_menu_option(
-                    _("Next page") + " >>>",
-                    610,
-                    coordenada_y(750),
-                    COLOR_NEXT
-                )
-                opciones.append((rect, "siguiente", None))
+            self.opciones.append((rect, "mapa", indice))
 
-            # buttons
-            about_rect, stats_rect, exit_rect = self._draw_footer(_("Exit"))
-            pygame.display.flip()
-            cambiarPagina = False
-            while not cambiarPagina:
-                for event in self._get_events():
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == 27:  # escape: salir
-                            self._play_click()
-                            return self._close_game(close_activity=True)
-                    elif event.type == pygame.QUIT:
-                        self._play_click()
-                        return self._close_game()
-                    elif event.type == pygame.MOUSEBUTTONDOWN:
-                        self._play_click()
-                        pos = event.pos
-                        # zona de opciones
-                        if about_rect.collidepoint(pos):
-                            if self.pantallaAcercaDe() == 1:
-                                return 1
-                        elif stats_rect.collidepoint(pos):
-                            if self.pantallaStats() == 1:
-                                return 1
-                        elif exit_rect.collidepoint(pos):
-                            return self._close_game(close_activity=True)
-                        else:
-                            for rect, accion, indice in opciones:
-                                if not rect.collidepoint(pos):
-                                    continue
-                                if accion == "anterior":
-                                    paginaDirectorios -= 1
-                                    cambiarPagina = True
-                                elif accion == "siguiente":
-                                    paginaDirectorios += 1
-                                    cambiarPagina = True
-                                else:
-                                    self.indiceDirectorioActual = indice
-                                    self.paginaDir = paginaDirectorios
-                                    return
-                                break
+        # Página siguiente
+        if fin < nDirectorios:
+            rect = self._draw_menu_option(
+                _("Next page") + " >>>",
+                610,
+                coordenada_y(750),
+                COLOR_NEXT
+            )
+            self.opciones.append((rect, "siguiente", None))
 
-                    elif event.type == EVENTOREFRESCO:
-                        pygame.display.flip()
+        # buttons
+        self.footer_rects = self._draw_footer(_("Exit"))
 
     def cargarImagen(self, nombre):
         """Carga una imagen y la escala de acuerdo a la resolucion"""
@@ -782,6 +666,12 @@ class Conozco():
     def __init__(self, parent=None):
         self.parent = parent
         self.running = True
+        self._screen = None
+        self._screen_revision = 0
+        self._deadline = None
+        self._next_refresh = 0
+        self._game_active = False
+        self.paginaDir = 0
         file_activity_info = configparser.ConfigParser()
         activity_info_path = os.path.join(BASE_DIR, 'activity', 'activity.info')
         file_activity_info.read(activity_info_path)
@@ -899,7 +789,6 @@ class Conozco():
             pygame.display.set_caption(_(self.activity_name))
         self.anchoPantalla = self.pantalla.get_width()
         self.altoPantalla = self.pantalla.get_height()
-        pygame.display.flip()
         if self.anchoPantalla == 1200 and self.altoPantalla == 900:
             xo_resolution = True
             scale = 1
@@ -1056,7 +945,6 @@ class Conozco():
             textrect.center = (coordenada_x(XCENTROPANEL), yLinea)
             self.pantalla.blit(text, textrect)
             yLinea = yLinea + self.fuente32.get_height() + escalar(10)
-        pygame.display.flip()
 
     def borrarGlobito(self):
         """ Borra el globito, lo deja en blanco"""
@@ -1068,14 +956,14 @@ class Conozco():
         self.mostrarGlobito([random.choice(self.listaCorrecto)])
         self.esCorrecto = True
         self.puntos += 5 if self.nRespuestasMal >= 1 else 10
-        pygame.time.set_timer(EVENTORESPUESTA, TIEMPORESPUESTA)
+        self._deadline = pygame.time.get_ticks() + TIEMPORESPUESTA
 
     def mal(self):
         """Muestra texto en el globito cuando la respuesta es incorrecta"""
         self.mostrarGlobito([random.choice(self.listaMal)])
         self.esCorrecto = False
         self.nRespuestasMal += 1
-        pygame.time.set_timer(EVENTORESPUESTA, TIEMPORESPUESTA)
+        self._deadline = pygame.time.get_ticks() + TIEMPORESPUESTA
 
     def _categoria(self, nombre):
         """Resuelve los prefijos usados por los archivos de niveles."""
@@ -1101,7 +989,7 @@ class Conozco():
             elementos, fuente, color = self._elementos_categoria(categoria)
             for elemento in elementos:
                 if elemento.nombre == respuesta and elemento.estaAca(pos):
-                    elemento.mostrarNombre(self.pantalla, fuente, color, True)
+                    elemento.mostrarNombre(self.pantalla, fuente, color)
                     return True
         return False
 
@@ -1113,7 +1001,7 @@ class Conozco():
                 continue
             elementos, fuente, color = self._elementos_categoria(categoria)
             for elemento in elementos:
-                elemento.mostrarNombre(self.pantalla, fuente, color, False)
+                elemento.mostrarNombre(self.pantalla, fuente, color)
 
     def presentLevel(self):
         for nombre in self.nivelActual.dibujoInicial:
@@ -1126,7 +1014,7 @@ class Conozco():
             else:
                 elementos, _, _ = self._elementos_categoria(categoria)
                 for elemento in elementos:
-                    elemento.dibujar(self.pantalla, False)
+                    elemento.dibujar(self.pantalla)
         self.mostrarNombres(self.nivelActual.nombreInicial)
 
     def explorarNombres(self):
@@ -1136,52 +1024,19 @@ class Conozco():
         # presentar nivel
         self.presentLevel()
         # boton terminar
-        end_rect = rectangulo(975, 25, 200, 50)
-        self.pantalla.fill(COLOR_SHOW_ALL, end_rect)
+        self.end_rect = rectangulo(975, 25, 200, 50)
+        self.pantalla.fill(COLOR_SHOW_ALL, self.end_rect)
         self.mostrarTexto(_("End"),
                           self.fuente40,
                           posicion(1075, 50),
                           COLOR_SKIP)
-        pygame.display.flip()
         # boton mostrar todo
-        show_all_rect = rectangulo(975, 90, 200, 50)
-        self.pantalla.fill(COLOR_SHOW_ALL, show_all_rect)
+        self.show_all_rect = rectangulo(975, 90, 200, 50)
+        self.pantalla.fill(COLOR_SHOW_ALL, self.show_all_rect)
         self.mostrarTexto(_("Show all"),
                           self.fuente40,
                           posicion(1075, 115),
                           COLOR_SKIP)
-        pygame.display.flip()
-        # lazo principal de espera por acciones del usuario
-        while 1:
-            for event in self._get_events():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == 27:  # escape: salir
-                        self._play_click()
-                        return
-                elif event.type == pygame.QUIT:
-                    self._play_click()
-                    return self._close_game()
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    self._play_click()
-                    if event.pos[0] < XMAPAMAX*scale+shift_x:  # zona de mapa
-                        for nombre in self.nivelActual.elementosActivos:
-                            categoria = self._categoria(nombre)
-                            if categoria is None:
-                                continue
-                            elementos, fuente, color = self._elementos_categoria(categoria)
-                            for elemento in elementos:
-                                if elemento.estaAca(event.pos):
-                                    elemento.mostrarNombre(
-                                        self.pantalla, fuente, color, True)
-                                    self._explore_places += 1
-                                    break
-                    elif end_rect.collidepoint(event.pos):
-                        return
-                    elif show_all_rect.collidepoint(event.pos):
-                        self.mostrarNombres(self.nivelActual.elementosActivos)
-                        pygame.display.flip()
-                elif event.type == EVENTOREFRESCO:
-                    pygame.display.flip()
 
     def _draw_progress(self):
         rect = rectangulo(XBARRA_A, YBARRA_A, ABARRA_A, ABARRA_P)
@@ -1203,202 +1058,29 @@ class Conozco():
         self.nivelActual.prepararPreguntas()
         # presentar nivel
         self.presentLevel()
-        end_rect = rectangulo(975, 26, 200, 48)
-        self.pantalla.fill(COLOR_SHOW_ALL, end_rect)
+        self.end_rect = rectangulo(975, 26, 200, 48)
+        self.pantalla.fill(COLOR_SHOW_ALL, self.end_rect)
         self.mostrarTexto(_("End"),
                           self.fuente40,
                           posicion(1075, 50),
                           COLOR_SKIP)
-        pygame.display.flip()
         # presentar pregunta inicial
         self.lineasPregunta = self.nivelActual.siguientePregunta(
             self.listaSufijos, self.listaPrefijos)
         self.mostrarGlobito(self.lineasPregunta)
-        # barra puntaje
-        pygame.draw.rect(self.pantalla, COLORBARRA_C,
-                         rectangulo(XBARRA_P, YBARRA_P-350, ABARRA_P, 350), 3)
-        self.mostrarTexto('0', self.fuente32,
-                          (coordenada_x(XBARRA_P+ABARRA_P/2),
-                           int(YBARRA_P+10)*scale+shift_y), COLORBARRA_P)
-        # barra avance
-        self._draw_progress()
-        
         self.puntos = 0
+        self._draw_score()
+        self._draw_progress()
         self.nRespuestasMal = 0
-        self.otorgado = False
         self.estadodespedida = 0
         self.respondiendo = False
-        self.avanceNivel = 0
-        pygame.time.set_timer(EVENTORESPUESTA, 0)
-        # leer eventos y ver si la respuesta es correcta
-        while 1:
-            for event in self._get_events():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == 27:  # escape: salir
-                        self._play_click()
-                        pygame.time.set_timer(EVENTORESPUESTA, 0)
-                        pygame.time.set_timer(EVENTODESPEGUE, 0)
-                        return
-                elif event.type == pygame.QUIT:
-                    self._play_click()
-                    return self._close_game()
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    self._play_click()
-                    if end_rect.collidepoint(event.pos):
-                        pygame.time.set_timer(EVENTORESPUESTA, 0)
-                        pygame.time.set_timer(EVENTODESPEGUE, 0)
-                        return
-                    if event.pos[0] < XMAPAMAX*scale+shift_x:  # zona mapa
-                        if self.avanceNivel < TOTALAVANCE:
-                            if not(self.respondiendo):
-                                self.respondiendo = True
-                                if self.esCorrecta(self.nivelActual, event.pos):
-                                    if not(self.otorgado):
-                                        self.borrarGlobito()
-                                        self.correcto()
-                                        self.otorgado = True
-                                else:
-                                    self.borrarGlobito()
-                                    self.mal()
-                                if self.puntos < 0:
-                                    self.mostrarTexto('0', self.fuente32,
-                                                      (coordenada_x(XBARRA_P+ABARRA_P/2),
-                                                       int(YBARRA_P+15)*scale+shift_y),
-                                                      COLORBARRA_P)
-                                else:
-                                    self.pantalla.fill(
-                                        COLORPANEL,
-                                        rectangulo(XBARRA_P, YBARRA_P-350,
-                                                   ABARRA_P, 390))
-                                    self.pantalla.fill(
-                                        COLORBARRA_P,
-                                        rectangulo(XBARRA_P, YBARRA_P-self.puntos*5,
-                                                   ABARRA_P, self.puntos*5))
-                                    pygame.draw.rect(self.pantalla, COLORBARRA_C,
-                                                     rectangulo(XBARRA_P, YBARRA_P-350, ABARRA_P, 350), 3)
-                                    self.mostrarTexto(str(self.puntos), self.fuente32,
-                                                      (coordenada_x(XBARRA_P+ABARRA_P/2),
-                                                       int(YBARRA_P+15)*scale+shift_y),
-                                                      COLORBARRA_P)
+        self._game_active = True
 
-                elif event.type == EVENTORESPUESTA:
-                    pygame.time.set_timer(EVENTORESPUESTA, 0)
-                    self.respondiendo = False
-                    if not(self.esCorrecto):
-                        if self.nRespuestasMal == 1:  # ayuda
-                            linea = self.lineasPregunta
-                            linea2 = self.nivelActual.devolverAyuda()
-                            linea3 = linea + linea2
-                            self.mostrarGlobito(linea3)
-                            pygame.time.set_timer(
-                                EVENTORESPUESTA, TIEMPORESPUESTA)
-                        elif self.nRespuestasMal > 1:
-                            self.lineasPregunta = \
-                                self.nivelActual.siguientePregunta(
-                                    self.listaSufijos, self.listaPrefijos)
-                            self.mostrarGlobito(self.lineasPregunta)
-                            self.nRespuestasMal = 0
-                            # avanzo
-                            self.avanceNivel = self.avanceNivel + 1
-                            # barra avance
-                            self._draw_progress()
-                            # fin barra avance
-                        else:  # volver a preguntar
-                            self.mostrarGlobito(self.lineasPregunta)
-                    else:
-                        self.avanceNivel = self.avanceNivel + 1
-                        # barra avance
-                        self._draw_progress()
-                        # fin barra avance
-                        if not(self.avanceNivel == TOTALAVANCE):
-                            self.lineasPregunta = \
-                                self.nivelActual.siguientePregunta(
-                                    self.listaSufijos, self.listaPrefijos)
-                            self.mostrarGlobito(self.lineasPregunta)
-                            self.nRespuestasMal = 0
-                            self.otorgado = False
-                    if self.avanceNivel == TOTALAVANCE:  # inicia despedida
-                        if self.puntos == 70:
-                            self.lineasPregunta = random.choice(self.listaDespedidasB)\
-                                .split("\n")
-                        else:
-                            self.lineasPregunta = random.choice(self.listaDespedidasM)\
-                                .split("\n")
-                        self.mostrarGlobito(self.lineasPregunta)
-                        pygame.time.set_timer(EVENTODESPEGUE,
-                                              TIEMPORESPUESTA*2)
-
-                elif event.type == EVENTODESPEGUE:
-                    self.estadobicho = ESTADODESPEGUE
-                    self.pantalla.fill(COLORPANEL,
-                                       rectangulo(XMAPAMAX, 76, DXPANEL, 824))
-                    if self.estadodespedida == 0:
-                        self.pantalla.blit(self.puerta1,
-                                           (coordenada_x(XPUERTA), YPUERTA*scale+shift_y))
-                        self.pantalla.blit(self.jp1,
-                                           posicion(XBICHO, YBICHO))
-                    elif self.estadodespedida == 1:
-                        self.pantalla.blit(self.puerta2,
-                                           (coordenada_x(XPUERTA), YPUERTA*scale+shift_y))
-                        self.pantalla.blit(self.jp1,
-                                           posicion(XBICHO, YBICHO))
-                    elif self.estadodespedida == 2:
-                        self.pantalla.blit(self.puerta1,
-                                           (coordenada_x(XPUERTA), YPUERTA*scale+shift_y))
-                    elif self.estadodespedida == 3:
-                        pygame.time.set_timer(EVENTODESPEGUE, 0)
-                        return
-                    pygame.display.flip()
-                    self.estadodespedida = self.estadodespedida + 1
-                    pygame.time.set_timer(EVENTODESPEGUE, 1000)
-
-                elif event.type == EVENTOREFRESCO:
-                    if self.estadobicho == ESTADONORMAL:
-                        if random.randint(1, 15) == 1:
-                            self.estadobicho = ESTADOPESTANAS
-                            self.pantalla.blit(self.ojos3,
-                                               posicion(1020, 547))
-                        elif random.randint(1, 20) == 1:
-                            self.estadobicho = ESTADOFRENTE
-                            self.pantalla.blit(self.ojos2,
-                                               posicion(1020, 547))
-                    elif self.estadobicho == ESTADOPESTANAS:
-                        self.estadobicho = ESTADONORMAL
-                        self.pantalla.blit(self.ojos1,
-                                           posicion(1020, 547))
-                    elif self.estadobicho == ESTADOFRENTE:
-                        if random.randint(1, 10) == 1:
-                            self.estadobicho = ESTADONORMAL
-                            self.pantalla.blit(self.ojos1,
-                                               posicion(1020, 547))
-                    elif self.estadobicho == ESTADODESPEGUE:
-                        pass
-                    pygame.display.flip()
-
-    def _wait_presentation(self, milliseconds):
-        """Return 'skip', 'quit' or 'continue' after waiting for events."""
-        pygame.time.set_timer(EVENTORESPUESTA, milliseconds)
-        try:
-            while True:
-                events = self._get_events()
-                if any(event.type == pygame.QUIT for event in events):
-                    return "quit"
-                for event in events:
-                    if event.type in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
-                        self._play_click()
-                        return "skip"
-                    if event.type == EVENTORESPUESTA:
-                        return "continue"
-                    if event.type == EVENTOREFRESCO:
-                        pygame.display.flip()
-        finally:
-            pygame.time.set_timer(EVENTORESPUESTA, 0)
-            pygame.event.clear(EVENTORESPUESTA)
 
     def presentacion(self):
-        """Reproduce los cuadros de la introduccion hasta terminar, saltar o salir."""
+        """Prepara la introduccion; cada plazo muestra un solo cuadro."""
         # Duracion, imagenes (nombre, x, y), dialogo (indice, x, y), aviso.
-        cuadros = (
+        self._intro_frames = iter((
             (500, [('fondo1', 75, 75)], None, True),
             (2000, [('globo1', 180, 260)], (0, 384, 330), False),
             (2000, [('globo1', 180, 260)], (1, 384, 315), False),
@@ -1409,106 +1091,266 @@ class Conozco():
             (500, [('fondo2', 75, 75), ('jpp2', 487, 347)], None, True),
             (2000, [('globo1', 160, 240)], (4, 360, 310), False),
             (2000, [('globo1', 160, 240)], (5, 360, 310), False),
-        )
+        ))
         self.pantalla.fill(COLOR_FONDO)
-        for duracion, imagenes, dialogo, aviso in cuadros:
-            for nombre, x, y in imagenes:
-                self.pantalla.blit(getattr(self, nombre), posicion(x, y))
-            if aviso:
-                self.mostrarTexto(_("Press any key to skip"), self.fuente32,
-                                  posicion(600, 800), COLOR_SKIP)
-            if dialogo is not None:
-                indice, x, y = dialogo
-                y_linea = coordenada_y(y)
-                for linea in self.listaPresentacion[indice].split("\n"):
-                    self.mostrarTexto(linea.strip(), self.fuente40,
-                                      (coordenada_x(x), y_linea), COLORPREGUNTAS)
-                    y_linea += self.fuente32.get_height() + escalar(10)
-            pygame.display.flip()
-            resultado = self._wait_presentation(duracion)
-            if resultado != "continue":
-                return resultado
-        return "continue"
+        self._advance_intro()
 
-    def run(self):
-        """Este es el loop principal del juego"""
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+    def _advance_intro(self):
+        frame = next(self._intro_frames, None)
+        if frame is None:
+            self._change_screen('maps')
+            return
+        duration, images, dialogue, notice = frame
+        for name, x, y in images:
+            self.pantalla.blit(getattr(self, name), posicion(x, y))
+        if notice:
+            self.mostrarTexto(_("Press any key to skip"), self.fuente32,
+                              posicion(600, 800), COLOR_SKIP)
+        if dialogue is not None:
+            index, x, y = dialogue
+            y_line = coordenada_y(y)
+            for line in self.listaPresentacion[index].split("\n"):
+                self.mostrarTexto(line.strip(), self.fuente40,
+                                  (coordenada_x(x), y_line), COLORPREGUNTAS)
+                y_line += self.fuente32.get_height() + escalar(10)
+        self._deadline = pygame.time.get_ticks() + duration
+
+    def _finish_game(self):
+        """Contabiliza incluso una partida interrumpida, sin duplicarla."""
+        if self._game_active:
+            self._score += self.puntos
+            self._average = self._score / self._game_times
+            self._game_active = False
+
+    def _change_screen(self, screen):
+        """Cambia de estado y dibuja su pantalla sin esperar eventos."""
+        self._finish_game()
+        self._deadline = None
+        self._screen = screen
+        self._screen_revision += 1
+        draw = {
+            'intro': self.presentacion,
+            'maps': self.pantallaDirectorios,
+            'menu': self.pantallaInicial,
+            'about': self.pantallaAcercaDe,
+            'stats': self.pantallaStats,
+        }
+        if screen in draw:
+            draw[screen]()
+        else:
+            self._draw_map_panel()
+            if screen == 'play':
+                self.jugarNivel()
+            else:
+                self.explorarNombres()
+
+    def _draw_map_panel(self):
+        self.pantalla.blit(self.fondo, (shift_x, shift_y))
+        self.pantalla.fill(COLORPANEL,
+                           rectangulo(XMAPAMAX, 0, DXPANEL, 900))
+        if self._screen == 'play':
+            self.pantalla.blit(self.jp1, posicion(XBICHO, YBICHO))
+            self.estadobicho = ESTADONORMAL
+            return
+        if self.bandera:
+            self.pantalla.blit(self.bandera, posicion(XMAPAMAX+47, 155))
+        y = coordenada_y(YTEXTO) + self.fuente9.get_height()
+        for label, value in self.lista_estadisticas:
+            for text, x, color in ((label, XMAPAMAX+10, COLORESTADISTICAS1),
+                                   (value, XMAPAMAX+135, COLORESTADISTICAS2)):
+                self.pantalla.blit(self.fuente9.render(text, 1, color),
+                                   (coordenada_x(x), y))
+            y += self.fuente9.get_height() + escalar(5)
+
+    def _back(self):
+        if self._screen == 'maps':
+            self._close_game(close_activity=True)
+        else:
+            self._change_screen('maps' if self._screen == 'menu' else 'menu')
+
+    def _handle_event(self, event):
+        """Despacha entrada al estado actual; QUIT se resuelve por lote."""
+        if event.type not in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
+            return
+        if self._screen == 'intro':
+            self._play_click()
+            self._change_screen('maps')
+        elif self._screen in ('about', 'stats'):
+            self._play_click()
+            self._change_screen(self._return_screen)
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                self._play_click()
+                self._back()
+        else:
+            self._play_click()
+            if self._screen in ('maps', 'menu'):
+                self._handle_menu_click(event.pos)
+            elif self.end_rect.collidepoint(event.pos):
+                self._change_screen('menu')
+            elif self._screen == 'explore':
+                self._handle_explore_click(event.pos)
+            elif rectangulo(0, 0, XMAPAMAX, 900).collidepoint(event.pos):
+                self._answer(event.pos)
+
+    def _handle_menu_click(self, pos):
+        for rect, action in zip(self.footer_rects, ('about', 'stats', 'back')):
+            if rect.collidepoint(pos):
+                if action == 'back':
+                    self._back()
+                else:
+                    self._return_screen = self._screen
+                    self._change_screen(action)
                 return
-            elif event.type == pygame.VIDEORESIZE:
-                pygame.display.set_mode(
-                    (event.size[0], event.size[1] - GRID_CELL_SIZE),
-                    pygame.RESIZABLE)
-                break
+        if self._screen == 'maps':
+            for rect, action, index in self.opciones:
+                if not rect.collidepoint(pos):
+                    continue
+                if action in ('anterior', 'siguiente'):
+                    self.paginaDir += -1 if action == 'anterior' else 1
+                    self._change_screen('maps')
+                else:
+                    self.indiceDirectorioActual = index
+                    self.directorio = self.listaDirectorios[index]
+                    pygame.mouse.set_cursor((32, 32), (1, 1), *self.cursor_espera)
+                    try:
+                        self.cargarDirectorio()
+                    finally:
+                        pygame.mouse.set_cursor((32, 32), (1, 1), *self.cursor)
+                    self._change_screen('menu')
+                return
+        else:
+            for rects, screen in ((self.niveles_rect, 'play'),
+                                  (self.exploraciones_rect, 'explore')):
+                for index, rect in enumerate(rects):
+                    if rect.collidepoint(pos):
+                        self.indiceNivelActual = index
+                        self._change_screen(screen)
+                        return
 
-        pygame.time.set_timer(EVENTOREFRESCO,TIEMPOREFRESCO)
+    def _handle_explore_click(self, pos):
+        if self.show_all_rect.collidepoint(pos):
+            self.mostrarNombres(self.nivelActual.elementosActivos)
+        elif rectangulo(0, 0, XMAPAMAX, 900).collidepoint(pos):
+            for name in self.nivelActual.elementosActivos:
+                category = self._categoria(name)
+                if category is None:
+                    continue
+                elements, font, color = self._elementos_categoria(category)
+                for element in elements:
+                    if element.estaAca(pos):
+                        element.mostrarNombre(self.pantalla, font, color)
+                        self._explore_places += 1
+                        break
 
-        self.loadAll()
+    def _answer(self, pos):
+        if self.respondiendo or self.avanceNivel >= TOTALAVANCE:
+            return
+        self.respondiendo = True
+        self.borrarGlobito()
+        if self.esCorrecta(self.nivelActual, pos):
+            self.correcto()
+        else:
+            self.mal()
+        self._draw_score()
 
-        self.loadCommons()
-        
-        self.load_stats()
+    def _draw_score(self):
+        self.pantalla.fill(COLORPANEL,
+                           rectangulo(XBARRA_P, YBARRA_P-350, ABARRA_P, 390))
+        self.pantalla.fill(COLORBARRA_P,
+                           rectangulo(XBARRA_P, YBARRA_P-self.puntos*5,
+                                      ABARRA_P, self.puntos*5))
+        pygame.draw.rect(self.pantalla, COLORBARRA_C,
+                         rectangulo(XBARRA_P, YBARRA_P-350, ABARRA_P, 350), 3)
+        self.mostrarTexto(str(self.puntos), self.fuente32,
+                          posicion(XBARRA_P+ABARRA_P/2, YBARRA_P+15), COLORBARRA_P)
 
-        resultado = self.presentacion()
+    def _advance_question(self):
+        self.respondiendo = False
+        if not self.esCorrecto and self.nRespuestasMal == 1:
+            self.mostrarGlobito(self.lineasPregunta + self.nivelActual.devolverAyuda())
+            return
+        self.avanceNivel += 1
+        self._draw_progress()
+        if self.avanceNivel == TOTALAVANCE:
+            messages = (self.listaDespedidasB if self.puntos == TOTALAVANCE * 10
+                        else self.listaDespedidasM)
+            self.mostrarGlobito(random.choice(messages).split("\n"))
+            self.respondiendo = True
+            self._deadline = pygame.time.get_ticks() + TIEMPORESPUESTA * 2
+        else:
+            self.nRespuestasMal = 0
+            self.lineasPregunta = self.nivelActual.siguientePregunta(
+                self.listaSufijos, self.listaPrefijos)
+            self.mostrarGlobito(self.lineasPregunta)
 
-        if resultado == "quit":
-            self.running = False
+    def _advance_departure(self):
+        self.estadobicho = ESTADODESPEGUE
+        if self.estadodespedida == 3:
+            self._change_screen('menu')
+            return
+        self.pantalla.fill(COLORPANEL, rectangulo(XMAPAMAX, 76, DXPANEL, 824))
+        door = self.puerta2 if self.estadodespedida == 1 else self.puerta1
+        self.pantalla.blit(door, posicion(XPUERTA, YPUERTA))
+        if self.estadodespedida < 2:
+            self.pantalla.blit(self.jp1, posicion(XBICHO, YBICHO))
+        self.estadodespedida += 1
+        self._deadline = pygame.time.get_ticks() + 1000
+
+    def _animate_character(self):
+        eyes = None
+        if self.estadobicho == ESTADONORMAL:
+            if random.randint(1, 15) == 1:
+                self.estadobicho, eyes = ESTADOPESTANAS, self.ojos3
+            elif random.randint(1, 20) == 1:
+                self.estadobicho, eyes = ESTADOFRENTE, self.ojos2
+        elif (self.estadobicho == ESTADOPESTANAS or
+              (self.estadobicho == ESTADOFRENTE and random.randint(1, 10) == 1)):
+            self.estadobicho, eyes = ESTADONORMAL, self.ojos1
+        if eyes is not None:
+            self.pantalla.blit(eyes, posicion(1020, 547))
+
+    def _update(self, now):
+        """Avanza animaciones y respuestas sin temporizadores en la cola."""
+        if self._deadline is not None and now >= self._deadline:
+            self._deadline = None
+            if self._screen == 'intro':
+                self._advance_intro()
+            elif self._screen == 'play':
+                if self.avanceNivel == TOTALAVANCE:
+                    self._advance_departure()
+                else:
+                    self._advance_question()
+        if now >= self._next_refresh:
+            self._next_refresh = now + TIEMPOREFRESCO
+            if self._screen == 'play':
+                self._animate_character()
+
+    def _process_events(self, events):
+        # Un cambio de pantalla descarta entrada residual, pero nunca QUIT.
+        if any(event.type == pygame.QUIT for event in events):
             self._close_game(close_activity=True)
             return
+        revision = self._screen_revision
+        for event in events:
+            self._handle_event(event)
+            if not self.running or self._screen_revision != revision:
+                break
 
-        # Si terminó normalmente o se salto, continuar con el juego.
-        self.paginaDir = 0
-        self.running = True
-
-        while self.running:
-            if self.pantallaDirectorios() == 1:
-                return
-            # seleccion de mapa
-            pygame.mouse.set_cursor((32, 32), (1, 1), *self.cursor_espera)
-            self.directorio = self.listaDirectorios[self.indiceDirectorioActual]
-            self.cargarDirectorio()
-            pygame.mouse.set_cursor((32, 32), (1, 1), *self.cursor)
+    def run(self):
+        """Unico bucle de eventos para todas las pantallas y animaciones."""
+        self.loadAll()
+        self.loadCommons()
+        self.load_stats()
+        self._change_screen('intro')
+        try:
             while self.running:
-                # pantalla inicial de juego
-                self.elegir_directorio = False
-                if self.pantallaInicial() == 1:
-                    return
-                if self.elegir_directorio:  # volver a seleccionar mapa
-                    break
-                # dibujar fondo y panel
-                self.pantalla.blit(self.fondo, (shift_x, shift_y))
-                self.pantalla.fill(COLORPANEL,
-                                   (coordenada_x(XMAPAMAX), shift_y,
-                                    escalar(DXPANEL), escalar(900)))
-                if self.jugar:
-                    self.pantalla.blit(self.jp1,
-                                       posicion(XBICHO, YBICHO))
-                    self.estadobicho = ESTADONORMAL
+                self._process_events(self._get_events())
+                if self.running:
+                    self._update(pygame.time.get_ticks())
                     pygame.display.flip()
-                    if self.jugarNivel() == 1:
-                        return
-                    self._score = self._score + self.puntos
-                    self._average = self._score / self._game_times
-                else:
-                    if self.bandera:
-                        self.pantalla.blit(self.bandera,
-                                           posicion(XMAPAMAX+47, 155))
-                    yLinea = escalar(YTEXTO) + shift_y + \
-                        self.fuente9.get_height()
-                    for par in self.lista_estadisticas:
-                        text1 = self.fuente9.render(
-                            par[0], 1, COLORESTADISTICAS1)
-                        self.pantalla.blit(text1,
-                                           ((XMAPAMAX+10)*scale+shift_x, yLinea))
-                        text2 = self.fuente9.render(
-                            par[1], 1, COLORESTADISTICAS2)
-                        self.pantalla.blit(text2,
-                                           ((XMAPAMAX+135)*scale+shift_x, yLinea))
-                        yLinea = yLinea+self.fuente9.get_height()+escalar(5)
-
-                    pygame.display.flip()
-                    if self.explorarNombres() == 1:
-                        return
+        finally:
+            self._close_game()
 
 
 def main():
