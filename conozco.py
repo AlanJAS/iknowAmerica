@@ -881,7 +881,7 @@ class Conozco():
             "  XXXXXX                XXXXXX  ",
             "   XXXX                  XXXX   ")
         self.cursor = pygame.cursors.compile(datos_cursor)
-        pygame.mouse.set_cursor((32, 32), (1, 1), *self.cursor)
+        self._set_cursor(self.cursor)
         datos_cursor_espera = (
             "                                ",
             "                                ",
@@ -916,6 +916,13 @@ class Conozco():
             "                                ",
             "                                ")
         self.cursor_espera = pygame.cursors.compile(datos_cursor_espera)
+
+    def _set_cursor(self, cursor):
+        """Some SDL backends do not support custom cursors."""
+        try:
+            pygame.mouse.set_cursor((32, 32), (1, 1), *cursor)
+        except pygame.error:
+            pass
 
     def cargarDirectorio(self):
         """Carga la informacion especifica de un directorio"""
@@ -1215,11 +1222,11 @@ class Conozco():
                 else:
                     self.indiceDirectorioActual = index
                     self.directorio = self.listaDirectorios[index]
-                    pygame.mouse.set_cursor((32, 32), (1, 1), *self.cursor_espera)
+                    self._set_cursor(self.cursor_espera)
                     try:
                         self.cargarDirectorio()
                     finally:
-                        pygame.mouse.set_cursor((32, 32), (1, 1), *self.cursor)
+                        self._set_cursor(self.cursor)
                     self._change_screen('menu')
                 return
         else:
