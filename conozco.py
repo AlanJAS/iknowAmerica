@@ -270,13 +270,12 @@ class Conozco():
 
     def loadInfo(self):
         """Carga las imagenes y los datos de cada pais"""
-        r_path = os.path.join(self.camino_datos, self.directorio + '.py')
-        a_path = os.path.abspath(r_path)
+        path = os.path.join(self.camino_datos, self.directorio + '.py')
         f = None
         try:
-            f = load_source(self.directorio, a_path)
+            f = load_source(self.directorio, path)
         except (OSError, ImportError, SyntaxError) as err:
-            print(_('Cannot open %s') % d, err)
+            print(_('Cannot open %s') % path, err)
 
         if f:
             lugares = []
