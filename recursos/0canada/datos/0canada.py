@@ -23,8 +23,7 @@ STATES = [
     (_('Greenland'), 239, 558, 157, 0),
     (_('Iceland'), 238, 728, 128, 45),
     (_('Alaska'), 237, 42, 197, 0),
-    (_('United States'), 236, 195, 775, 0),
-    (_('Newfoundland'), 235, 700, 547, 0)
+    (_('United States'), 236, 195, 775, 0)
 ]
 
 CAPITALS = [
