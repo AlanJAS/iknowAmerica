@@ -270,6 +270,21 @@ class Conozco():
 
     def loadInfo(self):
         """Carga las imagenes y los datos de cada pais"""
+        
+        # creo todas las listas
+        self.listaLugares = []
+        self.listaDeptos = []
+        self.listaRios = []
+        self.listaRutas = []
+        self.listaCuchillas = []
+        self.lista_estadisticas = []
+        # mapas
+        self.deptos = None
+        self.deptosLineas = None
+        self.rios = None
+        self.rutas = None
+        self.cuchillas = None
+        
         path = os.path.join(self.camino_datos, self.directorio + '.py')
         f = None
         try:
@@ -285,7 +300,7 @@ class Conozco():
                 lugares = lugares + f.CITIES
             if hasattr(f, 'HILLS'):
                 lugares = lugares + f.HILLS
-            self.listaLugares = list()
+            
             for c in lugares:
                 nombreLugar = c[0]
                 posx = c[1]
@@ -311,7 +326,7 @@ class Conozco():
             if hasattr(f, 'STATES'):
                 self.deptos = self.cargarImagen("deptos.png")
                 self.deptosLineas = self.cargarImagen("deptosLineas.png")
-                self.listaDeptos = list()
+                
                 for d in f.STATES:
                     nombreDepto = d[0]
                     claveColor = d[1]
@@ -326,7 +341,7 @@ class Conozco():
                 self.cuchillas = self.cargarImagen("cuchillas.png")
                 self.cuchillasDetectar = self.cargarImagen(
                     "cuchillasDetectar.png")
-                self.listaCuchillas = list()
+                
                 for c in f.CUCHILLAS:
                     nombreCuchilla = c[0]
                     claveColor = c[1]
@@ -340,7 +355,7 @@ class Conozco():
             if hasattr(f, 'RIVERS'):
                 self.rios = self.cargarImagen("rios.png")
                 self.riosDetectar = self.cargarImagen("riosDetectar.png")
-                self.listaRios = list()
+                
                 for r in f.RIVERS:
                     nombreRio = r[0]
                     claveColor = r[1]
@@ -354,7 +369,7 @@ class Conozco():
             if hasattr(f, 'ROUTES'):
                 self.rutas = self.cargarImagen("rutas.png")
                 self.rutasDetectar = self.cargarImagen("rutasDetectar.png")
-                self.listaRutas = list()
+                
                 for r in f.ROUTES:
                     nombreRuta = r[0]
                     claveColor = r[1]
@@ -364,7 +379,7 @@ class Conozco():
                     nuevaRuta = Zona(self.rutasDetectar, nombreRuta,
                                      claveColor, 6, (posx, posy), rotacion)
                     self.listaRutas.append(nuevaRuta)
-            self.lista_estadisticas = list()
+            
             if hasattr(f, 'STATS'):
                 for e in f.STATS:
                     p1 = e[0]
