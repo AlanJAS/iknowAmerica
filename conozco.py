@@ -612,6 +612,15 @@ class Conozco():
             self.mostrarTexto(label, self.fuente40, rect.center, COLOR_BUTTON_T)
             rectangles.append(rect)
         return rectangles
+        
+    def _draw_menu_option(self, texto, x, y, color):
+        """Dibuja una opcion y devuelve su zona clicable"""
+        rect = pygame.Rect(int(x*scale+shift_x), y-int(24*scale),
+                           int(590*scale), int(48*scale))
+        self.pantalla.fill(COLOR_OPTION_B, rect)
+        self.mostrarTexto(texto, self.fuente40,
+                          (int((x+290)*scale+shift_x), y), color)
+        return rect
 
     def pantallaInicial(self):
         """Pantalla con el menu principal del juego"""
@@ -631,34 +640,26 @@ class Conozco():
                           self.fuente60,
                           (int(300*scale+shift_x), int(220*scale+shift_y)),
                           COLOR_OPTION_T)
+
+        niveles_rect = []
         yLista = int(300*scale+shift_y)
         for n in self.listaNiveles:
-            self.pantalla.fill(COLOR_OPTION_B,
-                               (int(10*scale+shift_x),
-                                yLista-int(24*scale),
-                                int(590*scale),
-                                int(48*scale)))
-            self.mostrarTexto(n.nombre,
-                              self.fuente40,
-                              (int(300*scale+shift_x), yLista),
-                              COLOR_OPTION_T)
+            niveles_rect.append(self._draw_menu_option(
+                n.nombre, 10, yLista, COLOR_OPTION_T))
             yLista += int(50*scale)
+            
         self.mostrarTexto(_("Explore"),
                           self.fuente60,
                           (int(900*scale+shift_x), int(220*scale+shift_y)),
                           COLOR_NEXT)
+
+        exploraciones_rect = []
         yLista = int(300*scale+shift_y)
         for n in self.listaExploraciones:
-            self.pantalla.fill(COLOR_OPTION_B,
-                               (int(610*scale+shift_x),
-                                yLista-int(24*scale),
-                                int(590*scale),
-                                int(48*scale)))
-            self.mostrarTexto(n.nombre,
-                              self.fuente40,
-                              (int(900*scale+shift_x), yLista),
-                              COLOR_NEXT)
+            exploraciones_rect.append(self._draw_menu_option(
+                n.nombre, 610, yLista, COLOR_NEXT))
             yLista += int(50*scale)
+
         # buttons
         about_rect, stats_rect, exit_rect = self._draw_footer(_("Return"))
         pygame.display.flip()
@@ -683,42 +684,29 @@ class Conozco():
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.sound:
                         self.click.play()
+
                     pos = event.pos
-                    # zona de opciones
-                    if pos[1] < 800*scale+shift_y:
-                        if pos[1] > 275*scale + shift_y:
-                            if pos[0] < 600*scale + shift_x:  # primera columna
-                                if pos[1] < 275*scale + shift_y + \
-                                        len(self.listaNiveles)*50*scale:  # nivel
-                                    self.indiceNivelActual = \
-                                        int((pos[1]-int(275*scale+shift_y)) //
-                                            int(50*scale))
-                                    self.jugar = True
-                                    return
-                            else:  # segunda columna
-                                if pos[1] < 275*scale + shift_y +\
-                                        len(self.listaExploraciones)*50*scale:
-                                    # nivel de exploracion
-                                    self.indiceNivelActual = \
-                                        int((pos[1]-int(275*scale+shift_y)) //
-                                            int(50*scale))
-                                    self.jugar = False
-                                    return
-                    # buttons zone
+                    if about_rect.collidepoint(pos):
+                        if self.pantallaAcercaDe() == 1:
+                            return
+                    elif stats_rect.collidepoint(pos):
+                        if self.pantallaStats() == 1:
+                            return
+                    elif exit_rect.collidepoint(pos):
+                        self.elegir_directorio = True
+                        return
                     else:
-                        if pos[1] < 850*scale + shift_y:
-                            if pos[0] > 20*scale+shift_x and \
-                               pos[0] < 390*scale+shift_x:
-                                if self.pantallaAcercaDe() == 1:
-                                    return  # acerca
-                            elif pos[0] > 420*scale+shift_x and \
-                                    pos[0] < 790*scale+shift_x:
-                                if self.pantallaStats() == 1:
-                                    return  # stats
-                            elif pos[0] > 820*scale+shift_x and \
-                                    pos[0] < 1190*scale+shift_x:
-                                self.elegir_directorio = True
+                        for indice, rect in enumerate(niveles_rect):
+                            if rect.collidepoint(pos):
+                                self.indiceNivelActual = indice
+                                self.jugar = True
                                 return
+                        for indice, rect in enumerate(exploraciones_rect):
+                            if rect.collidepoint(pos):
+                                self.indiceNivelActual = indice
+                                self.jugar = False
+                                return
+
                 elif event.type == EVENTOREFRESCO:
                     pygame.display.flip()
 
