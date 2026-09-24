@@ -1221,6 +1221,29 @@ class Conozco():
                     return False
         return False
 
+    def mostrarNombres(self, categorias):
+        """Dibuja los nombres de las categorias indicadas, sin actualizar pantalla"""
+        configuracion = {
+            "deptos": (self.listaDeptos, self.fuente32, COLORNOMBREDEPTO, None),
+            "rios": (self.listaRios, self.fuente24, COLORNOMBRERIO, None),
+            "rutas": (self.listaRutas, self.fuente24, COLORNOMBRERUTA, None),
+            "cuchillas": (self.listaCuchillas, self.fuente24,
+                         COLORNOMBREELEVACION, None),
+            "capitales": (self.listaLugares, self.fuente24,
+                          COLORNOMBRECAPITAL, (0, 1)),
+            "ciudades": (self.listaLugares, self.fuente24,
+                         COLORNOMBRECAPITAL, (2,)),
+            "cerros": (self.listaLugares, self.fuente24,
+                       COLORNOMBREELEVACION, (5,)),
+        }
+        for categoria in categorias:
+            for prefijo, (elementos, fuente, color, tipos) in configuracion.items():
+                if categoria.startswith(prefijo):
+                    for elemento in elementos:
+                        if tipos is None or elemento.tipo in tipos:
+                            elemento.mostrarNombre(self.pantalla, fuente, color, False)
+                    break
+
     def presentLevel(self):
         for i in self.nivelActual.dibujoInicial:
             if i.startswith("lineasDepto"):
@@ -1243,38 +1266,7 @@ class Conozco():
                 for l in self.listaLugares:
                     if l.tipo == 5:
                         l.dibujar(self.pantalla, False)
-        for i in self.nivelActual.nombreInicial:
-            if i.startswith("deptos"):
-                for d in self.listaDeptos:
-                    d.mostrarNombre(self.pantalla, self.fuente32,
-                                    COLORNOMBREDEPTO, False)
-            elif i.startswith("rios"):
-                for d in self.listaRios:
-                    d.mostrarNombre(self.pantalla, self.fuente24,
-                                    COLORNOMBRERIO, False)
-            elif i.startswith("rutas"):
-                for d in self.listaRutas:
-                    d.mostrarNombre(self.pantalla, self.fuente24,
-                                    COLORNOMBRERUTA, False)
-            elif i.startswith("cuchillas"):
-                for d in self.listaCuchillas:
-                    d.mostrarNombre(self.pantalla, self.fuente24,
-                                    COLORNOMBREELEVACION, False)
-            elif i.startswith("capitales"):
-                for l in self.listaLugares:
-                    if ((l.tipo == 0) or (l.tipo == 1)):
-                        l.mostrarNombre(self.pantalla, self.fuente24,
-                                        COLORNOMBRECAPITAL, False)
-            elif i.startswith("ciudades"):
-                for l in self.listaLugares:
-                    if l.tipo == 2:
-                        l.mostrarNombre(self.pantalla, self.fuente24,
-                                        COLORNOMBRECAPITAL, False)
-            elif i.startswith("cerros"):
-                for l in self.listaLugares:
-                    if l.tipo == 5:
-                        l.mostrarNombre(self.pantalla, self.fuente24,
-                                        COLORNOMBREELEVACION, False)
+        self.mostrarNombres(self.nivelActual.nombreInicial)
 
     def explorarNombres(self):
         """Juego principal en modo exploro."""
@@ -1393,38 +1385,7 @@ class Conozco():
                     elif end_rect.collidepoint(event.pos):
                         return
                     elif show_all_rect.collidepoint(event.pos):
-                        for i in self.nivelActual.elementosActivos:
-                            if i.startswith("deptos"):
-                                for d in self.listaDeptos:
-                                    d.mostrarNombre(self.pantalla, self.fuente32,
-                                                    COLORNOMBREDEPTO, False)
-                            elif i.startswith("rios"):
-                                for d in self.listaRios:
-                                    d.mostrarNombre(self.pantalla, self.fuente24,
-                                                    COLORNOMBRERIO, False)
-                            elif i.startswith("rutas"):
-                                for d in self.listaRutas:
-                                    d.mostrarNombre(self.pantalla, self.fuente24,
-                                                    COLORNOMBRERUTA, False)
-                            elif i.startswith("cuchillas"):
-                                for d in self.listaCuchillas:
-                                    d.mostrarNombre(self.pantalla, self.fuente24,
-                                                    COLORNOMBREELEVACION, False)
-                            elif i.startswith("capitales"):
-                                for l in self.listaLugares:
-                                    if ((l.tipo == 0) or (l.tipo == 1)):
-                                        l.mostrarNombre(self.pantalla, self.fuente24,
-                                                        COLORNOMBRECAPITAL, False)
-                            elif i.startswith("ciudades"):
-                                for l in self.listaLugares:
-                                    if l.tipo == 2:
-                                        l.mostrarNombre(self.pantalla, self.fuente24,
-                                                        COLORNOMBRECAPITAL, False)
-                            elif i.startswith("cerros"):
-                                for l in self.listaLugares:
-                                    if l.tipo == 5:
-                                        l.mostrarNombre(self.pantalla, self.fuente24,
-                                                        COLORNOMBREELEVACION, False)
+                        self.mostrarNombres(self.nivelActual.elementosActivos)
                         pygame.display.flip()
                 elif event.type == EVENTOREFRESCO:
                     pygame.display.flip()
