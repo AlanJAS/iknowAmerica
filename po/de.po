@@ -25,12 +25,12 @@ msgstr "Ich kenne Amerika"
 
 #. TRANS: "summary" option from activity.info file
 msgid "Game about the geography of America"
-msgstr ""
+msgstr "Spiel über die Geografie Amerikas"
 
 #: conozco.py:263 conozco.py:373 conozco.py:398 conozco.py:454 conozco.py:535
 #, python-format
 msgid "Cannot open %s"
-msgstr "Spiel über die Geografie Amerikas"
+msgstr "%s"
 
 #: conozco.py:485
 #, python-format
