@@ -333,98 +333,45 @@ class Conozco():
             print(_('Cannot open %s') % path, err)
 
         if f:
-            lugares = []
-            if hasattr(f, 'CAPITALS'):
-                lugares = lugares + f.CAPITALS
-            if hasattr(f, 'CITIES'):
-                lugares = lugares + f.CITIES
-            if hasattr(f, 'HILLS'):
-                lugares = lugares + f.HILLS
-            
-            for c in lugares:
-                nombreLugar = c[0]
-                posx = c[1]
-                posy = c[2]
-                tipo = c[3]
-                incx = c[4]
-                incy = c[5]
-                if tipo == 0:
-                    simbolo = self.simboloCapitalN
-                elif tipo == 1:
-                    simbolo = self.simboloCapitalD
-                elif tipo == 2:
-                    simbolo = self.simboloCiudad
-                elif tipo == 5:
-                    simbolo = self.simboloCerro
-                else:
-                    simbolo = self.simboloCiudad
+            simbolos = {
+                0: self.simboloCapitalN,
+                1: self.simboloCapitalD,
+                2: self.simboloCiudad,
+                5: self.simboloCerro,
+            }
+            for categoria in ('CAPITALS', 'CITIES', 'HILLS'):
+                for nombre, x, y, tipo, incx, incy in getattr(f, categoria, []):
+                    simbolo = simbolos.get(tipo, self.simboloCiudad)
+                    self.listaLugares.append(
+                        Punto(nombre, tipo, simbolo, (x, y), (incx, incy)))
 
-                nuevoLugar = Punto(nombreLugar, tipo, simbolo,
-                                   (posx, posy), (incx, incy))
-                self.listaLugares.append(nuevoLugar)
-
-            if hasattr(f, 'STATES'):
-                self.deptos = self.cargarImagen("deptos.png")
-                self.deptosLineas = self.cargarImagen("deptosLineas.png")
-                
-                for d in f.STATES:
-                    nombreDepto = d[0]
-                    claveColor = d[1]
-                    posx = d[2]
-                    posy = d[3]
-                    rotacion = d[4]
-                    nuevoDepto = Zona(self.deptos, nombreDepto,
-                                      claveColor, 1, (posx, posy), rotacion)
-                    self.listaDeptos.append(nuevoDepto)
-
-            if hasattr(f, 'CUCHILLAS'):
-                self.cuchillas = self.cargarImagen("cuchillas.png")
-                self.cuchillasDetectar = self.cargarImagen(
-                    "cuchillasDetectar.png")
-                
-                for c in f.CUCHILLAS:
-                    nombreCuchilla = c[0]
-                    claveColor = c[1]
-                    posx = c[2]
-                    posy = c[3]
-                    rotacion = c[4]
-                    nuevaCuchilla = Zona(self.cuchillasDetectar, nombreCuchilla,
-                                         claveColor, 4, (posx, posy), rotacion)
-                    self.listaCuchillas.append(nuevaCuchilla)
-
-            if hasattr(f, 'RIVERS'):
-                self.rios = self.cargarImagen("rios.png")
-                self.riosDetectar = self.cargarImagen("riosDetectar.png")
-                
-                for r in f.RIVERS:
-                    nombreRio = r[0]
-                    claveColor = r[1]
-                    posx = r[2]
-                    posy = r[3]
-                    rotacion = r[4]
-                    nuevoRio = Zona(self.riosDetectar, nombreRio,
-                                    claveColor, 3, (posx, posy), rotacion)
-                    self.listaRios.append(nuevoRio)
-
-            if hasattr(f, 'ROUTES'):
-                self.rutas = self.cargarImagen("rutas.png")
-                self.rutasDetectar = self.cargarImagen("rutasDetectar.png")
-                
-                for r in f.ROUTES:
-                    nombreRuta = r[0]
-                    claveColor = r[1]
-                    posx = r[2]
-                    posy = r[3]
-                    rotacion = r[4]
-                    nuevaRuta = Zona(self.rutasDetectar, nombreRuta,
-                                     claveColor, 6, (posx, posy), rotacion)
-                    self.listaRutas.append(nuevaRuta)
+            # Datos, lista de destino, imagen visible, mascara de deteccion, tipo.
+            zonas = (
+                ('STATES', 'listaDeptos', 'deptosLineas', 'deptos', 1),
+                ('CUCHILLAS', 'listaCuchillas', 'cuchillas', 'cuchillasDetectar', 4),
+                ('RIVERS', 'listaRios', 'rios', 'riosDetectar', 3),
+                ('ROUTES', 'listaRutas', 'rutas', 'rutasDetectar', 6),
+            )
+            for categoria, lista, imagen, mascara, tipo in zonas:
+                if hasattr(f, categoria):
+                    self._cargar_zonas(getattr(f, categoria), lista,
+                                       imagen, mascara, tipo)
             
             if hasattr(f, 'STATS'):
                 for e in f.STATS:
                     p1 = e[0]
                     p2 = e[1]
                     self.lista_estadisticas.append((p1, p2))
+
+    def _cargar_zonas(self, datos, lista, imagen, mascara, tipo):
+        """Carga las imagenes y crea las zonas de una categoria geografica"""
+        setattr(self, imagen, self.cargarImagen(imagen + '.png'))
+        mapa = self.cargarImagen(mascara + '.png')
+        setattr(self, mascara, mapa)
+        setattr(self, lista, [
+            Zona(mapa, nombre, clave, tipo, (x, y), rotacion)
+            for nombre, clave, x, y, rotacion in datos
+        ])
 
     def cargarListaDirectorios(self):
         """Carga la lista de directorios con los distintos mapas"""
