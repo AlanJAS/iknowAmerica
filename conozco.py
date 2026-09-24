@@ -940,10 +940,17 @@ class Conozco():
             return None
         return os.path.join(folder, 'stats.dat')
 
+    def _update_play_time(self):
+        elapsed = time.monotonic() - self._init_time
+        minutes = int(elapsed // 60)
+
+        if minutes > 0:
+            self._time += minutes
+            self._init_time += minutes * 60
+
     def save_stats(self):
         try:
-            t = int((time.monotonic() - self._init_time) / 60)
-            self._time = self._time + t
+            self._update_play_time()
             path = self._get_stats_path()
             # use aux list
             l = []
