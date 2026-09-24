@@ -243,11 +243,11 @@ class Nivel():
 
     def __init__(self, nombre):
         self.nombre = nombre
-        self.dibujoInicial = list()
-        self.nombreInicial = list()
-        self.preguntas = list()
+        self.dibujoInicial = []
+        self.nombreInicial = []
+        self.preguntas = []
         self.indicePreguntaActual = 0
-        self.elementosActivos = list()
+        self.elementosActivos = []
 
     def prepararPreguntas(self):
         """Este metodo sirve para preparar la lista de preguntas al azar."""
@@ -355,8 +355,8 @@ class Conozco():
 
     def cargarListaDirectorios(self):
         """Carga la lista de directorios con los distintos mapas"""
-        self.listaDirectorios = list()
-        self.listaNombreDirectorios = list()
+        self.listaDirectorios = []
+        self.listaNombreDirectorios = []
         listaTemp = os.listdir(CAMINORECURSOS)
         listaTemp.sort()
         for d in listaTemp:
