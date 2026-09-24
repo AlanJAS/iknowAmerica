@@ -5,7 +5,8 @@ I know America
 ## Description
 
 A sugar game about the America geography.
-Writted in python using pygame
+Writted in python using pygame.
+It contains 33 maps, 121 levels, and 157 exploration modes and 3,440 questions.
 
 ## Screenshots
 
