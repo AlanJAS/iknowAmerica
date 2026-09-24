@@ -1383,44 +1383,42 @@ class Conozco():
                                                         True)
                                         self._explore_places += 1
                                         break
-                    elif (end_rect.collidepoint(event.pos) or
-                          show_all_rect.collidepoint(event.pos)):
-                        if end_rect.collidepoint(event.pos):
-                            return
-                        else:  # mostrar todo
-                            for i in self.nivelActual.elementosActivos:
-                                if i.startswith("deptos"):
-                                    for d in self.listaDeptos:
-                                        d.mostrarNombre(self.pantalla, self.fuente32,
-                                                        COLORNOMBREDEPTO, False)
-                                elif i.startswith("rios"):
-                                    for d in self.listaRios:
-                                        d.mostrarNombre(self.pantalla, self.fuente24,
-                                                        COLORNOMBRERIO, False)
-                                elif i.startswith("rutas"):
-                                    for d in self.listaRutas:
-                                        d.mostrarNombre(self.pantalla, self.fuente24,
-                                                        COLORNOMBRERUTA, False)
-                                elif i.startswith("cuchillas"):
-                                    for d in self.listaCuchillas:
-                                        d.mostrarNombre(self.pantalla, self.fuente24,
+                    elif end_rect.collidepoint(event.pos):
+                        return
+                    elif show_all_rect.collidepoint(event.pos):
+                        for i in self.nivelActual.elementosActivos:
+                            if i.startswith("deptos"):
+                                for d in self.listaDeptos:
+                                    d.mostrarNombre(self.pantalla, self.fuente32,
+                                                    COLORNOMBREDEPTO, False)
+                            elif i.startswith("rios"):
+                                for d in self.listaRios:
+                                    d.mostrarNombre(self.pantalla, self.fuente24,
+                                                    COLORNOMBRERIO, False)
+                            elif i.startswith("rutas"):
+                                for d in self.listaRutas:
+                                    d.mostrarNombre(self.pantalla, self.fuente24,
+                                                    COLORNOMBRERUTA, False)
+                            elif i.startswith("cuchillas"):
+                                for d in self.listaCuchillas:
+                                    d.mostrarNombre(self.pantalla, self.fuente24,
+                                                    COLORNOMBREELEVACION, False)
+                            elif i.startswith("capitales"):
+                                for l in self.listaLugares:
+                                    if ((l.tipo == 0) or (l.tipo == 1)):
+                                        l.mostrarNombre(self.pantalla, self.fuente24,
+                                                        COLORNOMBRECAPITAL, False)
+                            elif i.startswith("ciudades"):
+                                for l in self.listaLugares:
+                                    if l.tipo == 2:
+                                        l.mostrarNombre(self.pantalla, self.fuente24,
+                                                        COLORNOMBRECAPITAL, False)
+                            elif i.startswith("cerros"):
+                                for l in self.listaLugares:
+                                    if l.tipo == 5:
+                                        l.mostrarNombre(self.pantalla, self.fuente24,
                                                         COLORNOMBREELEVACION, False)
-                                elif i.startswith("capitales"):
-                                    for l in self.listaLugares:
-                                        if ((l.tipo == 0) or (l.tipo == 1)):
-                                            l.mostrarNombre(self.pantalla, self.fuente24,
-                                                            COLORNOMBRECAPITAL, False)
-                                elif i.startswith("ciudades"):
-                                    for l in self.listaLugares:
-                                        if l.tipo == 2:
-                                            l.mostrarNombre(self.pantalla, self.fuente24,
-                                                            COLORNOMBRECAPITAL, False)
-                                elif i.startswith("cerros"):
-                                    for l in self.listaLugares:
-                                        if l.tipo == 5:
-                                            l.mostrarNombre(self.pantalla, self.fuente24,
-                                                            COLORNOMBREELEVACION, False)
-                            pygame.display.flip()
+                        pygame.display.flip()
                 elif event.type == EVENTOREFRESCO:
                     pygame.display.flip()
 
