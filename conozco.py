@@ -158,7 +158,8 @@ class Punto():
 
     def dibujar(self, pantalla, flipAhora):
         """Dibuja un punto en su posicion"""
-        pantalla.blit(self.simbolo, (self.posicion[0]-8, self.posicion[1]-8))
+        rect = self.simbolo.get_rect(center=self.posicion)
+        pantalla.blit(self.simbolo, rect)
         if flipAhora:
             pygame.display.flip()
 
