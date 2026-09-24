@@ -1253,10 +1253,10 @@ class Conozco():
         # presentar nivel
         self.presentLevel()
         # boton terminar
-        self.pantalla.fill(COLOR_SHOW_ALL, (int(975*scale+shift_x),
-                                            int(25*scale+shift_y),
-                                            int(200*scale),
-                                            int(50*scale)))
+        end_rect = pygame.Rect(int(975*scale+shift_x),
+                               int(25*scale+shift_y),
+                               int(200*scale), int(50*scale))
+        self.pantalla.fill(COLOR_SHOW_ALL, end_rect)
         self.mostrarTexto(_("End"),
                           self.fuente40,
                           (int(1075*scale+shift_x),
@@ -1264,10 +1264,10 @@ class Conozco():
                           COLOR_SKIP)
         pygame.display.flip()
         # boton mostrar todo
-        self.pantalla.fill(COLOR_SHOW_ALL, (int(975*scale+shift_x),
-                                            int(90*scale+shift_y),
-                                            int(200*scale),
-                                            int(50*scale)))
+        show_all_rect = pygame.Rect(int(975*scale+shift_x),
+                                    int(90*scale+shift_y),
+                                    int(200*scale), int(50*scale))
+        self.pantalla.fill(COLOR_SHOW_ALL, show_all_rect)
         self.mostrarTexto(_("Show all"),
                           self.fuente40,
                           (int(1075*scale+shift_x),
@@ -1360,13 +1360,11 @@ class Conozco():
                                                         True)
                                         self._explore_places += 1
                                         break
-                    elif event.pos[0] > 975*scale+shift_x and \
-                            event.pos[0] < 1175*scale+shift_x:
-                        if event.pos[1] > 25*scale+shift_y and \
-                                event.pos[1] < 75*scale+shift_y:  # terminar
+                    elif (end_rect.collidepoint(event.pos) or
+                          show_all_rect.collidepoint(event.pos)):
+                        if end_rect.collidepoint(event.pos):
                             return
-                        elif event.pos[1] > 90*scale+shift_y and \
-                                event.pos[1] < 140*scale+shift_y:  # mostrar todo
+                        else:  # mostrar todo
                             for i in self.nivelActual.elementosActivos:
                                 if i.startswith("deptos"):
                                     for d in self.listaDeptos:
@@ -1425,11 +1423,10 @@ class Conozco():
         self.nivelActual.prepararPreguntas()
         # presentar nivel
         self.presentLevel()
-        self.pantalla.fill(COLOR_SHOW_ALL,
-                           (int(975*scale+shift_x),
-                            int(26*scale+shift_y),
-                            int(200*scale),
-                            int(48*scale)))
+        end_rect = pygame.Rect(int(975*scale+shift_x),
+                               int(26*scale+shift_y),
+                               int(200*scale), int(48*scale))
+        self.pantalla.fill(COLOR_SHOW_ALL, end_rect)
         self.mostrarTexto(_("End"),
                           self.fuente40,
                           (int(1075*scale+shift_x),
