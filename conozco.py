@@ -29,6 +29,7 @@ import time
 import importlib.util
 import gettext
 import configparser
+import tempfile
 from gettext import gettext as _
 import pygame
 gtk_present = True
@@ -763,12 +764,22 @@ class Conozco():
                       self._game_times, self._time]
             values.append(self._calc_sum(values))
 
-            # save
-            f = open(path, 'w')
-            for val in values:
-                f.write(str(val) + '\n')
-            f.close()
-        except Exception as err:
+            # Replace only after a complete write, preserving the previous
+            # file if writing fails. The temporary file is on the same disk.
+            temporary_path = None
+            try:
+                with tempfile.NamedTemporaryFile(
+                        mode='w', encoding='utf-8', dir=os.path.dirname(path),
+                        prefix='.stats-', delete=False) as stream:
+                    temporary_path = stream.name
+                    stream.write(''.join(f'{value}\n' for value in values))
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                os.replace(temporary_path, path)
+            finally:
+                if temporary_path is not None and os.path.exists(temporary_path):
+                    os.unlink(temporary_path)
+        except OSError as err:
             print('Error saving stats', err)
 
     def loadAll(self):
