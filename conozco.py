@@ -150,11 +150,11 @@ class Punto():
     def estaAca(self, pos):
         """Devuelve un booleano indicando si esta en la coordenada pos,
         la precision viene dada por la constante global RADIO"""
-        if (pos[0]-self.posicion[0])**2 + \
-                (pos[1]-self.posicion[1])**2 < RADIO2:
-            return True
-        else:
-            return False
+        radio = RADIO * scale
+        dx = pos[0] - self.posicion[0]
+        dy = pos[1] - self.posicion[1]
+
+        return dx * dx + dy * dy < radio * radio
 
     def dibujar(self, pantalla, flipAhora):
         """Dibuja un punto en su posicion"""
