@@ -704,10 +704,10 @@ class Conozco():
                     pos = event.pos
                     if about_rect.collidepoint(pos):
                         if self.pantallaAcercaDe() == 1:
-                            return
+                            return 1
                     elif stats_rect.collidepoint(pos):
                         if self.pantallaStats() == 1:
-                            return
+                            return 1
                     elif exit_rect.collidepoint(pos):
                         self.elegir_directorio = True
                         return
