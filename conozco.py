@@ -864,8 +864,11 @@ class Conozco():
         if self._game_times > 0:
             self._average = self._score / self._game_times
 
-    def _validate_stats(self, l):
-        return self._calc_sum(l) == l[-1]
+    def _validate_stats(self, values):
+        return (
+            len(values) in (6, 7)
+            and self._calc_sum(values[:-1]) == values[-1]
+        )
 
     def _calc_sum(self, l):
         return sum(l) % 7
