@@ -693,42 +693,28 @@ class Conozco():
             path = self._get_stats_path()
 
             with open(path, 'r', encoding='utf-8') as f:
-                l = [int(float(line.strip())) for line in f]
+                values = [int(line.strip()) for line in f]
 
         except FileNotFoundError:
             return  # First run.
 
-        except (OSError, ValueError, TypeError) as err:
+        except (OSError, ValueError) as err:
             print('Cannot load stats', err)
             return
 
-        # Accept both the old and the new format.
-        if not self._validate_stats(l):
+        if not self._validate_stats(values):
             print('Invalid stats file')
             return
 
-        # Old format: 7 values, including average at index 1.
-        # Remove the average and the old checksum.
-        if len(l) == 7:
-            l = [l[0], l[2], l[3], l[4], l[5]]
+        # Five integer statistics followed by their checksum.
+        (self._score, self._explore_times, self._explore_places,
+         self._game_times, self._time) = values[:-1]
 
-        else:
-            # New format: remove the checksum.
-            l = l[:-1]
-
-        self._score = l[0]
-        self._explore_times = l[1]
-        self._explore_places = l[2]
-        self._game_times = l[3]
-        self._time = l[4]
-
-        # Calculate average instead of reading it from stats.dat
-        if self._game_times > 0:
-            self._average = self._score / self._game_times
+        self._average = self._score / self._game_times if self._game_times > 0 else 0
 
     def _validate_stats(self, values):
         return (
-            len(values) in (6, 7)
+            len(values) == 6
             and self._calc_sum(values[:-1]) == values[-1]
         )
 
