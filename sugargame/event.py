@@ -21,6 +21,7 @@
 #
 
 import logging
+from collections import defaultdict
 from gi.repository import GLib
 from gi.repository import Gdk
 import pygame
@@ -100,7 +101,8 @@ class Translator(object):
         self._inner_evb.connect('screen-changed', self._screen_changed_cb)
 
         # Internal data
-        self.__keystate = [0] * 323
+        # Pygame 2 uses sparse SDL key codes (e.g. K_LSHIFT = 1073742049).
+        self.__keystate = defaultdict(bool)
         self.__button_state = [0, 0, 0]
         self.__mouse_pos = (0, 0)
         self.__repeat = (None, None)
@@ -201,17 +203,20 @@ class Translator(object):
         return True
 
     def _get_pressed(self):
-        return self.__keystate
+        # Keep the key-code indexing API without exposing mutable live state.
+        return self.__keystate.copy()
 
     def _get_mouse_pressed(self):
         return self.__button_state
 
     def _mousedown_cb(self, widget, event):
-        self.__button_state[event.button - 1] = 1
+        if 1 <= event.button <= len(self.__button_state):
+            self.__button_state[event.button - 1] = 1
         return self._mouseevent(widget, event, pygame.MOUSEBUTTONDOWN)
 
     def _mouseup_cb(self, widget, event):
-        self.__button_state[event.button - 1] = 0
+        if 1 <= event.button <= len(self.__button_state):
+            self.__button_state[event.button - 1] = 0
         return self._mouseevent(widget, event, pygame.MOUSEBUTTONUP)
 
     def _mouseevent(self, widget, event, type):

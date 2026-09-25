@@ -31,7 +31,7 @@ CANVAS = None
 
 
 class PygameCanvas(Gtk.EventBox):
-    def __init__(self, activity, main=None, modules=[pygame]):
+    def __init__(self, activity, main=None, modules=None):
         Gtk.EventBox.__init__(self)
 
         global CANVAS
@@ -43,7 +43,7 @@ class PygameCanvas(Gtk.EventBox):
 
         self._activity = activity
         self._main = main
-        self._modules = modules
+        self._modules = [pygame] if modules is None else modules
 
         self.set_can_focus(True)
 
@@ -58,7 +58,12 @@ class PygameCanvas(Gtk.EventBox):
         # Preinitialize Pygame with the X window ID.
         os.environ['SDL_WINDOWID'] = str(widget.get_id())
         for module in self._modules:
-            module.init()
+            try:
+                module.init()
+            except pygame.error:
+                # Audio is optional; display/font failures must still surface.
+                if module is not pygame.mixer:
+                    raise
 
         # Restore the default cursor.
         widget.props.window.set_cursor(None)
