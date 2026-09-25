@@ -8,21 +8,21 @@ LEVEL1 = [
         ['lineasDepto'],
         [],
 [
-    (_('Tarapacá'), _('Is north')),
-    (_('Antofagasta'), _('Is north')),
-    (_('Atacama'), _('Is north')),
-    (_('Coquimbo'), _('Is north')),
-    (_('Valparaíso'), _('Is north')),
-    (_('Metropolitana'), _('Is north')),
-    (_("Libertador General Bernardo O'Higgins"), _('Is in the center')),
-    (_('Maule'), _('Is in the center')),
-    (_('Bío-Bío'), _('Is in the center')),
-    (_('La Araucanía'), _('Is south')),
-    (_('Los Lagos'), _('Is south')),
-    (_('Aysén'), _('Is south')),
-    (_('Magallanes'), _('Is south')),
-    (_('Arica Parinacota'), _('Is south')),
-    (_('Los Rios'), _('Is south'))
+    (1, _('Is north')),
+    (2, _('Is north')),
+    (3, _('Is north')),
+    (4, _('Is north')),
+    (5, _('Is north')),
+    (6, _('Is north')),
+    (7, _('Is in the center')),
+    (8, _('Is in the center')),
+    (9, _('Is in the center')),
+    (10, _('Is south')),
+    (11, _('Is south')),
+    (12, _('Is south')),
+    (13, _('Is south')),
+    (14, _('Is south')),
+    (15, _('Is south'))
 ]
 ]
 
@@ -32,21 +32,21 @@ LEVEL2 = [
         ['lineasDepto', 'capitales'],
         [],
 [
-    (_('Santiago'), _('Is north')),
-    (_('Iquique'), _('Is north')),
-    (_('Antofagasta'), _('Is north')),
-    (_('Copiapó'), _('Is north')),
-    (_('La Serena'), _('Is north')),
-    (_('Valparaíso'), _('Is north')),
-    (_('Rancagua'), _('Is in the center')),
-    (_('Talca'), _('Is in the center')),
-    (_('Concepción'), _('Is in the center')),
-    (_('Temuco'), _('Is south')),
-    (_('Puerto Montt'), _('Is south')),
-    (_('Coihaique'), _('Is south')),
-    (_('Punta Arenas'), _('Is south')),
-    (_('Arica'), _('Is north')),
-    (_('Valdivia'), _('Is south'))
+    (18, _('Is north')),
+    (19, _('Is north')),
+    (20, _('Is north')),
+    (21, _('Is north')),
+    (22, _('Is north')),
+    (23, _('Is north')),
+    (24, _('Is in the center')),
+    (25, _('Is in the center')),
+    (26, _('Is in the center')),
+    (27, _('Is south')),
+    (28, _('Is south')),
+    (29, _('Is south')),
+    (30, _('Is south')),
+    (31, _('Is north')),
+    (32, _('Is south'))
 ]
 ]
 

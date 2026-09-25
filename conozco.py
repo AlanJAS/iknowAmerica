@@ -163,7 +163,8 @@ class Punto():
     dentro del mapa.
     """
 
-    def __init__(self, nombre, tipo, simbolo, posxy, postexto):
+    def __init__(self, identifier, nombre, tipo, simbolo, posxy, postexto):
+        self.id = identifier
         self.nombre = nombre
         self.tipo = int(tipo)
         self.posxy = (coordenada_x(int(posxy[0])),
@@ -201,7 +202,8 @@ class Zona():
     especifico, dado por la clave (valor 0 a 255 del componente rojo).
     """
 
-    def __init__(self, mapa, nombre, claveColor, tipo, posxy, rotacion):
+    def __init__(self, identifier, mapa, nombre, claveColor, tipo, posxy, rotacion):
+        self.id = identifier
         self.mapa = mapa  # esto hace una copia en memoria o no????
         self.nombre = nombre
         self.claveColor = int(claveColor)
@@ -300,10 +302,10 @@ class Conozco():
             5: self.cerro,
         }
         for categoria in ('CAPITALS', 'CITIES', 'HILLS'):
-            for nombre, x, y, tipo, incx, incy in getattr(f, categoria, []):
+            for identifier, nombre, x, y, tipo, incx, incy in getattr(f, categoria, []):
                 simbolo = simbolos.get(tipo, self.ciudad)
                 self.listaLugares.append(
-                    Punto(nombre, tipo, simbolo, (x, y), (incx, incy)))
+                    Punto(identifier, nombre, tipo, simbolo, (x, y), (incx, incy)))
 
         # Datos, lista de destino, imagen visible, mascara de deteccion, tipo.
         zonas = (
@@ -323,14 +325,24 @@ class Conozco():
                 p2 = e[1]
                 self.lista_estadisticas.append((p1, p2))
 
+        self.elementosPorId = {}
+        for categoria, configuracion in CATEGORIAS.items():
+            elementos, _, _ = self._elementos_categoria(categoria)
+            for elemento in elementos:
+                if type(elemento.id) is not int or elemento.id <= 0:
+                    raise ValueError(f'Invalid feature ID {elemento.id!r} in {path}')
+                if elemento.id in self.elementosPorId:
+                    raise ValueError(f'Duplicate feature ID {elemento.id!r} in {path}')
+                self.elementosPorId[elemento.id] = (elemento, configuracion[5])
+
     def _cargar_zonas(self, datos, lista, imagen, mascara, tipo):
         """Carga las imagenes y crea las zonas de una categoria geografica"""
         setattr(self, imagen, self.cargarImagen(imagen + '.png'))
         mapa = self.cargarImagen(mascara + '.png')
         setattr(self, mascara, mapa)
         setattr(self, lista, [
-            Zona(mapa, nombre, clave, tipo, (x, y), rotacion)
-            for nombre, clave, x, y, rotacion in datos
+            Zona(identifier, mapa, nombre, clave, tipo, (x, y), rotacion)
+            for identifier, nombre, clave, x, y, rotacion in datos
         ])
 
     def cargarListaDirectorios(self):
@@ -393,22 +405,31 @@ class Conozco():
             level.dibujoInicial = [item.strip() for item in drawings]
             level.nombreInicial = [item.strip() for item in labels]
             if index == 1:
-                level.preguntas = [
-                    (text, kind, str(answer), str(hint))
-                    for text, kind, answer, hint in questions
-                ]
+                for text, kind, answer_id, hint in questions:
+                    self._resolver_respuesta(answer_id, kind, path)
+                    level.preguntas.append((text, kind, answer_id, str(hint)))
             else:
                 if index not in templates:
                     raise ValueError(f'Unknown level type {index} in {path}')
                 kind, template = templates[index]
-                level.preguntas = [
-                    (template % ({'route': answer} if index == 5 else answer),
-                     kind, answer, hint)
-                    for answer, hint in questions
-                ]
+                for answer_id, hint in questions:
+                    answer = self._resolver_respuesta(answer_id, kind, path).nombre
+                    text = template % ({'route': answer} if index == 5 else answer)
+                    level.preguntas.append((text, kind, answer_id, hint))
             if not level.preguntas:
                 raise ValueError(f'Empty level {name!r} in {path}')
             self.listaNiveles.append(level)
+
+    def _resolver_respuesta(self, identifier, kind, path):
+        """Valida la referencia estable sin utilizar el nombre traducido."""
+        if type(identifier) is not int or identifier <= 0:
+            raise ValueError(f'Invalid answer ID {identifier!r} in {path}')
+        if identifier not in self.elementosPorId:
+            raise ValueError(f'Unknown answer ID {identifier!r} in {path}')
+        elemento, expected_kind = self.elementosPorId[identifier]
+        if kind != expected_kind:
+            raise ValueError(f'Wrong question type {kind} for {identifier!r} in {path}')
+        return elemento
 
     def cargarExploraciones(self):
         """Carga los niveles de exploracion del archivo de configuracion"""
@@ -968,6 +989,7 @@ class Conozco():
 
     def _reset_map_data(self):
         """Descarta todos los datos y recursos del mapa anterior."""
+        self.elementosPorId = {}
         for attribute in (
                 'listaLugares', 'listaDeptos', 'listaRios', 'listaRutas',
                 'listaCuchillas', 'lista_estadisticas', 'listaNiveles',
@@ -1043,7 +1065,7 @@ class Conozco():
         return elementos, getattr(self, fuente), color
 
     def esCorrecta(self, nivel, pos):
-        """Comprueba nombre, categoria y posicion de la respuesta."""
+        """Comprueba ID, categoria y posicion, independientemente del idioma."""
         tipo = nivel.preguntaActual[1]
         respuesta = nivel.preguntaActual[2]
         for categoria, configuracion in CATEGORIAS.items():
@@ -1051,7 +1073,7 @@ class Conozco():
                 continue
             elementos, fuente, color = self._elementos_categoria(categoria)
             for elemento in elementos:
-                if elemento.nombre == respuesta and elemento.estaAca(pos):
+                if elemento.id == respuesta and elemento.estaAca(pos):
                     elemento.mostrarNombre(self.pantalla, fuente, color)
                     return True
         return False
