@@ -308,14 +308,14 @@ class Conozco():
             return
 
         simbolos = {
-            0: self.simboloCapitalN,
-            1: self.simboloCapitalD,
-            2: self.simboloCiudad,
-            5: self.simboloCerro,
+            0: self.capitalN,
+            1: self.capitalD,
+            2: self.ciudad,
+            5: self.cerro,
         }
         for categoria in ('CAPITALS', 'CITIES', 'HILLS'):
             for nombre, x, y, tipo, incx, incy in getattr(f, categoria, []):
-                simbolo = simbolos.get(tipo, self.simboloCiudad)
+                simbolo = simbolos.get(tipo, self.ciudad)
                 self.listaLugares.append(
                     Punto(nombre, tipo, simbolo, (x, y), (incx, incy)))
 
@@ -801,18 +801,37 @@ class Conozco():
         self.camino_imagenes = os.path.join(CAMINORECURSOS,
                                             CAMINOCOMUN,
                                             CAMINOIMAGENES)
-        imagenes = {
-            'fondo1': 'fondo1', 'fondo2': 'fondo2',
-            'jpp1': 'jpp1', 'jpp2': 'jpp2',
-            'globo1': 'globo1', 'globo3': 'globo3', 'jp1': 'jp1',
-            'ojos1': 'ojos1', 'ojos2': 'ojos2', 'ojos3': 'ojos3',
-            'puerta1': 'puerta01', 'puerta2': 'puerta02',
-            'globito': 'globito', 'terron': 'terron',
-            'simboloCapitalD': 'capitalD', 'simboloCapitalN': 'capitalN',
-            'simboloCiudad': 'ciudad', 'simboloCerro': 'cerro',
-        }
-        for atributo, archivo in imagenes.items():
-            setattr(self, atributo, self.cargarImagen(archivo + '.png'))
+        # defino todo
+        self.fondo1 = None
+        self.fondo2 = None
+        self.jpp1 = None
+        self.jpp2 = None
+        self.globo1 = None
+        self.globo3 = None
+        self.jp1 = None
+        self.ojos1 = None
+        self.ojos2 = None
+        self.ojos3 = None
+        self.puerta1 = None
+        self.puerta2 = None
+        self.globito = None
+        self.terron = None
+        self.capitalD = None
+        self.capitalN = None
+        self.ciudad = None
+        self.cerro = None
+        imagenes = [
+            'fondo1', 'fondo2',
+            'jp1', 'jpp1', 'jpp2',
+            'globo1', 'globo3',
+            'ojos1', 'ojos2', 'ojos3',
+            'puerta1', 'puerta2',
+            'globito', 'terron',
+            'capitalD', 'capitalN',
+            'ciudad', 'cerro'
+        ]
+        for archivo in imagenes:
+            setattr(self, archivo, self.cargarImagen(archivo + '.png'))
         self.globo2 = pygame.transform.flip(self.globo1, True, False)
         # cargar sonidos
         self.camino_sonidos = os.path.join(CAMINORECURSOS,
