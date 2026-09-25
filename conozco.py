@@ -75,7 +75,6 @@ CAMINOFUENTES = "fuentes"
 CAMINODATOS = "datos"
 CAMINOIMAGENES = "imagenes"
 CAMINOSONIDOS = "sonidos"
-
 ARCHIVONIVELES = "levels"
 ARCHIVOEXPLORACIONES = "explorations"
 # colors
@@ -285,7 +284,7 @@ class Conozco():
 
     def loadInfo(self):
         """Carga las imagenes y los datos de cada pais"""
-        
+
         # creo todas las listas
         self.listaLugares = []
         self.listaDeptos = []
@@ -299,7 +298,7 @@ class Conozco():
         self.rios = None
         self.rutas = None
         self.cuchillas = None
-        
+
         path = os.path.join(self.camino_datos, self.directorio + '.py')
         f = None
         try:
@@ -331,7 +330,7 @@ class Conozco():
                 if hasattr(f, categoria):
                     self._cargar_zonas(getattr(f, categoria), lista,
                                        imagen, mascara, tipo)
-            
+
             if hasattr(f, 'STATS'):
                 for e in f.STATS:
                     p1 = e[0]
@@ -529,7 +528,7 @@ class Conozco():
             self.mostrarTexto(label, self.fuente40, rect.center, COLOR_BUTTON_T)
             rectangles.append(rect)
         return rectangles
-        
+
     def _draw_menu_option(self, texto, x, y, color):
         """Dibuja una opcion y devuelve su zona clicable"""
         rect = pygame.Rect(coordenada_x(x), y-escalar(24),
@@ -563,7 +562,7 @@ class Conozco():
             self.niveles_rect.append(self._draw_menu_option(
                 n.nombre, 10, yLista, COLOR_OPTION_T))
             yLista += escalar(50)
-            
+
         self.mostrarTexto(_("Explore"),
                           self.fuente60,
                           posicion(900, 220),
