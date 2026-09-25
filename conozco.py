@@ -734,8 +734,6 @@ class Conozco():
         self._game_active = True
         # pantalla
         self.pantalla = None
-        self.anchoPantalla = 1200
-        self.altoPantalla = 900
 
     def load_stats(self):
         """Carga las estadisticas del juego"""
@@ -833,22 +831,23 @@ class Conozco():
             self.pantalla = pygame.display.set_mode(
                 (info.current_w, info.current_h), pygame.FULLSCREEN)
             pygame.display.set_caption(_(self.activity_name))
-        self.anchoPantalla = self.pantalla.get_width()
-        self.altoPantalla = self.pantalla.get_height()
-        if self.anchoPantalla == 1200 and self.altoPantalla == 900:
+        # calculo escala y shift_x y shift_y
+        anchoPantalla = self.pantalla.get_width()
+        altoPantalla = self.pantalla.get_height()
+        if anchoPantalla == 1200 and altoPantalla == 900:
             xo_resolution = True
             scale = 1
             shift_x = 0
             shift_y = 0
         else:
             xo_resolution = False
-            if self.anchoPantalla/1200.0 < self.altoPantalla/900.0:
-                scale = self.anchoPantalla/1200.0
+            if anchoPantalla/1200.0 < altoPantalla/900.0:
+                scale = anchoPantalla/1200.0
                 shift_x = 0
-                shift_y = int((self.altoPantalla-scale*900)/2)
+                shift_y = int((altoPantalla-scale*900)/2)
             else:
-                scale = self.altoPantalla/900.0
-                shift_x = int((self.anchoPantalla-scale*1200)/2)
+                scale = altoPantalla/900.0
+                shift_x = int((anchoPantalla-scale*1200)/2)
                 shift_y = 0
         # cargar imagenes generales
         self.camino_imagenes = os.path.join(CAMINORECURSOS,
