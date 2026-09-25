@@ -668,6 +668,9 @@ class Conozco():
         # sound
         self.click = None
         self.sound = False
+        # cursores
+        self.cursor = None
+        self.cursor_espera = None
         # stats
         self._score = 0
         self._average = 0
@@ -676,6 +679,7 @@ class Conozco():
         self._game_times = 0
         self._time = 0
         # images
+        self.fondo = None
         self.fondo1 = None
         self.fondo2 = None
         self.jpp1 = None
