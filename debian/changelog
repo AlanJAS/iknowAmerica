@@ -1,3 +1,64 @@
+iknowamerica (12) unstable; urgency=low
+
+  * Add persistent player statistics when running outside Sugar, using the
+    user's application data directory.
+  * Refresh country information across 30 country and territory datasets,
+    including government officials, population, GDP, HDI, and selected
+    historical and currency details.
+  * Standardize country statistics formatting, include reference years, and
+    update dataset timestamps.
+  * Consolidate screen navigation, input handling, and animations into a single
+    event loop.
+  * Improve menu, pagination, End, and Show All controls using rectangular hit
+    areas.
+  * Centralize coordinate scaling and geographic category configuration.
+  * Simplify resource loading, question selection, map labels, and progress
+    rendering.
+  * Fix launching the application from a different working directory by
+    resolving resources relative to the script.
+  * Fix point selection and marker alignment at different display scales.
+  * Fix map-region detection for missing masks and clicks outside image
+    boundaries.
+  * Correct detection colors for the Guanajibo River and Savan Island.
+  * Remove the duplicate Newfoundland entry from the Canada map.
+  * Correct geographic names and mismatches between map data and questions,
+    including Santiago del Estero, Lake Ilopango, Lake Izabal, Tacuarembó River,
+    and Guri Reservoir.
+  * Restore the missing Rosario entry in Paraguay's city questions.
+  * Fix first-run statistics handling and reject malformed or invalid statistics
+    files.
+  * Prevent repeated statistics saves from counting the same play time multiple
+    times.
+  * Use a monotonic clock for elapsed play time.
+  * Save statistics through an atomic file replacement to reduce the risk of
+    corruption.
+  * Fix sound toggling in Sugar and allow operation when audio initialization
+    fails.
+  * Handle unsupported custom cursors gracefully.
+  * Fix SugarGame keyboard handling for Pygame 2 key codes and guard against
+    unsupported mouse-button indices.
+  * Ignore repeated key events and non-left mouse clicks in game controls.
+  * Improve exit handling, distinguish skipping the introduction from closing
+    the application, and restore the previous screen after viewing About or
+    Statistics.
+  * Correct misplaced German translation entries.
+  * Avoid unnecessary display updates by refreshing only when the screen
+    changes.
+  * Convert loaded images to the display pixel format while preserving
+    transparency.
+  * Expand the README with screenshots, installation instructions, dependencies,
+    and instructions for launching from another directory.
+  * Update English credits and licensing text.
+  * Expand historical Debian changelog entries.
+  * Remove duplicated code and simplify loading and rendering helpers.
+  * Replace the previous seven-value player statistics format with six integer
+    values, including a checksum.
+  * Calculate average scores from cumulative scores and game counts instead of
+    storing the average.
+  * Legacy statistics files are no longer loaded.
+
+ -- Alan Aguiar <alanjas@hotmail.com>  Fri, 25 Sep 2026 12:25:17 -0300
+
 iknowamerica (11) unstable; urgency=low
 
   * Package upstream commit b356160 for standalone desktops.
