@@ -163,27 +163,27 @@ class Punto():
     dentro del mapa.
     """
 
-    def __init__(self, nombre, tipo, simbolo, posicion, postexto):
+    def __init__(self, nombre, tipo, simbolo, posxy, postexto):
         self.nombre = nombre
         self.tipo = int(tipo)
-        self.posicion = (coordenada_x(int(posicion[0])),
-                         coordenada_y(int(posicion[1])))
-        self.postexto = (escalar(int(postexto[0]))+self.posicion[0],
-                         escalar(int(postexto[1]))+self.posicion[1])
+        self.posxy = (coordenada_x(int(posxy[0])),
+                         coordenada_y(int(posxy[1])))
+        self.postexto = (escalar(int(postexto[0]))+self.posxy[0],
+                         escalar(int(postexto[1]))+self.posxy[1])
         self.simbolo = simbolo
 
     def estaAca(self, pos):
         """Devuelve un booleano indicando si esta en la coordenada pos,
         la precision viene dada por la constante global RADIO"""
         radio = RADIO * scale
-        dx = pos[0] - self.posicion[0]
-        dy = pos[1] - self.posicion[1]
+        dx = pos[0] - self.posxy[0]
+        dy = pos[1] - self.posxy[1]
 
         return dx * dx + dy * dy < radio * radio
 
     def dibujar(self, pantalla):
         """Dibuja un punto en su posicion"""
-        rect = self.simbolo.get_rect(center=self.posicion)
+        rect = self.simbolo.get_rect(center=self.posxy)
         pantalla.blit(self.simbolo, rect)
 
     def mostrarNombre(self, pantalla, fuente, color):
@@ -201,13 +201,13 @@ class Zona():
     especifico, dado por la clave (valor 0 a 255 del componente rojo).
     """
 
-    def __init__(self, mapa, nombre, claveColor, tipo, posicion, rotacion):
+    def __init__(self, mapa, nombre, claveColor, tipo, posxy, rotacion):
         self.mapa = mapa  # esto hace una copia en memoria o no????
         self.nombre = nombre
         self.claveColor = int(claveColor)
         self.tipo = int(tipo)
-        self.posicion = (coordenada_x(int(posicion[0])),
-                         coordenada_y(int(posicion[1])))
+        self.posxy = (coordenada_x(int(posxy[0])),
+                         coordenada_y(int(posxy[1])))
         self.rotacion = int(rotacion)
 
     def estaAca(self, pos):
@@ -216,7 +216,7 @@ class Zona():
             return False
         local_pos = (int(pos[0] - shift_x), int(pos[1] - shift_y))
         if not self.mapa.get_rect().collidepoint(local_pos):
-             return False
+            return False
         return self.mapa.get_at(local_pos)[0] == self.claveColor
 
     def mostrarNombre(self, pantalla, fuente, color):
@@ -224,7 +224,7 @@ class Zona():
         text = fuente.render(self.nombre, 1, color)
         textrot = pygame.transform.rotate(text, self.rotacion)
         textrect = textrot.get_rect()
-        textrect.center = (self.posicion[0], self.posicion[1])
+        textrect.center = (self.posxy[0], self.posxy[1])
         pantalla.blit(textrot, textrect)
 
 
