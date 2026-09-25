@@ -667,6 +667,7 @@ class Conozco():
         self._deadline = None
         self._next_refresh = 0
         self._game_active = False
+        self._dirty = True  # se redibuja al menos una vez, al arrancar
         self.paginaDir = 0
         file_activity_info = configparser.ConfigParser()
         activity_info_path = os.path.join(BASE_DIR, 'activity', 'activity.info')
@@ -1129,6 +1130,7 @@ class Conozco():
         self._deadline = None
         self._screen = screen
         self._screen_revision += 1
+        self._dirty = True
         draw = {
             'intro': self.presentacion,
             'maps': self.pantallaDirectorios,
@@ -1171,7 +1173,9 @@ class Conozco():
 
     def _handle_event(self, event):
         """Despacha entrada al estado actual; QUIT se resuelve por lote."""
-        if event.type not in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
+        if event.type in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
+            self._dirty = True
+        else:
             return
         if event.type == pygame.MOUSEBUTTONDOWN and event.button != 1:
             return
@@ -1312,11 +1316,13 @@ class Conozco():
             self.estadobicho, eyes = ESTADONORMAL, self.ojos1
         if eyes is not None:
             self.pantalla.blit(eyes, posicion(1020, 547))
+            self._dirty = True
 
     def _update(self, now):
         """Avanza animaciones y respuestas sin temporizadores en la cola."""
         if self._deadline is not None and now >= self._deadline:
             self._deadline = None
+            self._dirty = True
             if self._screen == 'intro':
                 self._advance_intro()
             elif self._screen == 'play':
@@ -1351,7 +1357,9 @@ class Conozco():
                 self._process_events(self._get_events())
                 if self.running:
                     self._update(pygame.time.get_ticks())
-                    pygame.display.flip()
+                    if self._dirty:
+                        pygame.display.flip()
+                        self._dirty = False
         finally:
             self._close_game()
 
