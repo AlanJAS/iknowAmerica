@@ -213,18 +213,12 @@ class Zona():
 
     def estaAca(self, pos):
         """Devuelve True si la coordenada pos esta en la zona"""
-        if pos[0] < XMAPAMAX*scale+shift_x:
-            try:
-                colorAca = self.mapa.get_at((int(pos[0]-shift_x),
-                                             int(pos[1]-shift_y)))
-            except:  # probablemente click fuera de la imagen
-                return False
-            if colorAca[0] == self.claveColor:
-                return True
-            else:
-                return False
-        else:
+        if self.mapa is None:
             return False
+        local_pos = (int(pos[0] - shift_x), int(pos[1] - shift_y))
+        if not self.mapa.get_rect().collidepoint(local_pos):
+             return False
+        return self.mapa.get_at(local_pos)[0] == self.claveColor
 
     def mostrarNombre(self, pantalla, fuente, color):
         """Escribe el nombre de la zona en su posicion"""
@@ -715,6 +709,7 @@ class Conozco():
     def _validate_stats(self, values):
         return (
             len(values) == 6
+            and all(value >= 0 for value in values)
             and self._calc_sum(values[:-1]) == values[-1]
         )
 
@@ -815,13 +810,14 @@ class Conozco():
                                            CAMINOCOMUN,
                                            CAMINOSONIDOS)
         # check sound
-        self.sound = True
+        self.click = None
         try:
             self.click = pygame.mixer.Sound(os.path.join(
                 self.camino_sonidos, "junggle_btn117.wav"))
             self.click.set_volume(0.2)
-        except:
-            self.sound = False
+        except (pygame.error, OSError):
+            self.click = None
+        self.change_sound(getattr(self.parent, 'sound_enable', True))
         # cargar directorios
         self.cargarListaDirectorios()
         # cargar fuentes
@@ -1168,6 +1164,8 @@ class Conozco():
         """Despacha entrada al estado actual; QUIT se resuelve por lote."""
         if event.type not in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
             return
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button != 1:
+            return
         if self._screen == 'intro':
             self._play_click()
             self._change_screen('maps')
@@ -1355,5 +1353,7 @@ def main():
 
 if __name__ == "__main__":
     pygame.init()
-    pygame.display.init()
-    main()
+    try:
+        main()
+    finally:
+        pygame.quit()
