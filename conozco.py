@@ -639,11 +639,20 @@ class Conozco():
         self.footer_rects = self._draw_footer(_("Exit"))
 
     def cargarImagen(self, nombre):
-        """Carga una imagen y la escala de acuerdo a la resolucion"""
+        """Carga una imagen, la convierte al formato de pantalla (para que
+        el blit sea rapido) y la escala de acuerdo a la resolucion"""
         archivo = os.path.join(self.camino_imagenes, nombre)
         if not os.path.exists(archivo):
             return None
         imagen = pygame.image.load(archivo)
+        # Sin convert()/convert_alpha() cada blit reconvierte el formato de
+        # pixel al vuelo, lo que es mucho mas lento. Se preserva el canal
+        # alfa si la imagen lo tiene (mascara de deteccion o sprite con
+        # transparencia); si no, convert() alcanza y es un poco mas liviano.
+        if imagen.get_masks()[3]:
+            imagen = imagen.convert_alpha()
+        else:
+            imagen = imagen.convert()
         if not xo_resolution:
             imagen = pygame.transform.scale(imagen,
                          (escalar(imagen.get_width()),
