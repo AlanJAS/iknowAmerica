@@ -966,8 +966,22 @@ class Conozco():
         except pygame.error:
             pass
 
+    def _reset_map_data(self):
+        """Descarta todos los datos y recursos del mapa anterior."""
+        for attribute in (
+                'listaLugares', 'listaDeptos', 'listaRios', 'listaRutas',
+                'listaCuchillas', 'lista_estadisticas', 'listaNiveles',
+                'listaExploraciones'):
+            setattr(self, attribute, [])
+        for attribute in (
+                'fondo', 'bandera', 'deptos', 'deptosLineas',
+                'rios', 'riosDetectar', 'rutas', 'rutasDetectar',
+                'cuchillas', 'cuchillasDetectar'):
+            setattr(self, attribute, None)
+
     def cargarDirectorio(self, directorio):
         """Carga la informacion especifica de un directorio"""
+        self._reset_map_data()
         self.camino_imagenes = os.path.join(CAMINORECURSOS,
                                             directorio,
                                             CAMINOIMAGENES)
@@ -1168,7 +1182,8 @@ class Conozco():
         """Contabiliza incluso una partida interrumpida, sin duplicarla."""
         if self._game_active:
             self._score += self.puntos
-            self._average = self._score / self._game_times
+            self._average = (self._score / self._game_times
+                             if self._game_times > 0 else 0)
             self._game_active = False
 
     def _change_screen(self, screen):
