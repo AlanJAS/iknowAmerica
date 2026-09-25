@@ -1173,12 +1173,13 @@ class Conozco():
 
     def _handle_event(self, event):
         """Despacha entrada al estado actual; QUIT se resuelve por lote."""
-        if event.type in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
-            self._dirty = True
-        else:
+        if event.type not in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
+            return
+        if event.type == pygame.KEYDOWN and getattr(event, 'repeat', False):
             return
         if event.type == pygame.MOUSEBUTTONDOWN and event.button != 1:
             return
+        self._dirty = True
         if self._screen == 'intro':
             self._play_click()
             self._change_screen('maps')
