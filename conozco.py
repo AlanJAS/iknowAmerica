@@ -282,13 +282,13 @@ class Conozco():
         textrect.center = posicion
         self.pantalla.blit(text, textrect)
 
-    def loadInfo(self):
+    def loadInfo(self, directorio):
         """Carga las imagenes y los datos de cada pais"""
 
-        path = os.path.join(self.camino_datos, self.directorio + '.py')
+        path = os.path.join(self.camino_datos, directorio + '.py')
         f = None
         try:
-            f = load_source(self.directorio, path)
+            f = load_source(directorio, path)
         except (OSError, ImportError, SyntaxError) as err:
             print(_('Cannot open %s') % path, err)
             return
@@ -966,18 +966,18 @@ class Conozco():
         except pygame.error:
             pass
 
-    def cargarDirectorio(self):
+    def cargarDirectorio(self, directorio):
         """Carga la informacion especifica de un directorio"""
         self.camino_imagenes = os.path.join(CAMINORECURSOS,
-                                            self.directorio,
+                                            directorio,
                                             CAMINOIMAGENES)
         self.camino_datos = os.path.join(CAMINORECURSOS,
-                                         self.directorio,
+                                         directorio,
                                          CAMINODATOS)
         self.fondo = self.cargarImagen("fondo.png")
         self.bandera = self.cargarImagen("bandera.png")
 
-        self.loadInfo()
+        self.loadInfo(directorio)
 
         self.cargarNiveles()
         self.cargarExploraciones()
@@ -1266,10 +1266,10 @@ class Conozco():
                     self._change_screen('maps')
                 else:
                     self.indiceDirectorioActual = index
-                    self.directorio = self.listaDirectorios[index]
+                    directorio = self.listaDirectorios[index]
                     self._set_cursor(self.cursor_espera)
                     try:
-                        self.cargarDirectorio()
+                        self.cargarDirectorio(directorio)
                     finally:
                         self._set_cursor(self.cursor)
                     self._change_screen('menu')
