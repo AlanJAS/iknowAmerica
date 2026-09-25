@@ -56,6 +56,10 @@ iknowamerica (12) unstable; urgency=low
   * Calculate average scores from cumulative scores and game counts instead of
     storing the average.
   * Legacy statistics files are no longer loaded.
+  * Use numbers identifiers to cities and zones to prevent incorrect answers due
+    to translations errors
+  * Use local variables when it's posible
+  * Change name images to less problems
 
  -- Alan Aguiar <alanjas@hotmail.com>  Fri, 25 Sep 2026 12:25:17 -0300
 
