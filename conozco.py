@@ -285,20 +285,6 @@ class Conozco():
     def loadInfo(self):
         """Carga las imagenes y los datos de cada pais"""
 
-        # creo todas las listas
-        self.listaLugares = []
-        self.listaDeptos = []
-        self.listaRios = []
-        self.listaRutas = []
-        self.listaCuchillas = []
-        self.lista_estadisticas = []
-        # mapas
-        self.deptos = None
-        self.deptosLineas = None
-        self.rios = None
-        self.rutas = None
-        self.cuchillas = None
-
         path = os.path.join(self.camino_datos, self.directorio + '.py')
         f = None
         try:
@@ -401,6 +387,7 @@ class Conozco():
             5: (6, _('the %(route)s')),
         }
         self.listaNiveles = []
+        self.indiceNivelActual = 0
         for index, name, drawings, labels, questions in data.LEVELS:
             level = Nivel(str(name))
             level.dibujoInicial = [item.strip() for item in drawings]
@@ -422,8 +409,6 @@ class Conozco():
             if not level.preguntas:
                 raise ValueError(f'Empty level {name!r} in {path}')
             self.listaNiveles.append(level)
-
-        self.indiceNivelActual = 0
 
     def cargarExploraciones(self):
         """Carga los niveles de exploracion del archivo de configuracion"""
@@ -690,8 +675,66 @@ class Conozco():
         self._explore_places = 0
         self._game_times = 0
         self._time = 0
+        # images
+        self.fondo1 = None
+        self.fondo2 = None
+        self.jpp1 = None
+        self.jpp2 = None
+        self.globo1 = None
+        self.globo2 = None
+        self.globo3 = None
+        self.jp1 = None
+        self.ojos1 = None
+        self.ojos2 = None
+        self.ojos3 = None
+        self.puerta1 = None
+        self.puerta2 = None
+        self.globito = None
+        self.terron = None
+        self.capitalD = None
+        self.capitalN = None
+        self.ciudad = None
+        self.cerro = None
+        # fuentes
+        self.fuente9 = None
+        self.fuente24 = None
+        self.fuente32 = None
+        self.fuente40 = None
+        self.fuente60 = None
+        # creo todas las listas
+        self.listaLugares = []
+        self.listaDeptos = []
+        self.listaRios = []
+        self.listaRutas = []
+        self.listaCuchillas = []
+        self.lista_estadisticas = []
+        self.listaNiveles = []
+        self.listaExploraciones = []
+        self.listaDirectorios = []
+        self.listaNombreDirectorios = []
+        # mapas
+        self.deptos = None
+        self.deptosLineas = None
+        self.rios = None
+        self.rutas = None
+        self.cuchillas = None
+        # estados
+        self.estadobicho = ESTADONORMAL
+        self.puntos = 0
+        self.nivelActual = 0
+        self.indiceNivelActual = 0
+        self.avanceNivel = 0
+        self.nRespuestasMal = 0
+        self.estadodespedida = 0
+        self.respondiendo = False
+        self._game_active = True
+        # pantalla
+        self.pantalla = None
+        self.anchoPantalla = 1200
+        self.altoPantalla = 900
 
     def load_stats(self):
+        """Carga las estadisticas del juego"""
         try:
             path = self._get_stats_path()
 
@@ -716,6 +759,7 @@ class Conozco():
         self._average = self._score / self._game_times if self._game_times > 0 else 0
 
     def _validate_stats(self, values):
+        """Valida la integridad de los valores de estadísticas"""
         return (
             len(values) == 6
             and all(value >= 0 for value in values)
@@ -723,9 +767,11 @@ class Conozco():
         )
 
     def _calc_sum(self, l):
+        """Devuelve checksum de una stadística"""
         return sum(l) % 7
 
     def _get_stats_path(self):
+        """Obtiene ruta para guardar las estadísticas"""
         if self.parent is not None:
             folder = os.path.join(self.parent.get_activity_root(), 'data')
         else:
@@ -738,6 +784,7 @@ class Conozco():
         return os.path.join(folder, 'stats.dat')
 
     def _update_play_time(self):
+        """Actualiza tiempo de juego previniendo duplicar el tiempo"""
         elapsed = time.monotonic() - self._init_time
         minutes = int(elapsed // 60)
 
@@ -746,6 +793,7 @@ class Conozco():
             self._init_time += minutes * 60
 
     def save_stats(self):
+        """Guarda las estadísticas del juego"""
         try:
             self._update_play_time()
             path = self._get_stats_path()
@@ -773,6 +821,7 @@ class Conozco():
             print('Error saving stats', err)
 
     def loadAll(self):
+        """Carga todos los recursos del juego"""
         global scale, shift_x, shift_y, xo_resolution
         self.pantalla = pygame.display.get_surface()
         if not(self.pantalla):
@@ -801,25 +850,6 @@ class Conozco():
         self.camino_imagenes = os.path.join(CAMINORECURSOS,
                                             CAMINOCOMUN,
                                             CAMINOIMAGENES)
-        # defino todo
-        self.fondo1 = None
-        self.fondo2 = None
-        self.jpp1 = None
-        self.jpp2 = None
-        self.globo1 = None
-        self.globo3 = None
-        self.jp1 = None
-        self.ojos1 = None
-        self.ojos2 = None
-        self.ojos3 = None
-        self.puerta1 = None
-        self.puerta2 = None
-        self.globito = None
-        self.terron = None
-        self.capitalD = None
-        self.capitalN = None
-        self.ciudad = None
-        self.cerro = None
         imagenes = [
             'fondo1', 'fondo2',
             'jp1', 'jpp1', 'jpp2',
