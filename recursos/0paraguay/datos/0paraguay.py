@@ -105,19 +105,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Asunción') + _("(25º16' S - 57º40' W)")),
+    (_('Capital:'), _('Asunción') + ' ' + _("(25º16' S - 57º40' W)")),
     (_('Language:'), _('Spanish') + ' , ' + _('Guaraní')),
     (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Horacio Cartes')),
-    (_('Vice President:'), _('Juan Afara')),
+    (_('President:'), _('Santiago Peña')),
+    (_('Vice President:'), _('Pedro Alliana')),
     (_('Independence:'), _('from Spain')),
     ('', _('declared: %s') % _('May 15, 1811')),
     ('', _('recognized: %s') % _('September 10, 1880')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('406.752'), 'u': _('km²'), 'p': _('59th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('7.012.433'), 'p': _('104th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('30.754'), 'u': _('billion'), 'p': _('99th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Medium'), 'v': _('0,679'), 'p': _('112nd')}),
+    (_('Area:'), '406 752' + ' ' + _('km²')),
+    (_('Population:'), '7 013 078 (2025)'),
+    (_('GDP:'), 'USD 49 280 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.756 (2023, #99)'),
     (_('Currency:'), _('Guaraní')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

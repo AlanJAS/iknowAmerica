@@ -174,19 +174,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Washington') + _("(38º53' N - 77º02' W)")),
+    (_('Capital:'), _('Washington') + ' ' + _("(38º53' N - 77º02' W)")),
     (_('Language:'), _('English')),
     (_('Government:'), _('Federal presidential republic')),
-    (_('President:'), _('Doanld Trump')),
-    (_('Vice President:'), _('Mike Pence')),
+    (_('President:'), _('Donald Trump')),
+    (_('Vice President:'), _('JD Vance')),
     (_('Independence:'), _('from Great Britain')),
     ('', _('declared: %s') % _('July 4, 1776')),
     ('', _('recognized: %s') % _('September 3, 1783')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('9.826.675'), 'u': _('km²'), 'p': _('3rd')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('322.369.319'), 'p': _('3rd')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('17419.000'), 'u': _('billion'), 'p': _('2nd')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Very High'), 'v': _('0,915'), 'p': _('8th')}),
+    (_('Area:'), '9 826 675' + ' ' + _('km²')),
+    (_('Population:'), '341 784 857 (2025)'),
+    (_('GDP:'), 'USD 30 770 000 000 000 (2025)'),
+    (_('HDI:'), _('Very High') + ' - 0.938 (2023, #17)'),
     (_('Currency:'), _('United States Dollar')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

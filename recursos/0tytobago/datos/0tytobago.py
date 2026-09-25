@@ -70,18 +70,18 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Port of Spain') + _("(10º40' N - 61º31' W)")),
+    (_('Capital:'), _('Port of Spain') + ' ' + _("(10º40' N - 61º31' W)")),
     (_('Language:'), _('English')),
     (_('Government:'), _('Parliamentary republic')),
-    (_('President:'), _('Anthony Carmona')),
-    (_('Prime Minister:'), _('Keith Rowley')),
+    (_('President:'), _('Christine Kangaloo')),
+    (_('Prime Minister:'), _('Kamla Persad-Bissessar')),
     (_('Independence:'), _('from United Kingdom')),
     ('', _('August 31, 1962')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('5.128'), 'u': _('km²'), 'p': _('172th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('1.223.916'), 'p': _('159th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('28.788'), 'u': _('billion'), 'p': _('100th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,772'), 'p': _('64th')}),
+    (_('Area:'), '5 128' + ' ' + _('km²')),
+    (_('Population:'), '1 367 764 (2025)'),
+    (_('GDP:'), 'USD 25 940 000 000 (2025)'),
+    (_('HDI:'), _('Very High') + ' - 0.807 (2023, #72)'),
     (_('Currency:'), _('Trinidad and Tobago dollar')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

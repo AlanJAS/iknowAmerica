@@ -124,18 +124,18 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Tegucigalpa') + _("(14º6' N - 87º13' W)")),
+    (_('Capital:'), _('Tegucigalpa') + ' ' + _("(14º6' N - 87º13' W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Juan Orlando Hernández')),
+    (_('President:'), _('Nasry Asfura')),
     (_('Independence:'), _('from Spain')),
     ('', _('declared: %s') % _('September 15, 1821')),
     ('', _('recognized: %s') % _('December 11, 1825')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('112.492'), 'u': _('km²'), 'p': _('102th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('8.249.574'), 'p': _('94th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('19.567'), 'u': _('billion'), 'p': _('108th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Medium'), 'v': _('0,606'), 'p': _('131st')}),
+    (_('Area:'), '112 492' + ' ' + _('km²')),
+    (_('Population:'), '11 005 850 (2025)'),
+    (_('GDP:'), 'USD 39 600 000 000 (2025)'),
+    (_('HDI:'), _('Medium') + ' - 0.645 (2023, #139)'),
     (_('Currency:'), _('Lempira')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

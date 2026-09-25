@@ -87,18 +87,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Kingston') + _("(17º59' N - 76º48' W)")),
+    (_('Capital:'), _('Kingston') + ' ' + _("(17º59' N - 76º48' W)")),
     (_('Language:'), _('English')),
     (_('Government:'), _('Constitutional monarchy')),
-    (_('Monarch:'), _('Queen Elizabeth II')),
-    (_('Governor:'), _('Patrick Allen')),
+    (_('Monarch:'), _('Charles III')),
+    (_('Governor Gen.:'), _('Patrick Allen')),
+    (_('Prime Minister:'), _('Andrew Holness')),
     (_('Independence:'), _('from United Kingdom')),
     ('', _('August 6, 1962')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('10.991'), 'u': _('km²'), 'p': _('166th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('2.950.210'), 'p': _('139th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('15.569'), 'u': _('billion'), 'p': _('116th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,719'), 'p': _('99th')}),
+    (_('Area:'), '10 991' + ' ' + _('km²')),
+    (_('Population:'), '2 837 077 (2025)'),
+    (_('GDP:'), 'USD 22 700 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.720 (2023, #117)'),
     (_('Currency:'), _('Jamaican dollar')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

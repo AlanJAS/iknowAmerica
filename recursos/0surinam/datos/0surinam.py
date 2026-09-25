@@ -74,18 +74,18 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Paramaribo') + _("(5º52' N - 55º10' W)")),
+    (_('Capital:'), _('Paramaribo') + ' ' + _("(5º52' N - 55º10' W)")),
     (_('Language:'), _('Dutch')),
     (_('Government:'), _('Representative republic')),
-    (_('President:'), _('Dési Bouterse')),
-    (_('Vice President:'), _('Ashwin Adhin')),
+    (_('President:'), _('Jennifer Geerlings-Simons')),
+    (_('Vice President:'), _('Gregory Rusland')),
     (_('Independence:'), _('from Netherlands')),
     ('', _('November 25, 1975')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('163.820'), 'u': _('km²'), 'p': _('91th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('573.311'), 'p': _('167th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('5.297'), 'u': _('billion'), 'p': _('147th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Medium'), 'v': _('0,714'), 'p': _('103rd')}),
+    (_('Area:'), '163 820' + ' ' + _('km²')),
+    (_('Population:'), '639 850 (2025)'),
+    (_('GDP:'), 'USD 4 520 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.722 (2023, #114)'),
     (_('Currency:'), _('Surinamese dollar')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

@@ -152,19 +152,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Guatemala') + _("(14º38' N - 90º33' W)")),
+    (_('Capital:'), _('Guatemala') + ' ' + _("(14º38' N - 90º33' W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Jimmy Morales')),
-    (_('Vice President:'), _('Jafeth Cabrera')),
+    (_('President:'), _('Bernardo Arévalo')),
+    (_('Vice President:'), _('Karin Herrera')),
     (_('Independence:'), _('from Spain')),
     ('', _('declared: %s') % _('September 15, 1821')),
     ('', _('recognized: %s') % _('October 11, 1825')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('108.889'), 'u': _('km²'), 'p': _('106th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('15.806.675'), 'p': _('66th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('66.037'), 'u': _('billion'), 'p': _('77th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Medium'), 'v': _('0,627'), 'p': _('128th')}),
+    (_('Area:'), '108 889' + ' ' + _('km²')),
+    (_('Population:'), '18 687 881 (2025)'),
+    (_('GDP:'), 'USD 123 310 000 000 (2025)'),
+    (_('HDI:'), _('Medium') + ' - 0.662 (2023, #137)'),
     (_('Currency:'), _('Quetzal')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

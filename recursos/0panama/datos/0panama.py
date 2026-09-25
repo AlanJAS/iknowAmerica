@@ -86,19 +86,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Panamá') + _("(8º58' N - 79º32' W)")),
+    (_('Capital:'), _('Panamá') + ' ' + _("(8º58' N - 79º32' W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Juan Carlos Varela')),
-    (_('Vice President:'), _('Isabel Saint Malo')),
+    (_('President:'), _('José Raúl Mulino')),
+    (_('Vice President:'), _('Vacant')),
     (_('Independence:'), _('from Spain')),
-    ('', _('28 of november of 1821')),
+    ('', _('November 28, 1821')),
     (_('from Colombia:'), _('November 3, 1903')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('78.200'), 'u': _('km²'), 'p': _('118th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('3.929.141'), 'p': _('129th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('49.142'), 'u': _('billion'), 'p': _('89th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,780'), 'p': _('60th')}),
+    (_('Area:'), '78 200' + ' ' + _('km²')),
+    (_('Population:'), '4 571 189 (2025)'),
+    (_('GDP:'), 'USD 90 460 000 000 (2025)'),
+    (_('HDI:'), _('Very High') + ' - 0.839 (2023, #59)'),
     (_('Currency:'), _('Balboa')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

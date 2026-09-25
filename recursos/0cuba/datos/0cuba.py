@@ -80,18 +80,18 @@ CITIES = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Havana') + _("(23º80' N - 82º23' W)")),
+    (_('Capital:'), _('Havana') + ' ' + _("(23º08' N - 82º23' W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Communist state')),
-    (_('President:'), _('Raúl Castro')),
-    (_('Vice President:'), _('Miguel Díaz-Canel')),
+    (_('President:'), _('Miguel Díaz-Canel')),
+    (_('Vice President:'), _('Salvador Valdés Mesa')),
     (_('Independence:'), _('from United States')),
     ('', _('May 20, 1902')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('110.860'), 'u': _('km²'), 'p': _('105th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('11.242.621'), 'p': _('71th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('78.694'), 'u': _('billion'), 'p': _('64th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,769'), 'p': _('67th')}),
+    (_('Area:'), '110 860' + ' ' + _('km²')),
+    (_('Population:'), '10 937 203 (2025)'),
+    (_('GDP:'), 'USD 107 350 000 000 (2020)'),
+    (_('HDI:'), _('High') + ' - 0.762 (2023, #97)'),
     (_('Currency:'), _('Cuban peso')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

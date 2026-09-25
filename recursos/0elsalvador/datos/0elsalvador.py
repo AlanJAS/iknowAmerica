@@ -96,19 +96,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('San Salvador'), _("(13º40' N - 89º10' W)")),
+    (_('Capital:'), _('San Salvador') + ' ' + _("(13º40' N - 89º10' W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Salvador Sánchez Cerén')),
-    (_('Vice President:'), _('Óscar Ortiz')),
+    (_('President:'), _('Nayib Bukele')),
+    (_('Vice President:'), _('Félix Ulloa')),
     (_('Independence:'), _('from Spain')),
     ('', _('declared: %s') % _('September 15, 1821')),
     ('', _('recognized: %s') % _('June 12, 1824')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('21.041'), 'u': _('km²'), 'p': _('152th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('6.377.195'), 'p': _('99th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('28.986'), 'u': _('billion'), 'p': _('99th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Medium'), 'v': _('0,686'), 'p': _('116th')}),
+    (_('Area:'), '21 041' + ' ' + _('km²')),
+    (_('Population:'), '6 365 503 (2025)'),
+    (_('GDP:'), 'USD 36 710 000 000 (2025)'),
+    (_('HDI:'), _('Medium') + ' - 0.678 (2023, #132)'),
     (_('Currency:'), _('United States Dollar')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

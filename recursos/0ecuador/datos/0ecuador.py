@@ -137,19 +137,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Quito') + _("(0º13' S - 78º31' W)")),
+    (_('Capital:'), _('Quito') + ' ' + _("(0º13' S - 78º31' W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Rafael Correa')),
-    (_('Vice President:'), _('Jorge Glas')),
+    (_('President:'), _('Daniel Noboa')),
+    (_('Vice President:'), _('María José Pinto')),
     (_('Independence:'), _('from Spain')),
     ('', _('May 24, 1822')),
     ('', _('of Colombia: May 13, 1830')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('256.370'), 'u': _('km²'), 'p': _('71th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('16.144.000'), 'p': _('65th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('100.755'), 'u': _('billion'), 'p': _('64th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,732'), 'p': _('88th')}),
+    (_('Area:'), '256 370' + ' ' + _('km²')),
+    (_('Population:'), '18 289 896 (2025)'),
+    (_('GDP:'), 'USD 130 320 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.777 (2023, #88)'),
     (_('Currency:'), _('United States Dollar')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

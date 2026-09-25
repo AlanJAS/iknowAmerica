@@ -96,18 +96,18 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Port-au-Prince') + _("(18º32' N - 72º20' W)")),
-    (_('Language:'), _('French')),
-    (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Michel Martelly')),
-    (_('Prime Minister:'), _('Enex Jean-Charles')),
+    (_('Capital:'), _('Port-au-Prince')),
+    ('', _("(18º32' N - 72º20' W)")),
+    (_('Language:'), _('French') + ', ' + _('Haitian Creole')),
+    (_('Government:'), _('Transitional government')),
+    (_('President:'), _('Vacant')),
+    (_('Prime Minister:'), _('Alix Didier Fils-Aimé')),
     (_('Independence:'), _('from France')),
     ('', _('declared: %s') % _('January 1, 1804')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('27.750'), 'u': _('km²'), 'p': _('147th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('10.604.000'), 'p': _('85th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('8.924'), 'u': _('billion'), 'p': _('137th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Low'), 'v': _('0,483'), 'p': _('163rd')}),
+    (_('Area:'), '27 750' + ' ' + _('km²')),
+    (_('Population:'), '11 906 095 (2025)'),
+    (_('GDP:'), 'USD 32 080 000 000 (2025)'),
+    (_('HDI:'), _('Medium') + ' - 0.554 (2023, #166)'),
     (_('Currency:'), _('Gourde')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
-

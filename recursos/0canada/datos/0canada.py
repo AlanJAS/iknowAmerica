@@ -107,19 +107,20 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Ottawa') + _("(45º24' N - 75º40' W)")),
+    (_('Capital:'), _('Ottawa') + ' ' + _("(45º24' N - 75º40' W)")),
     (_('Language:'), _('English') + ' , ' + _('French')),
-    (_('Government:'), _('Federal parliamentary monarch')),
-    (_('Monarch:'), _('Queen Elizabeth II')),
-    (_('Governor:'), _('David Johnston')),
+    (_('Government:'), _('Federal parliamentary monarchy')),
+    (_('Monarch:'), _('Charles III')),
+    (_('Governor Gen.:'), _('Louise Arbour')),
+    (_('Prime Minister:'), _('Mark Carney')),
     (_('Independence:'), _('from United Kingdom')),
     ('', _('declared: %s') % _('July 1, 1867')),
     ('', _('recognized: %s') % _('December 11, 1931')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('9.984.670'), 'u': _('km²'), 'p': _('2nd')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('36.048.521'), 'p': _('37th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('1628.000'), 'u': _('billion'), 'p': _('15th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Very High'), 'v': _('0,913'), 'p': _('9th')}),
+    (_('Area:'), '9 984 670' + ' ' + _('km²')),
+    (_('Population:'), '41 651 653 (2025)'),
+    (_('GDP:'), 'USD 2 320 000 000 000 (2025)'),
+    (_('HDI:'), _('Very High') + ' - 0.939 (2023, #16)'),
     (_('Currency:'), _('Canadian dollar')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

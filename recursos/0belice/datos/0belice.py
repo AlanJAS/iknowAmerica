@@ -92,18 +92,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Belmopan') + _("(17º15'N - 88º46'E)")),
-    (_('Language:'), _('English (most speak: Spanish)')),
+    (_('Capital:'), _('Belmopan') + ' ' + _("(17º15'N - 88º46'W)")),
+    (_('Language:'), _('English')),
     (_('Government:'), _('Parliamentary democracy')),
-    (_('Monarch:'), _('Queen Elizabeth II')),
-    (_('Governor:'), _('Dean Barrow')),
+    (_('Monarch:'), _('Charles III')),
+    (_('Governor Gen.:'), _('Froyla Tzalam')),
+    (_('Prime Minister:'), _('John Briceño')),
     (_('Independence:'), _('from the United Kingdom')),
     ('', _('September 21, 1981')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('22.966'), 'u': _('km²'), 'p': _('151th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('347.369'), 'p': _('170th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('1.759'), 'u': _('billion'), 'p': _('167th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,715'), 'p': _('101st')}),
+    (_('Area:'), '22 966' + ' ' + _('km²')),
+    (_('Population:'), '422 924 (2025)'),
+    (_('GDP:'), 'USD 3 330 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.721 (2023, #115)'),
     (_('Currency:'), _('Belize Dollar')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

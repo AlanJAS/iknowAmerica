@@ -43,19 +43,19 @@ CAPITALS = [
 ]
 
 STATS = [
-    (_('Capital:'), _('Santiago') + _("(33º26' S - 70º39' W)")),
+    (_('Capital:'), _('Santiago') + ' ' + _("(33º26' S - 70º39' W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Michelle Bachelet Jeria')),
+    (_('President:'), _('José Antonio Kast')),
     (_('Independence:'), _('from Spain')),
     ('', _('declared: %s') % _('February 12, 1818')),
     ('', _('recognized: %s') % _('February 24, 1844')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('756.096'), 'u': _('km²'), 'p': _('38th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('18.006.407'), 'p': _('62nd')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('410.277'), 'u': _('billion'), 'p': _('42nd')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Very High'), 'v': _('0,832'), 'p': _('42th')}),
+    (_('Area:'), '756 096' + ' ' + _('km²')),
+    (_('Population:'), '19 859 921 (2025)'),
+    (_('GDP:'), 'USD 357 370 000 000 (2025)'),
+    (_('HDI:'), _('Very High') + ' - 0.878 (2023, #45)'),
     (_('Currency:'), _('Peso')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 
 

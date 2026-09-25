@@ -135,19 +135,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Brasilia') + _("(15º45' S - 47º57' W)")),
+    (_('Capital:'), _('Brasilia') + ' ' + _("(15º45' S - 47º57' W)")),
     (_('Language:'), _('Portuguese')),
     (_('Government:'), _('Federal presidential republic')),
-    (_('President:'), _('Dilma Rousseff')),
-    (_('Vice President:'), _('Michel Temer')),
+    (_('President:'), _('Luiz Inácio Lula da Silva')),
+    (_('Vice President:'), _('Geraldo Alckmin')),
     (_('Independence:'), _('from Portugal')),
     ('', _('declared: %s') % _('September 7, 1822')),
     ('', _('recognized: %s') % _('August 29, 1825')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('8.514.877'), 'u': _('km²'), 'p': _('5th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('205.338.000'), 'p': _('5th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('1672.000'), 'u': _('billion'), 'p': _('9th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,755'), 'p': _('75th')}),
+    (_('Area:'), '8 514 877' + ' ' + _('km²')),
+    (_('Population:'), '212 812 405 (2025)'),
+    (_('GDP:'), 'USD 2 280 000 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.786 (2023, #84)'),
     (_('Currency:'), _('Real')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

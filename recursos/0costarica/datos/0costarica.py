@@ -145,19 +145,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('San José') + _("(9º56'N - 84º5'W)")),
+    (_('Capital:'), _('San José') + ' ' + _("(9º56'N - 84º5'W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Luis Guillermo Solís')),
-    (_('Vice President:'), _('Helio Fallas Venegas')),
-    ('', _('Ana Helena Chacón')),
+    (_('President:'), _('Laura Fernández Delgado')),
+    (_('Vice President:'), _('Francisco Gamboa')),
+    ('', _('Douglas Soto Campos')),
     (_('Independence:'), _('from Spain')),
     ('', _('September 15, 1821')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('51.100'), 'u': _('km²'), 'p': _('129th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('4.615.518'), 'p': _('115th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('74.324'), 'u': _('billion'), 'p': _('80th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,766'), 'p': _('69th')}),
+    (_('Area:'), '51 100' + ' ' + _('km²')),
+    (_('Population:'), '5 152 950 (2025)'),
+    (_('GDP:'), 'USD 102 900 000 000 (2025)'),
+    (_('HDI:'), _('Very High') + ' - 0.833 (2023, #62)'),
     (_('Currency:'), _('Costa Rica Colon')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

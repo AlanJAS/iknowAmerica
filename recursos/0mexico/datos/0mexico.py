@@ -134,18 +134,18 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('México') + _("(19º26' N - 99º08' W)")),
+    (_('Capital:'), _('Mexico City')),
+    ('', _("(19º26' N - 99º08' W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Federal republic')),
-    (_('President:'), _('Enrique Peña Nieto')),
+    (_('President:'), _('Claudia Sheinbaum')),
     (_('Independence:'), _('from Spain')),
     ('', _('declared: %s') % _('September 16, 1810')),
     ('', _('recognized: %s') % _('December 28, 1836')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('1.972.550'), 'u': _('km²'), 'p': _('14th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('119.530.753'), 'p': _('11st')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('1.232.000'), 'u': _('billion'), 'p': _('13th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,756'), 'p': _('74th')}),
+    (_('Area:'), '1 972 550' + ' ' + _('km²')),
+    (_('Population:'), '131 946 900 (2025)'),
+    (_('GDP:'), 'USD 1 830 000 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.789 (2023, #81)'),
     (_('Currency:'), _('Peso')),
-    (_('Info updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
-

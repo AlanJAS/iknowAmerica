@@ -131,19 +131,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Managua') + _("(13º0' N - 85º0' W)")),
+    (_('Capital:'), _('Managua') + ' ' + _("(12º09' N - 86º16' W)")),
     (_('Language:'), _('Spanish')),
-    (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Daniel Ortega Saavedra')),
-    (_('Vice President:'), _('Omar Halleslevens')),
+    (_('Government:'), _('Republic with co-presidency')),
+    (_('Co-President:'), _('Daniel Ortega')),
+    (_('Co-President:'), _('Rosario Murillo')),
     (_('Independence:'), _('from Spain')),
     ('', _('declared: %s') % _('September 15, 1821')),
     ('', _('recognized: %s') % _('April 8, 1826')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('129.494'), 'u': _('km²'), 'p': _('97th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('6.071.045'), 'p': _('108th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('12.557'), 'u': _('billion'), 'p': _('138th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Medium'), 'v': _('0,631'), 'p': _('125th')}),
+    (_('Area:'), '129 494' + ' ' + _('km²')),
+    (_('Population:'), '7 007 502 (2025)'),
+    (_('GDP:'), 'USD 22 240 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.706 (2023, #123)'),
     (_('Currency:'), _('Córdoba')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

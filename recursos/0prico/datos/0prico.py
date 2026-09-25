@@ -181,19 +181,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('San Juan') + _("(18º29' N - 66º08' W)")),
+    (_('Capital:'), _('San Juan') + ' ' + _("(18º29' N - 66º08' W)")),
     (_('Language:'), _('Spanish') + ' , ' + _('English')),
     (_('Government:'), _('Unincorporated territory')),
     ('', _('from United States')),
     (_('President:'), _('Donald Trump')),
-    (_('Governor:'), _('Alejandro García Padilla')),
-    (_('Ceded by Spain to the United States'), ''),
-    ('', _('August 13, 1898')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('9.104'), 'u': _('km²'), 'p': _('170th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('3.725.789'), 'p': _('127th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('105.100'), 'u': _('billion'), 'p': _('60th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Very High'), 'v': _('0,865'), 'p': _('29th')}),
+    (_('Governor:'), _('Jenniffer González Colón')),
+    (_('Cession:'), _('from Spain to the United States')),
+    ('', _('December 10, 1898')),
+    (_('Area:'), '9 104' + ' ' + _('km²')),
+    (_('Population:'), '3 184 835 (2025)'),
+    (_('GDP:'), 'USD 129 370 000 000 (2025)'),
+    (_('HDI:'), _('Not reported by UNDP (2023)')),
     (_('Currency:'), _('United States Dollar')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

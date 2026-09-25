@@ -131,19 +131,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Lima') + _("(12º02' S - 77º01' W)")),
+    (_('Capital:'), _('Lima') + ' ' + _("(12º02' S - 77º01' W)")),
     (_('Language:'), _('Spanish') + ' , ' + _('Quechua') + ' , ' + _('Aimará')),
     (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Ollanta Humala Tasso')),
-    (_('Prime Minister:'), _('Pedro Cateriano')),
+    (_('President:'), _('Keiko Fujimori')),
+    (_('Prime Minister:'), _('Luis Galarreta')),
     (_('Independence:'), _('from Spain')),
     ('', _('declared: %s') % _('July 28 1821')),
     ('', _('recognized: %s') % _('August 14, 1879')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('1.285.216'), 'u': _('km²'), 'p': _('20th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('31.151.643'), 'p': _('40th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('217.607'), 'u': _('billion'), 'p': _('50th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,734'), 'p': _('84th')}),
-    (_('Currency:'), _('Nuevo sol')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Area:'), '1 285 216' + ' ' + _('km²')),
+    (_('Population:'), '34 576 665 (2025)'),
+    (_('GDP:'), 'USD 334 850 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.794 (2023, #79)'),
+    (_('Currency:'), _('Sol')),
+    (_('Updated:'), '2026-09-25'),
 ]
 

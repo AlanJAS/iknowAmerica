@@ -99,19 +99,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Sucre') + _("(19º2' S - 65º15' W)")),
-    (_('Language:'), _('Spanish') + ' , ' + _('Quechua') + ' , ' + _('Guarani')),
+    (_('Capital:'), _('Sucre') + ' ' + _("(19º2' S - 65º15' W)")),
+    (_('Language:'), _('Spanish')),
+    ('', _('36 indigenous languages')),
     (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Evo Morales Ayma')),
-    (_('Vice President:'), _('Álvaro García Linera')),
+    (_('President:'), _('Rodrigo Paz Pereira')),
+    (_('Vice President:'), _('Edmand Lara')),
     (_('Independence:'), _('from Spain')),
     ('', _('declared: %s') % _('August 6, 1825')),
     ('', _('recognized: %s') % _('July 21, 1847')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('1.098.581'), 'u': _('km²'), 'p': _('27th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('11.410.651'), 'p': _('83rd')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('33.537'), 'u': _('billion'), 'p': _('96th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Medium'), 'v': _('0,662'), 'p': _('119th')}),
+    (_('Area:'), '1 098 581' + ' ' + _('km²')),
+    (_('Population:'), '12 581 843 (2025)'),
+    (_('GDP:'), 'USD 64 770 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.733 (2023, #108)'),
     (_('Currency:'), _('Boliviano')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
-

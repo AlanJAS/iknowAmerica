@@ -80,18 +80,18 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Georgetown') + _("(6º49' N - 58º9' W)")),
+    (_('Capital:'), _('Georgetown') + ' ' + _("(6º49' N - 58º9' W)")),
     (_('Language:'), _('English')),
     (_('Government:'), _('Semi-Presidential Republic')),
-    (_('President:'), _('David Granger')),
-    (_('Prime minister:'), _('Moses Nagamootoo')),
+    (_('President:'), _('Irfaan Ali')),
+    (_('Prime Minister:'), _('Mark Phillips')),
     (_('Independence:'), _('from United Kingdom')),
     ('', _('May 26, 1966')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('214.970'), 'u': _('km²'), 'p': _('81th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('735.554'), 'p': _('165th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('2.788'), 'u': _('billion'), 'p': _('158th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Medium'), 'v': _('0,636'), 'p': _('124th')}),
+    (_('Area:'), '214 970' + ' ' + _('km²')),
+    (_('Population:'), '835 986 (2025)'),
+    (_('GDP:'), 'USD 27 100 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.776 (2023, #89)'),
     (_('Currency:'), _('Guyanese dollar')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

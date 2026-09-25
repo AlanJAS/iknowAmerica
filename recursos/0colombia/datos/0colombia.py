@@ -132,19 +132,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Bogotá') + _("(4º39' N - 74º3' W)")),
+    (_('Capital:'), _('Bogotá') + ' ' + _("(4º39' N - 74º3' W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Juan Manuel Santos')),
-    (_('Vice President:'), _('Germán Vargas Lleras')),
+    (_('President:'), _('Abelardo de la Espriella')),
+    (_('Vice President:'), _('José Manuel Restrepo')),
     (_('Independence:'), _('from Spain')),
     ('', _('declared: %s') % _('July 20, 1810')),
     ('', _('recognized: %s') % _('August 7, 1819')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('1.141.748'), 'u': _('km²'), 'p': _('26th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('48.400.388'), 'p': _('28th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('427.139'), 'u': _('billion'), 'p': _('29th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,720'), 'p': _('97th')}),
+    (_('Area:'), '1 141 748' + ' ' + _('km²')),
+    (_('Population:'), '53 425 635 (2025)'),
+    (_('GDP:'), 'USD 457 410 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.788 (2023, #83)'),
     (_('Currency:'), _('Peso')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

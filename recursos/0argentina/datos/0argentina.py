@@ -108,19 +108,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Buenos Aires') + _("(34º40' S - 58º24' W)")),
+    (_('Capital:'), _('Buenos Aires') + ' ' + _("(34º40' S - 58º24' W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Federal presidential republic')),
-    (_('President:'), _('Mauricio Macri')),
-    (_('Vice President:'), _('Gabriela Michetti')),
+    (_('President:'), _('Javier Milei')),
+    (_('Vice President:'), _('Victoria Villarruel')),
     (_('Independence:'), _('from Spain')),
     ('', _('declared: %s') % _('July 9, 1816')),
-    ('', _('recognized: %s') % ('September 21, 1863')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('2.780.400'), 'u': _('km²'), 'p': _('8th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('43.417.000'), 'p': _('32nd')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('964.279'), 'u': _('billion'), 'p': _('25th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('Very High'), 'v': _('0,836'), 'p': _('40th')}),
+    ('', _('recognized: %s') % _('September 21, 1863')),
+    (_('Area:'), '2 780 400' + ' ' + _('km²')),
+    (_('Population:'), '45 851 378 (2025)'),
+    (_('GDP:'), 'USD 683 100 000 000 (2025)'),
+    (_('HDI:'), _('Very High') + ' - 0.865 (2023, #47)'),
     (_('Currency:'), _('Peso')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

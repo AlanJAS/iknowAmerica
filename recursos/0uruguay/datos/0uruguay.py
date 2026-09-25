@@ -178,18 +178,18 @@ ROUTES = [
 ]
 
 STATS = [
-    (_('Capital:'), _('Montevideo') + _("(34º53' S - 56º10' W)")),
+    (_('Capital:'), _('Montevideo') + ' ' + _("(34º53' S - 56º10' W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Tabaré Vázquez')),
-    (_('Vice President:'), _('Raúl Sendic')),
+    (_('President:'), _('Yamandú Orsi')),
+    (_('Vice President:'), _('Carolina Cosse')),
     (_('Independence:'), _('declared: %s') % _('August 25, 1825')),
-    ('', _('recognized: %s') % _('August 28, 1828')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('176.215'), 'u': _('km²'), 'p': _('90th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('3.324.460'), 'p': _('133rd')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('54.968'), 'u': _('billion'), 'p': _('78th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,793'), 'p': _('52th')}),
+    ('', _('recognized: %s') % _('August 27, 1828')),
+    (_('Area:'), '176 215' + ' ' + _('km²')),
+    (_('Population:'), '3 384 688 (2025)'),
+    (_('GDP:'), 'USD 85 350 000 000 (2025)'),
+    (_('HDI:'), _('Very High') + ' - 0.862 (2023, #48)'),
     (_('Currency:'), _('Peso')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 

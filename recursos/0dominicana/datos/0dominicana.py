@@ -110,18 +110,18 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Santo Domingo') + _("(18º28' N - 69º54' W)")),
+    (_('Capital:'), _('Santo Domingo')),
+    ('', _("(18º28' N - 69º54' W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Presidential republic')),
-    (_('President:'), _('Danilo Medina')),
-    (_('Vice President:'), _('Margarita Cedeño')),
+    (_('President:'), _('Luis Abinader')),
+    (_('Vice President:'), _('Raquel Peña')),
     (_('Independence:'), _('February 27, 1844 (of Haiti)')),
     ('', _('1865 (from Spain)')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('48.442'), 'u': _('km²'), 'p': _('131st')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('10.090.000'), 'p': _('80th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('66.575'), 'u': _('billion'), 'p': _('69th')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,715'), 'p': _('101st')}),
+    (_('Area:'), '48 442' + ' ' + _('km²')),
+    (_('Population:'), '11 520 487 (2025)'),
+    (_('GDP:'), 'USD 127 410 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.776 (2023, #89)'),
     (_('Currency:'), _('Peso')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
-

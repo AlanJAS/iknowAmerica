@@ -117,19 +117,19 @@ RIVERS = [
 ROUTES = []
 
 STATS = [
-    (_('Capital:'), _('Caracas') + _("(10º30' N - 66º58' W)")),
+    (_('Capital:'), _('Caracas') + ' ' + _("(10º30' N - 66º58' W)")),
     (_('Language:'), _('Spanish')),
     (_('Government:'), _('Federal republic')),
-    (_('President:'), _('Nicolás Maduro')),
-    (_('Vice President:'), _('Aristóbulo Istúriz')),
+    (_('Acting Pres.:'), _('Delcy Rodríguez')),
+    (_('Vice President:'), _('Delcy Rodríguez')),
     (_('Independence:'), _('from Spain')),
     ('', _('declared: %s') % _('July 5, 1811')),
     ('', _('recognized: %s') % _('March 30, 1845')),
-    (_('Area:'), '%(sup)s %(u)s (%(p)s)' % {'sup': _('916.445'), 'u': _('km²'), 'p': _('33th')}),
-    (_('Population:'), '%(v)s (%(p)s)' % {'v': _('30.933.000'), 'p': _('44th')}),
-    (_('GDP:'), '%(c)s %(v)s %(u)s (%(p)s)' % {'c': _('USD'), 'v': _('131.855'), 'u': _('billion'), 'p': _('33rd')}),
-    (_('HDI:'), '%(l)s - %(v)s (%(p)s)' % {'l': _('High'), 'v': _('0,762'), 'p': _('71st')}),
+    (_('Area:'), '916 445' + ' ' + _('km²')),
+    (_('Population:'), '28 516 896 (2025)'),
+    (_('GDP:'), 'USD 99 660 000 000 (2025)'),
+    (_('HDI:'), _('High') + ' - 0.709 (2023, #121)'),
     (_('Currency:'), _('Bolívar')),
-    (_('Updated:'), _('April 5, 2016'))
+    (_('Updated:'), '2026-09-25'),
 ]
 
