@@ -863,15 +863,14 @@ class Conozco():
         for archivo in imagenes:
             setattr(self, archivo, self.cargarImagen(archivo + '.png'))
         self.globo2 = pygame.transform.flip(self.globo1, True, False)
-        # cargar sonidos
-        self.camino_sonidos = os.path.join(CAMINORECURSOS,
+        # cargar sonido
+        camino_sonido = os.path.join(CAMINORECURSOS,
                                            CAMINOCOMUN,
-                                           CAMINOSONIDOS)
+                                           CAMINOSONIDOS,
+                                           "junggle_btn117.wav")
         # check sound
-        self.click = None
         try:
-            self.click = pygame.mixer.Sound(os.path.join(
-                self.camino_sonidos, "junggle_btn117.wav"))
+            self.click = pygame.mixer.Sound(camino_sonido)
             self.click.set_volume(0.2)
         except (pygame.error, OSError):
             self.click = None
@@ -969,9 +968,6 @@ class Conozco():
         self.camino_imagenes = os.path.join(CAMINORECURSOS,
                                             self.directorio,
                                             CAMINOIMAGENES)
-        self.camino_sonidos = os.path.join(CAMINORECURSOS,
-                                           self.directorio,
-                                           CAMINOSONIDOS)
         self.camino_datos = os.path.join(CAMINORECURSOS,
                                          self.directorio,
                                          CAMINODATOS)
