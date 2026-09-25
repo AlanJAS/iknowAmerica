@@ -305,37 +305,37 @@ class Conozco():
             f = load_source(self.directorio, path)
         except (OSError, ImportError, SyntaxError) as err:
             print(_('Cannot open %s') % path, err)
+            return
 
-        if f:
-            simbolos = {
-                0: self.simboloCapitalN,
-                1: self.simboloCapitalD,
-                2: self.simboloCiudad,
-                5: self.simboloCerro,
-            }
-            for categoria in ('CAPITALS', 'CITIES', 'HILLS'):
-                for nombre, x, y, tipo, incx, incy in getattr(f, categoria, []):
-                    simbolo = simbolos.get(tipo, self.simboloCiudad)
-                    self.listaLugares.append(
-                        Punto(nombre, tipo, simbolo, (x, y), (incx, incy)))
+        simbolos = {
+            0: self.simboloCapitalN,
+            1: self.simboloCapitalD,
+            2: self.simboloCiudad,
+            5: self.simboloCerro,
+        }
+        for categoria in ('CAPITALS', 'CITIES', 'HILLS'):
+            for nombre, x, y, tipo, incx, incy in getattr(f, categoria, []):
+                simbolo = simbolos.get(tipo, self.simboloCiudad)
+                self.listaLugares.append(
+                    Punto(nombre, tipo, simbolo, (x, y), (incx, incy)))
 
-            # Datos, lista de destino, imagen visible, mascara de deteccion, tipo.
-            zonas = (
-                ('STATES', 'listaDeptos', 'deptosLineas', 'deptos', 1),
-                ('CUCHILLAS', 'listaCuchillas', 'cuchillas', 'cuchillasDetectar', 4),
-                ('RIVERS', 'listaRios', 'rios', 'riosDetectar', 3),
-                ('ROUTES', 'listaRutas', 'rutas', 'rutasDetectar', 6),
-            )
-            for categoria, lista, imagen, mascara, tipo in zonas:
-                if hasattr(f, categoria):
-                    self._cargar_zonas(getattr(f, categoria), lista,
-                                       imagen, mascara, tipo)
+        # Datos, lista de destino, imagen visible, mascara de deteccion, tipo.
+        zonas = (
+            ('STATES', 'listaDeptos', 'deptosLineas', 'deptos', 1),
+            ('CUCHILLAS', 'listaCuchillas', 'cuchillas', 'cuchillasDetectar', 4),
+            ('RIVERS', 'listaRios', 'rios', 'riosDetectar', 3),
+            ('ROUTES', 'listaRutas', 'rutas', 'rutasDetectar', 6),
+        )
+        for categoria, lista, imagen, mascara, tipo in zonas:
+            if hasattr(f, categoria):
+                self._cargar_zonas(getattr(f, categoria), lista,
+                                   imagen, mascara, tipo)
 
-            if hasattr(f, 'STATS'):
-                for e in f.STATS:
-                    p1 = e[0]
-                    p2 = e[1]
-                    self.lista_estadisticas.append((p1, p2))
+        if hasattr(f, 'STATS'):
+            for e in f.STATS:
+                p1 = e[0]
+                p2 = e[1]
+                self.lista_estadisticas.append((p1, p2))
 
     def _cargar_zonas(self, datos, lista, imagen, mascara, tipo):
         """Carga las imagenes y crea las zonas de una categoria geografica"""
