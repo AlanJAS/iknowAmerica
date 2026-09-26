@@ -1,6 +1,6 @@
 [Activity]
 name = I know America
-activity_version = 11
+activity_version = 12
 bundle_id = org.ceibaljam.conozcoamerica
 icon = america
 exec = sugar-activity3 activity.ConzocoActivity
